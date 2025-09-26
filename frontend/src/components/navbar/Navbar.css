@@ -5,7 +5,7 @@
     width: 100%;
     height: max-content;
     background-color: #212121;
-    background: linear-gradient(to left,rgb(29, 13, 0),rgb(39, 18, 0),rgb(29, 13, 0));
+    background: linear-gradient(to left,rgba(29, 13, 0, 1),rgb(39, 18, 0),rgb(29, 13, 0));
     
     margin: 0;
     display: flex;
@@ -123,5 +123,5 @@ button:hover{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 12px;
+    font-size: 10px;
 }
