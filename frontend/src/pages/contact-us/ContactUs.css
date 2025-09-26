@@ -1,0 +1,206 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.contact-us-container {
+    margin:0;
+    padding: 0px;
+    background-color: #fff8ef;
+    min-height: 100vh;
+    width: 100%;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 400;
+    
+}
+
+.header {
+    align-items: center;
+    text-align: center;
+    background-color: #1d0d00ff;
+    height: auto;
+    width: 100%;
+    border-bottom: 2px solid #3d1901ff;
+    
+}
+
+.header-img {
+    display: flex;
+    padding-top: 10px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 500px;
+    width: 100%;
+    background-image:url('../../assets/Contact us.webp');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+.logo{
+    width: 20%;
+}
+.header h1 {
+    font-size: 92px;
+    font-weight: bold;
+    color: #fff8ef;
+    text-shadow: 2px 2px 8px #000000;}
+
+
+.map{
+    padding: 50px;
+    display: flex;
+    justify-content: center;    
+    flex-direction: row;
+    margin-top: 60px;
+    align-items: center;
+  
+}
+.map-frame{
+    
+    border: 7px solid #3d1901ff;
+   
+}
+
+.contact-details{
+    box-sizing: border-box;
+    color: #fff8ef;
+    background-color: #3d1901ff;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 5px;
+    font-size: 20px;
+    font-weight: 300;
+    height:350px;
+    
+}
+
+.branch-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+}
+
+.branch{
+    margin-top: 10px;
+    background-color: #3d1901ff;
+    width: 600px;
+    height: 100%;
+    padding: 10px;
+    
+    
+}
+.branch-img{
+    width: 300px;
+    height: 250px;
+    box-sizing: border-box;
+    border: 3px solid #fff8ef;
+}
+
+.branch-content{
+   text-align: left ;
+}
+.branch-border{
+    box-sizing: border-box;
+    border: 5px solid #fff8ef;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    padding: 20px;
+    color: #fff8ef;
+    align-items: center;
+   
+}
+
+.branch-content h2{
+    font-size: 36px;
+    font-weight: 600;
+    background-color: #fff8ef;
+    color:#3d1901ff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px;
+    height: 40px;
+}
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+    gap: 20px;
+}
+
+.contact-form{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    border: 2px solid #3d1901ff;
+    width: 50%;
+    padding: 50px;
+}
+.form-fields{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.cform{
+    display: flex;
+    flex-direction: column;
+    gap: 0px;
+    width: 400px;
+    
+}
+.line{
+    height: 2px;
+    background-color: #3d1901ff;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    width: 100%;
+}
+.cform h3{
+margin-top: 0;
+}
+.form-image{
+    width: 500px;
+    height: 400px;
+    background-color: #eee;
+    background-image: url('../../assets/yaka.jpeg');
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+.input{
+    padding: 10px;
+    font-size: 16px;
+    border: 2px solid #3d1901ff;
+    margin-top: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    font-family: "Josefin Sans", sans-serif;
+}
+.input-messsage{
+    font-size: 16px;
+    margin-top: 10px;
+    border: 2px solid #3d1901ff;
+    padding: 10px;
+    font-family: "Josefin Sans", sans-serif;
+    box-sizing: border-box;
+    width: 100%;
+    resize: none;
+}
+.button-c{
+    background-color: #3d1901ff;
+    color: #fff8ef;
+    border: none;
+    margin-top: 10px;
+    margin-left: 0px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    width: 100%;
+}
