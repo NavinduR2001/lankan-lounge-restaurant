@@ -1,10 +1,23 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './Navbar.css'
 import {cart, logo} from '../../assets/assets'
-import {Link} from 'react-router-dom'
+import {Link, useLocation } from 'react-router-dom'
 
 function Navbar() {
     const[menu,setMenu]=useState("home")
+    const location = useLocation()
+    useEffect(() => {
+        const path = location.pathname
+        if (path === '/') {
+            setMenu('home')
+        } else if (path === '/about-us') {
+            setMenu('about-us')
+        } else if (path === '/menu') {
+            setMenu('menu')
+        } else if (path === '/contact-us') {
+            setMenu('contact-us')
+        }
+    }, [location.pathname])
   return (
     <>
     <div className="navbar">
@@ -23,7 +36,7 @@ function Navbar() {
     <Link to="/">MENU</Link>
      </li>
      <li onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>
-    <Link to="/">CONTACT US</Link>
+    <Link to="/contact-us">CONTACT US</Link>
     </li>
 </ul>
 
