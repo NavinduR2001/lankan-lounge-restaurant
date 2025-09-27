@@ -35,7 +35,7 @@ function ContactUs() {
         <div className="container">
         <div className="contact-form">
             <div className="cform">
-                <h2>GET IN TOUCH</h2>
+                <h2>SEND US A MESSAGE</h2>
                 <div className="line"></div>
                 <h3>We would love to hear from you!</h3>
                 <form className='form-fields'>

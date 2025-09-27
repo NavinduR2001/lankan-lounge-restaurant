@@ -9,6 +9,7 @@ const messages = [
   "SIGNATURE DISHES!",
   "24-HOUR SERVICE!",
   "ONLINE ORDER!",
+  "TAKE AWAY!",
   "FAST DELIVERY!"
 ];
 
@@ -70,7 +71,7 @@ function Header() {
               <h4>+94 47 113 4547</h4>
               </div>
             <div className="outlet-item ">
-              <h3>EBILIPITTIYA</h3>
+              <h3>KANDY</h3>
               <h4>+94 47 113 4548</h4>
               </div>
           </div>
