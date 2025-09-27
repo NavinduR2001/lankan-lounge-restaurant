@@ -1,4 +1,234 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Ephesis&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.home{
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    background-color: #fdf0df;
+}
 .top{
     background-color: #fdf0df;
     height: 100vh;
+    font-family: 'Inter', sans-serif;
 }
+
+.welcome{
+    font-family: "Josefin Sans", sans-serif;
+
+}
+
+.welcome-title, .offer-title, .dishes-title {
+    font-size: 70px;
+    text-align: center;
+    margin-top: 80px;
+    color: #212121;
+    /* text-shadow: 3px 3px 2px #000000; */
+
+    
+}
+
+.welcome h2, .dishes-subtitle{
+    font-size: 80px;
+    text-align: center;
+    margin-top: -70px;
+    color: #5d4037;
+    font-family: "Ephesis", cursive;
+  
+}
+.line-resturent{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap:40px;
+
+    
+}
+.resline{
+    position: relative;
+    bottom: 60px;
+    z-index: 1; /* Keep this lower */
+}
+
+.welcome-img{
+    margin: 0;
+    margin-top: -220px;
+    display: flex;
+    flex-direction: row;
+    gap: justify;
+    justify-content: center;    
+    align-items: center;
+    width: 100%;
+    height: max-content;
+    padding: 0;
+    position: relative; /* Add this */
+    z-index: 10; /* Increase this to be higher than lines */
+}
+.chicken{
+    width: 50%;
+    height: 50%;
+    object-fit: cover;
+}
+.plateimg{
+    width: 50%;
+    height:50%;
+    object-fit: cover;
+ 
+}
+
+.ordercap{
+    text-align: center;
+    font-size: 36px;
+    position: relative;
+    bottom: 80px;
+    color: #212121;
+   
+}
+
+.offers{
+    font-family: "Josefin Sans", sans-serif;
+    padding:10px 150px;
+    text-align: center;
+    background-color: #fdf0df;
+    height: max-content;
+}
+.offer-container{
+    
+    padding: 20px;
+    display:grid;
+    grid-template-columns: 1fr 1fr; /* 2 equal columns */
+    grid-template-rows: 1fr 1fr; /* 2 equal rows */
+    gap: 20px; 
+    position: relative;
+    bottom: 80px;
+}
+
+.dishes-title {
+    position: relative;
+    bottom: 30px;
+    text-align: center;
+}
+.offer-card{
+    background-color: #fff;
+    border: 1px solid #ddd;
+    padding: 20px;
+    margin: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: inline-block;
+    height: 200px;
+    vertical-align: top;
+}
+
+.dishes{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 150px ;
+    gap: 100px;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    
+}
+
+.dish-card{
+    padding: 20px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 70px;
+    height: 600px;
+     /* border-bottom: 2px solid #5d4037; */
+    
+   
+}
+.dish-name{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    justify-content: center;
+    width: 600px;
+    
+   
+}
+
+.dishes-title{
+    font-family: "Josefin Sans", sans-serif;
+}
+
+.dishes-subtitle{
+    font-size: clamp(62px, 4vw, 24px); /* Responsive font size */
+    text-align: center;
+    margin-top: -50px;
+    color: #5d4037;
+    font-family: "Ephesis", cursive;
+    white-space: nowrap;
+    position: relative;
+    top: -40px;
+}
+.dishline{
+    position: relative;
+    bottom: 80px;
+    z-index: 1; /* Keep this lower */
+}
+
+.dish-image-placeholder{
+    width: 800px;
+    height:600px;
+    
+
+}
+
+.rostedchicken-image{
+    width: 800px;
+    height:600px;
+    
+
+}
+.dish-name{
+    display: flex;
+    flex-direction: column; 
+    align-items: flex-start;
+    width: 600px;
+    height:600px;
+    color: #5d4037;
+     font-family: "Josefin Sans", sans-serif;
+}
+.add-to-cart-btn{
+    margin:0px;
+    background-color: #5d4037;
+    width: 200px;
+    height: 50px;
+    font-size: 20px;
+    color: #fff8ef ;
+
+}
+.add-to-cart-btn:hover{
+   
+    background-color: #ffca28;
+    color: #5d4037;
+}
+.dish-title{
+    font-size: 56px;
+    color: #5d4037;
+    margin-bottom: 10px;
+}
+.person, .price ,.sdish-description, .dish-rating{
+    font-size: 24px;
+    color: #212121;
+    line-height: 1.5;
+    margin-bottom: 10px;
+   
+}
+.dline{
+    display: block; 
+    margin:0;
+    width: 100%;
+    height: 0;
+    border-top: 2px solid #5d4037;
+    background-color: transparent;}
+
