@@ -2,8 +2,10 @@ import React from 'react'
 import './Home.css';
 import Header from '../../components/header/Header'
 import Navbar from '../../components/Navbar/Navbar'
-import { chicken, lplate, rplate,rostedChicken,pizza } from '../../assets/assets';
-
+import { chicken, lplate, rplate,rostedChicken,pizza, burger, biriyani } from '../../assets/assets';
+import { IoFastFoodSharp } from "react-icons/io5";
+import { TbTargetArrow } from "react-icons/tb";
+import { SiCodechef } from "react-icons/si";
 
 function Home() {
   return (
@@ -85,16 +87,16 @@ function Home() {
         </div>
 
         <div className="dish-card">
-          <div className='dish-image-placeholder'><img src={rostedChicken} alt="Rosted Chicken" className='rostedchicken-image' /></div>
+          <div className='dish-image-placeholder'><img src={burger} alt="Rosted Chicken" className='rostedchicken-image' /></div>
 
           <div className='dish-name'>
-            <h1 className="dish-title" >Spicy Rosted Chicken</h1>
-            <h2>Sri Lankan</h2>
+            <h1 className="dish-title" >Classic Cheeseburger</h1>
+            <h2>Burger</h2>
             <div className="dline"></div>
             <h3 className='dish-rating'>Rating: ★★★★☆</h3>
-            <p className='sdish-description'>The perfect blend of spices and flavors. This dish is a must-try for spice lovers!. Chicken is marinated with a special blend of spices and roasted to perfection.</p>
-            <p className='person'>2 Persons</p>
-            <p className='price'>LKR. 5400.00</p>
+            <p className='sdish-description'>Cheeseburgers are an all-time favorite classic. They're a hug between two slices of bread with the perfect combination of melted cheese, bacon, and vibrant vegetables—fresh lettuce, tomato, onion, avocado, and mushrooms. Pickles, mayonnaise, ketchup, and mustard enhance the overall taste.</p>
+            <p className='person'>1 Person</p>
+            <p className='price'>LKR. 900.00</p>
             <div className='add-to-cart-button'>
             <button className='add-to-cart-btn'>Add to Cart</button>
           </div>
@@ -115,10 +117,41 @@ function Home() {
             <button className='add-to-cart-btn'>Add to Cart</button>
           </div>
           </div>
-           <div className='dish-image-placeholder'><img src={rostedChicken} alt="Rosted Chicken" className='rostedchicken-image' /></div>
+           <div className='dish-image-placeholder'><img src={biriyani} alt="Rosted Chicken" className='rostedchicken-image' /></div>
 
         </div>
 
+      {/* Services Section */}
+      <div className="services-section">
+        <div className="line-about">
+          <div className="line aboutline"></div>
+          <h2 className='services-subtitle'>Why Choose Us</h2>
+          <div className="line aboutline"></div>
+        </div>
+        
+        <div className="services-grid">
+          <div className="service-card">
+            <div className="service-icon"><IoFastFoodSharp /></div>
+            <div className="service-number">100+</div>
+            <h3>Weekly Orders</h3>
+            <p>We proudly serve over 100 orders every week, delivering fresh and delicious meals to our valued customers.</p>
+          </div>
+
+          <div className="service-card">
+            <div className="service-icon"><TbTargetArrow /></div>
+            <div className="service-number">★★★★★</div>
+            <h3>Best Customer Service</h3>
+            <p>Our dedicated team ensures every customer receives exceptional service with a smile. Your satisfaction is our priority.</p>
+          </div>
+
+          <div className="service-card">
+            <div className="service-icon"><SiCodechef /></div>
+            <div className="service-number">A+</div>
+            <h3>High Quality Food</h3>
+            <p>We use only the finest ingredients and traditional cooking methods to ensure every dish meets the highest quality standards.</p>
+          </div>
+        </div>
+      </div>
         
 
 
