@@ -19,10 +19,11 @@ function ContactUs() {
           </div>
         </div>
         
-        {/* <div className="branch-container">
+        <div className="branch-container">
+
           <div className="branch">
             <div className="branch-border">
-              <img src={branch} className='branch-img'/>
+              {/* <img src={branch} className='branch-img'/> */}
               <div className="branch-content">
                 <h2>COLOMBO</h2>
                 <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
@@ -31,7 +32,56 @@ function ContactUs() {
               </div>
             </div>
           </div>
-        </div> */}
+
+           <div className="branch">
+            <div className="branch-border">
+              {/* <img src={branch} className='branch-img'/> */}
+              <div className="branch-content">
+                <h2>COLOMBO</h2>
+                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
+                <p><FaPhone />  +94 11 234 5678</p>
+                <p><MdEmail /> info@gamigedara.com</p>
+              </div>
+            </div>
+          </div>
+
+           <div className="branch">
+            <div className="branch-border">
+              {/* <img src={branch} className='branch-img'/> */}
+              <div className="branch-content">
+                <h2>COLOMBO</h2>
+                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
+                <p><FaPhone />  +94 11 234 5678</p>
+                <p><MdEmail /> info@gamigedara.com</p>
+              </div>
+            </div>
+          </div>
+
+           <div className="branch">
+            <div className="branch-border">
+              {/* <img src={branch} className='branch-img'/> */}
+              <div className="branch-content">
+                <h2>COLOMBO</h2>
+                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
+                <p><FaPhone />  +94 11 234 5678</p>
+                <p><MdEmail /> info@gamigedara.com</p>
+              </div>
+            </div>
+          </div>
+
+           <div className="branch">
+            <div className="branch-border">
+              {/* <img src={branch} className='branch-img'/> */}
+              <div className="branch-content">
+                <h2>COLOMBO</h2>
+                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
+                <p><FaPhone />  +94 11 234 5678</p>
+                <p><MdEmail /> info@gamigedara.com</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
         <div className="container">
         <div className="contact-form">
             <div className="cform">
