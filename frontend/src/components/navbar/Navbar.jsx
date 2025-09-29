@@ -30,7 +30,7 @@ function Navbar() {
     <Link to="/">HOME</Link>
     </li>
     <li onClick={() => setMenu("about-us")} className={menu === "about-us" ? "active" : ""}>
-    <Link to="/">ABOUT US</Link>
+    <Link to="/about-us">ABOUT US</Link>
      </li>
     <li onClick={() => setMenu("menu")} className={menu === "menu" ? "active" : ""}>
     <Link to="/">MENU</Link>
