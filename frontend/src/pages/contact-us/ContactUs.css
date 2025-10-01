@@ -52,11 +52,13 @@
     flex-direction: row;
     margin-top: 60px;
     align-items: center;
+    gap: 40px;
   
 }
 .map-frame{
     
-    border: 7px solid #3d1901ff;
+    border-top: 7px solid #3d1901ff;
+    border-radius: 15px;
    
 }
 
@@ -73,6 +75,7 @@
     font-size: 20px;
     font-weight: 300;
     height:350px;
+    width: 600px;
     
 }
 
@@ -143,8 +146,9 @@
     justify-content: center;
     align-items: center;
     gap: 40px;
-    border: 2px solid #3d1901ff;
-    width: 50%;
+    /* border: 2px solid #3d1901ff;
+    border-radius: 15px; */
+    width: fit-content;
     padding: 50px;
 }
 .form-fields{
@@ -155,7 +159,7 @@
     display: flex;
     flex-direction: column;
     gap: 0px;
-    width: 400px;
+    width: 600px;
     
 }
 .line{
@@ -169,7 +173,7 @@
 margin-top: 0;
 }
 .form-image{
-    width: 500px;
+    width:600px;
     height: 400px;
     background-color: #eee;
     background-image: url('../../assets/yaka.jpeg');
