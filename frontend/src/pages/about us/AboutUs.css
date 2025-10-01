@@ -5,7 +5,7 @@
     margin: 0;
     padding: 0;
     font-family: "Josefin Sans", sans-serif;
-    background-color: #fff8ef;
+    background-color: #fdf0df;
 }
 
 /* Hero Section */
@@ -133,7 +133,7 @@
 /* Gallery Section */
 .gallery-section {
     padding: 100px 150px;
-    background-color: #fff8ef;
+    background-color: #fdf0df;
     text-align: center;
 }
 
