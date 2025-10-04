@@ -22,7 +22,7 @@
     max-width: 500px;
     border-left: 5px solid #ffbf00ff;
     border-right: 5px solid #ffbf00ff;
-    background-color: #fff8ef;
+    /* background-color: #fff8ef; */
     display: flex;
     flex-direction: column;
     align-items: center;    
@@ -32,11 +32,12 @@
     font-size: 50px;
     color: #212121;
     display: flex;
-    align-items: flex-start;
+    align-items: left;
+    justify-content: left;
     cursor: pointer;
     position: relative;
-    bottom: 50px;
-    right: 120px;
+    right: 100%;
+   
     width:100%;
     margin:0;
     transition: transform 0.4s ease, color 0.3s ease;
@@ -48,7 +49,10 @@
 
 .signin-header {
     text-align: center;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
+    margin-top: -60px;
+    
+    
 }
 
 .signin-logo {
@@ -59,10 +63,18 @@
 }
 
 .signin-title {
-    font-size: 48px;
-    color: #212121;
+    font-size: 68px;
+    color: #fff8ef;
     margin-bottom: 20px;
     font-family: "Josefin Sans", sans-serif;
+}
+.signin-description{
+    font-size: 22px;
+    color: #fff8ef;
+    margin-top: -10px;
+    font-family: "Josefin Sans", sans-serif;
+    text-align: center;
+    font-weight: 300;
 }
 
 .line-signin {
@@ -80,7 +92,7 @@
 }
 
 .signin-subtitle {
-    font-size: 36px;
+    font-size: 46px;
     color: #5d4037;
     font-family: "Ephesis", cursive;
     white-space: nowrap;
@@ -127,7 +139,11 @@
 }
 
 
-
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: #ffbf00ff;
+    box-shadow: 0 0 10px rgba(255, 191, 0, 0.2);
+}
 
 
 
@@ -194,13 +210,19 @@
 .signin-btn {
     margin:0px;
     background-color: #5d4037;
-    width: 100%;
+    border-radius: 10px;
+    width: 50%;
     height: 50px;
     font-size: 20px;
     color: #fff8ef ;
     transition: transform 0.6s ease, background-color 0.1s ease, color 0.1s ease;
 }
-
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
 .signin-btn:hover {
   background-color: #212121;
     /* color: #5d4037; */
@@ -220,7 +242,7 @@
 }
 
 .register-link {
-    color: #5d4037;
+    color: #212121;
     text-decoration: none;
     font-weight: 600;
     transition: color 0.3s ease;
@@ -278,6 +300,7 @@
     background-position: center;
     border-radius: 0 20px 20px 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     border-right: 5px solid #ffbf00ff;
@@ -285,8 +308,8 @@
 }
 
 .login-logo{
-    width: 500px;
-    height: 500px;
+    width: 300px;
+    height:300px;
     object-fit: contain;
     
     

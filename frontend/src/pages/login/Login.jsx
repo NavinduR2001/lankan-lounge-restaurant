@@ -15,9 +15,7 @@ function Login() {
 
 
         <div className="signin-header">
-    
-      
-          <h1 className="signin-title"><div className='back-btn-login'><IoChevronBackCircle  onClick={()=>navigate(-1)}/></div> Welcome Back</h1>
+          <div className='back-btn-login'><IoChevronBackCircle  onClick={()=>navigate(-1)}/></div> 
           <div className="line-signin">
             <div className="line signinline"></div>
             <h2 className='signin-subtitle'>Sign In</h2>
@@ -56,9 +54,10 @@ function Login() {
               </label>
             </div>
 
+            <div className="login-container">
             <button type="submit" className="signin-btn" >
               Login
-            </button>
+            </button></div>
 
             <div className="signin-footer">
               <p>Don't have an account? 
@@ -70,7 +69,11 @@ function Login() {
       </div>
 
       <div className="imagebg">
-       <img src={logo} alt="Logo" className='login-logo' />
+        <h1 className="signin-title">Welcome Back!</h1>
+      
+       
+        <p className="signin-description">Enter your credentials to access your account and<br></br>enjoy our delicious services.</p>
+         <img src={logo} alt="Logo" className='login-logo' />
       </div>
 
     </div>
