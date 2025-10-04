@@ -1,7 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
+import { useNavigate } from 'react-router-dom';
 import './Header.css'
 import background_video from "../../assets/background-video.mp4";
 import {logo} from '../../assets/assets'
+
+
 
 const messages = [
   "TRADITIONAL FLAVOURS!",
@@ -14,6 +17,7 @@ const messages = [
 ];
 
 function Header() {
+  const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [fade, setFade] = useState(true);
 
@@ -49,7 +53,7 @@ function Header() {
             <div className="logo-img"><img src={logo}></img></div>
             
                 <h3>SRI LANKAN CULTURAL RESTAURENT</h3>
-                <button className='header-order'>ORDER NOW</button>
+                <button className='header-order' onClick={() => navigate('/menu')}>ORDER NOW</button>
         </div>
     </div>
     <div className="outlet">

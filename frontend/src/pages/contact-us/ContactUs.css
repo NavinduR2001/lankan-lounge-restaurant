@@ -179,6 +179,7 @@ margin-top: 0;
     background-image: url('../../assets/yaka.jpeg');
     background-size: cover;
     background-repeat: no-repeat;
+    border-radius: 70px 0px 70px 0px;
 }
 .input{
     padding: 10px;

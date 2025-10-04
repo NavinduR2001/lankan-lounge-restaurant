@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import './Navbar.css'
 import {cart, logo} from '../../assets/assets'
-import {Link, useLocation } from 'react-router-dom'
+import {Link, useLocation, useNavigate } from 'react-router-dom'
 
 function Navbar() {
+    const navigate = useNavigate();
     const[menu,setMenu]=useState("home")
     const location = useLocation()
     useEffect(() => {
@@ -16,6 +17,9 @@ function Navbar() {
             setMenu('menu')
         } else if (path === '/contact-us') {
             setMenu('contact-us')
+        } else if (path === '/cart') {
+            setMenu('cart')
+            
         }
     }, [location.pathname])
   return (
@@ -33,7 +37,7 @@ function Navbar() {
     <Link to="/about-us">ABOUT US</Link>
      </li>
     <li onClick={() => setMenu("menu")} className={menu === "menu" ? "active" : ""}>
-    <Link to="/">MENU</Link>
+    <Link to="/menu">MENU</Link>
      </li>
      <li onClick={() => setMenu("contact-us")} className={menu === "contact-us" ? "active" : ""}>
     <Link to="/contact-us">CONTACT US</Link>
@@ -43,13 +47,14 @@ function Navbar() {
         </div>
         <div className='nav-buttons'>
            
-            <button className='cart' >
+            <button className='cart' onClick={()=>navigate('/cart')}>
               <div className='cart-count'>1</div>
               <img src={cart} className='cart-img'></img>
               <label>CART</label>
               </button>
-            
-            <button>SIGN IN</button>
+            <Link to="/login">
+            <button>LOGIN</button>
+            </Link>
         </div>
 
         </div>

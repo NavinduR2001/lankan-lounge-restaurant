@@ -57,7 +57,7 @@ function Home() {
             <h1 className="dish-title">Tomato Cheese Pizza </h1>
             <h2>Sri Lankan</h2>
             <div className="dline"></div>
-            <h3 className='dish-rating'>Rating: ★★★★☆</h3>
+            {/* <h3 className='dish-rating'>Rating: ★★★★☆</h3> */}
             <p className='sdish-description'>The Pizza is a delicious blend of flavors, topped with fresh ingredients and melted cheese. Specially tomato pieces are used to enhance the taste. This specialty is a must-try for pizza lovers!</p>
             <p className='person'>2 Persons(M)</p>
             <p className='price'>LKR. 2400.00</p>
@@ -74,7 +74,7 @@ function Home() {
             <h1 className="dish-title" >Spicy Rosted Chicken</h1>
             <h2>Sri Lankan</h2>
             <div className="dline"></div>
-            <h3 className='dish-rating'>Rating: ★★★★☆</h3>
+            {/* <h3 className='dish-rating'>Rating: ★★★★☆</h3> */}
             <p className='sdish-description'>The perfect blend of spices and flavors. This dish is a must-try for spice lovers!. Chicken is marinated with a special blend of spices and roasted to perfection.</p>
             <p className='person'>2 Persons</p>
             <p className='price'>LKR. 5400.00</p>
@@ -93,7 +93,7 @@ function Home() {
             <h1 className="dish-title" >Classic Cheeseburger</h1>
             <h2>Burger</h2>
             <div className="dline"></div>
-            <h3 className='dish-rating'>Rating: ★★★★☆</h3>
+            {/* <h3 className='dish-rating'>Rating: ★★★★☆</h3> */}
             <p className='sdish-description'>Cheeseburgers are an all-time favorite classic. They're a hug between two slices of bread with the perfect combination of melted cheese, bacon, and vibrant vegetables—fresh lettuce, tomato, onion, avocado, and mushrooms. Pickles, mayonnaise, ketchup, and mustard enhance the overall taste.</p>
             <p className='person'>1 Person</p>
             <p className='price'>LKR. 900.00</p>
@@ -109,7 +109,7 @@ function Home() {
             <h1 className="dish-title" >Spicy Rosted Chicken</h1>
             <h2>Sri Lankan</h2>
             <div className="dline"></div>
-            <h3 className='dish-rating'>Rating: ★★★★☆</h3>
+            {/* <h3 className='dish-rating'>Rating: ★★★★☆</h3> */}
             <p className='sdish-description'>The perfect blend of spices and flavors. This dish is a must-try for spice lovers!. Chicken is marinated with a special blend of spices and roasted to perfection.</p>
             <p className='person'>2 Persons</p>
             <p className='price'>LKR. 5400.00</p>
