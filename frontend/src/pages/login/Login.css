@@ -1,0 +1,316 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Prop+Single:wght@100..900&family=Ephesis&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..700&family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.signin-page {
+    box-sizing: border-box;
+    min-height: 100vh;
+    background-color: #fdf0df;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    font-family: "Josefin Sans", sans-serif;
+
+}
+
+.signin-container {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+   padding: 40px 60px;
+    
+    width: 100%;
+    max-width: 500px;
+    border-left: 5px solid #ffbf00ff;
+    border-right: 5px solid #ffbf00ff;
+    /* background-color: #fff8ef; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;    
+
+}
+.back-btn-login{
+    font-size: 50px;
+    color: #212121;
+    display: flex;
+    align-items: left;
+    justify-content: left;
+    cursor: pointer;
+    position: relative;
+    right: 100%;
+   
+    width:100%;
+    margin:0;
+    transition: transform 0.4s ease, color 0.3s ease;
+}
+.back-btn-login:hover{
+    color: #5d4037;
+    transform: translateY(-5px);
+}
+
+.signin-header {
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: -60px;
+    
+    
+}
+
+.signin-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    margin-bottom: 20px;
+}
+
+.signin-title {
+    font-size: 68px;
+    color: #fff8ef;
+    margin-bottom: 20px;
+    font-family: "Josefin Sans", sans-serif;
+}
+.signin-description{
+    font-size: 22px;
+    color: #fff8ef;
+    margin-top: -10px;
+    font-family: "Josefin Sans", sans-serif;
+    text-align: center;
+    font-weight: 300;
+}
+
+.line-signin {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.signinline {
+    width: 60px;
+    height: 2px;
+    background-color: #5d4037;
+}
+
+.signin-subtitle {
+    font-size: 46px;
+    color: #5d4037;
+    font-family: "Ephesis", cursive;
+    white-space: nowrap;
+}
+
+.signin-form-container {
+    width: 100%;
+}
+
+.signin-form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+   
+
+    
+}
+
+.form-label {
+    font-size: 16px;
+    font-weight: 600;
+    color: #5d4037;
+    margin-bottom: 5px;
+}
+
+.form-input {
+
+    width: 100%;
+    box-sizing: border-box;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-family: "Josefin Sans", sans-serif;
+    transition: all 0.3s ease;
+    background-color: #fff8ef;
+    margin: 0;
+    padding: 15px 15px;
+}
+
+
+.form-input:focus, .form-select:focus {
+    outline: none;
+    border-color: #ffbf00ff;
+    box-shadow: 0 0 10px rgba(255, 191, 0, 0.2);
+}
+
+
+
+.password-input-container {
+ margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #5d4037;
+}
+.password-toggle:hover{
+    background-color: none;
+}
+.error-message {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.remember-me {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: #5d4037;
+    cursor: pointer;
+}
+
+.remember-me input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #ffbf00ff;
+}
+
+.forgot-password {
+    color: #ffbf00ff;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.forgot-password:hover {
+    color: #5d4037;
+}
+
+.signin-btn {
+    margin:0px;
+    background-color: #5d4037;
+    border-radius: 10px;
+    width: 50%;
+    height: 50px;
+    font-size: 20px;
+    color: #fff8ef ;
+    transition: transform 0.6s ease, background-color 0.1s ease, color 0.1s ease;
+}
+.login-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.signin-btn:hover {
+  background-color: #212121;
+    /* color: #5d4037; */
+    transform: translateY(-10px);
+}
+
+.signin-footer {
+    text-align: center;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.signin-footer p {
+    color: #5d4037;
+    font-size: 16px;
+}
+
+.register-link {
+    color: #212121;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.register-link:hover {
+    color: #5d4037;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .signin-container {
+        padding: 30px 20px;
+        margin: 10px;
+    }
+    
+    .signin-title {
+        font-size: 36px;
+    }
+    
+    .signin-subtitle {
+        font-size: 28px;
+    }
+    
+    .form-options {
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+}
+
+@media (max-width: 480px) {
+    .signin-container {
+        padding: 20px 15px;
+    }
+    
+    .signin-title {
+        font-size: 32px;
+    }
+    
+    .line-signin {
+        gap: 20px;
+    }
+    
+    .signinline {
+        width: 40px;
+    }
+}
+
+.imagebg {
+    background-image: url('../../assets/content-bg.jpg');
+    width: 800px;
+    height:600px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0 20px 20px 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-right: 5px solid #ffbf00ff;
+    box-sizing: border-box;
+}
+
+.login-logo{
+    width: 300px;
+    height:300px;
+    object-fit: contain;
+    
+    
+}
