@@ -1,0 +1,120 @@
+.menu-page {
+    padding: 20px 200px;
+    background-color: #fdf0df;
+}
+
+.menu-grid{
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 50px;
+    
+
+}
+
+.menu-item{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    /* background-color: #fff; */
+    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    cursor: pointer;
+ 
+
+
+
+}
+.menu-item:hover{
+    transform: translateY(-20px);
+
+
+}
+
+.menu-top-item-image{
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ffbf00ff;
+    box-shadow: 5px 5px 6px rgba(39, 21, 0, 0.52);
+    
+}
+
+.menu-top-item-title{
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 24px;
+    font-weight:600;
+    color:#5d4037 ;
+    border-bottom: 2px solid #ffbf00ff;
+    border-radius: 5px;
+    padding: 5px 10px 0px 10px;
+}
+
+.menu-container{
+    font-family: "Josefin Sans", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 150px;
+    test-align: center;
+    align-items: center;
+    justify-content: center;
+    margin-top: 100px;
+}
+
+.sub-menu{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:80px;
+    width: 100%;
+}
+.sub-menu-container{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 100px;
+    
+}
+
+.sub-menu-title{
+    font-size:62px;
+    font-family: "Ephesis", cursive;
+    m
+}
+
+.line-about-menu {
+  display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: center;
+    justify-items: center;
+    width:100%;
+}
+
+.line-menu {
+    
+    height: 2px;
+    background-color: #5d4037;
+}
+.menu-page-title{
+    
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 72px;
+    text-align: center;
+    color: #5d4037;
+    
+}
+.menu-page-subtitle{
+    font-family: "Ephesis", cursive;
+    font-size: 42px;
+    text-align: center;
+    color: #212121;
+    margin-bottom: 0px;
+    position: relative;
+    bottom: 50px;
+}
+
+.item-porsion{
+    font-size: 18px;
+    
+    margin: 0px 0px 20px 0px;
+}
