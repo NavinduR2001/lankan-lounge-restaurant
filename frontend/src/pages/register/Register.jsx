@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import './Register.css'
 import { Link, useNavigate } from 'react-router-dom'
-import { logo } from '../../assets/assets'
 import { IoChevronBackCircle } from "react-icons/io5";
+import { registerUser } from '../../services/api'; // Import API service
 
 function Register() {
-
   const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
@@ -19,8 +18,9 @@ function Register() {
   })
 
   const [errors, setErrors] = useState({})
-  // const [showPassword, setShowPassword] = useState(false)
-  // const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [loading, setLoading] = useState(false) // Add loading state
+  const [apiError, setApiError] = useState('') // Add API error state
+  const [apiGood, setApiGood] = useState('')
 
   const districts = [
     'Colombo', 'Kalutara', 'Kandy', 
@@ -35,12 +35,15 @@ function Register() {
       ...formData,
       [e.target.name]: e.target.value
     })
-    // Clear error when user starts typing
+    // Clear errors when user starts typing
     if (errors[e.target.name]) {
       setErrors({
         ...errors,
         [e.target.name]: ''
       })
+    }
+    if (apiError) {
+      setApiError('')
     }
   }
 
@@ -90,13 +93,51 @@ function Register() {
     return newErrors
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const newErrors = validateForm()
     
     if (Object.keys(newErrors).length === 0) {
-      console.log('Registration data:', formData)
-      // Handle registration logic here
+      setLoading(true)
+      setApiError('')
+      
+      try {
+        // Remove confirmPassword before sending to backend
+        const submitData = { ...formData };
+        delete submitData.confirmPassword;
+        
+        const response = await registerUser(submitData);
+        
+        // Store token in localStorage
+        localStorage.setItem('token', response.data.token);
+        
+        // Show success message
+        // alert('Registration successful! Welcome to Lankan Lounge!');
+
+        setApiGood('Registration successful! Welcome to Lankan Lounge!')
+
+
+        // Redirect to home page or dashboard
+        navigate('/');
+        
+      } catch (error) {
+        console.error('Registration error:', error);
+        
+        if (error.response?.data?.message) {
+          setApiError(error.response.data.message);
+        } else if (error.response?.data?.errors) {
+          // Handle validation errors from backend
+          const backendErrors = {};
+          error.response.data.errors.forEach(err => {
+            backendErrors[err.path] = err.msg;
+          });
+          setErrors(backendErrors);
+        } else {
+          setApiError('Registration failed. Please try again.');
+        }
+      } finally {
+        setLoading(false)
+      }
     } else {
       setErrors(newErrors)
     }
@@ -106,9 +147,7 @@ function Register() {
     <div className='register-page'>
       <div className="register-container">
         <div className="register-header">
-          {/* <img src={logo} alt="Lankan Lounge Logo" className="register-logo" /> */}
-          {/* <h1 className="register-title">Join Lankan Lounge</h1> */}
-          <div className='back-btn-reg'><IoChevronBackCircle  onClick={()=>navigate(-1)}/></div> 
+          <div className='back-btn-reg'><IoChevronBackCircle onClick={() => navigate(-1)} /></div>
           <div className="line-register">
             <div className="line registerline"></div>
             <h2 className='register-subtitle'>Create Account</h2>
@@ -117,6 +156,18 @@ function Register() {
         </div>
 
         <div className="register-form-container">
+          {apiError && (
+            <div className="api-error-message">
+              {apiError}
+            </div>
+          )}
+
+          {apiGood && (
+            <div className="api-good-message">
+              {apiGood}
+            </div>
+          )}
+
           <form onSubmit={handleSubmit} className="register-form">
             <div className="form-row">
               <div className="form-group">
@@ -208,7 +259,6 @@ function Register() {
                     className={`form-input ${errors.password ? 'error' : ''}`}
                     placeholder="Enter your password"
                   />
-                
                 </div>
                 {errors.password && <span className="error-message">{errors.password}</span>}
               </div>
@@ -225,7 +275,6 @@ function Register() {
                     className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
                     placeholder="Confirm your password"
                   />
-                  
                 </div>
                 {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
               </div>
@@ -240,12 +289,13 @@ function Register() {
             </div>
 
             <div className="reg-btn-align">
-            <button type="submit" className="register-btn">
-              Create Account
-            </button></div>
+              <button type="submit" className="register-btn" disabled={loading}>
+                {loading ? 'Creating Account...' : 'Create Account'}
+              </button>
+            </div>
 
             <div className="register-footer">
-              <p>Already have an account? 
+              <p>Already have an account?
                 <Link to="/login" className="signin-link"> Sign In</Link>
               </p>
             </div>
