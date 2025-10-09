@@ -314,3 +314,53 @@
     
     
 }
+
+.api-error-message, .error-message-container {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  color: #c33;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+  position: relative;
+  bottom: 30px;
+}
+.api-good-message {
+  background-color: #e6ffed;
+  border: 1px solid #a6f4c5;
+  color: #2e7d32;
+  padding: 10px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-input.error {
+  border-color: #c33;
+}
+
+.error-message {
+  color: #c33;
+  font-size: 16px;
+  margin-top: 5px;
+  display: block;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #666;
+}
+
+.password-input-container {
+  position: relative;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
