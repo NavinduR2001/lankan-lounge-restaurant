@@ -2,11 +2,74 @@ import React, { useState } from 'react'
 import './Login.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { logo } from '../../assets/assets'
-import { IoIosEye,IoIosEyeOff } from "react-icons/io";
+import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { IoChevronBackCircle } from "react-icons/io5";
+import { loginUser } from '../../services/api'; // Import API service
 
 function Login() {
   const navigate = useNavigate();
+
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [good, setGood] = useState('')
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+    // Clear error when user starts typing
+    if (error) {
+      setError('');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.email || !formData.password) {
+      setError('Please fill in all fields');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const response = await loginUser(formData);
+      
+      // Store token in localStorage
+      localStorage.setItem('token', response.data.token);
+      
+      // Store user info if available
+      if (response.data.user) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+      }
+      
+      // Show success message
+      setGood('Login successful!')
+      
+      // Redirect to home page
+      navigate('/');
+      
+    } catch (error) {
+      console.error('Login error:', error);
+      
+      if (error.response?.data?.message) {
+        setError(error.response.data.message);
+      } else {
+        setError('Login failed. Please try again.');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className='signin-page'>
@@ -24,13 +87,33 @@ function Login() {
         </div>
 
         <div className="signin-form-container">
-          <form  className="signin-form">
+          {error && (
+            <div className="error-message-container">
+              <p className="error-message">{error}</p>
+            </div>
+          )}
+          {good && (
+            <div className="good-message-container">
+              <p className="good-message">{good}</p>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="signin-form">
 
             <div className="form-group">
               <label htmlFor="email" className="form-label">Email Address</label>
 
               <div className="password-input-container">
-                <input type="email" id="email"  placeholder='Enter your email' className="form-input" />
+                <input 
+                  type="email" 
+                  id="email" 
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder='Enter your email' 
+                  className="form-input"
+                  required
+                />
               </div>
              
             </div>
@@ -38,7 +121,22 @@ function Login() {
             <div className="form-group">
               <label htmlFor="password" className="form-label">Password</label>
               <div className="password-input-container">
-                <input type="password" id="password"  placeholder='Enter your password' className="form-input" />
+                <input 
+                  type={showPassword ? "text" : "password"} 
+                  id="password" 
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  placeholder='Enter your password' 
+                  className="form-input"
+                  required
+                />
+                <span 
+                  className="password-toggle" 
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <IoIosEyeOff /> : <IoIosEye />}
+                </span>
               </div>
             </div>
                
@@ -55,9 +153,9 @@ function Login() {
             </div>
 
             <div className="login-container">
-            <button type="submit" className="signin-btn" >
-              Login
-            </button></div>
+            <button type="submit" className="signin-btn" disabled={loading}>
+                {loading ? 'Signing In...' : 'Login'}
+              </button></div>
 
             <div className="signin-footer">
               <p>Don't have an account? 
