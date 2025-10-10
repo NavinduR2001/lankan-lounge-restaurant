@@ -57,6 +57,8 @@ function Login() {
       
       // Redirect to home page
       navigate('/');
+
+      document.getElementsByClassName('profile').style.display = 'block';
       
     } catch (error) {
       console.error('Login error:', error);
