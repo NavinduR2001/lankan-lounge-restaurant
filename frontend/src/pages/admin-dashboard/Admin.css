@@ -1,0 +1,346 @@
+.admin-container {
+  display: flex;
+  flex-direction: row;
+  height: fit-content;
+  box-sizing: border-box;
+  padding: 50px 100px; 
+  gap: 40px;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.menu-section{
+  width:20%;
+  height:100%;
+  box-sizing: border-box;
+  background-color: #e0e0e0;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+.content-section{
+  width: 80%;
+  height: 100%;
+  box-sizing: border-box;
+  padding: 20px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+}
+.Available-order{
+  display:none;
+}
+.Order-history{
+  display:none;
+}
+.profile-menu-item{
+  padding:20px 0px;
+  cursor: pointer;
+  border-bottom: 1px solid #ccc;
+  font-weight: 500;
+  font-size: 20px;
+  color: #333;
+  font-family: "Josefin Sans", sans-serif;
+}
+
+.profile-menu-item:hover{
+  font-weight: 800;
+  padding-left: 10px;
+}
+
+.last-p-item{
+  border-bottom: none;
+  border-top: 1px solid #ccc;
+}
+
+.submenu-profile{
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  list-style: none;
+}
+
+.submenu-profile li{
+  padding: 20px 0px;
+  cursor: pointer;
+  margin: 0;
+  font-weight: 400;
+  font-size: 18px;
+  color: #555;
+  font-family: "Josefin Sans", sans-serif;
+  list-style: none;
+  text-align: left;
+}
+
+.submenu-profile li:hover{
+  font-weight: 700;
+  padding-left: 10px;
+}
+
+.ad-topic-header{
+  text-align: center;
+  font-size: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  background-color: #212121;
+  padding: 20px;
+  border-radius: 10px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.Ad-av-header{
+  font-size: 28px;
+  font-weight: 700;
+  color: #fff8ef;
+  margin: 0;
+}
+
+/* Updated Table Styles */
+.content-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.orders-table{
+  width: 100%;
+  border-collapse: separate; /* Changed from collapse to separate */
+  border-spacing: 0 15px; /* Add vertical spacing between rows */
+  margin-top: 20px;
+}
+
+/* Table Header Styles */
+.orders-table thead th {
+  background-color: #5d4037;
+  color: white;
+  padding: 15px 12px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.orders-table thead th:first-child {
+  border-top-left-radius: 8px;
+  border-bottom-left-radius: 8px;
+}
+
+.orders-table thead th:last-child {
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* Table Body Styles - Card-like rows */
+.orders-table tbody tr {
+ 
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  transition: all 0.3s ease,background-color 0.3s ease;
+  margin: 10px 0; /* Add margin between rows */
+}
+
+.orders-table tbody tr:hover {
+  /* box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); */
+  transform: translateY(-2px);
+  
+}
+
+/* Table Data Styles */
+.orders-table tbody td {
+   background-color: #fff8ef;
+  padding: 20px 15px;
+  border: none;
+  vertical-align: top;
+  color: #212121;
+  font-size: 16px;
+  line-height: 1.5;
+  border-right: 1px solid #eee;
+}
+
+/* First and last cell border radius */
+.orders-table tbody td:first-child {
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  font-weight: 600;
+  
+  border-right: 1px solid #eee;
+}
+
+.orders-table tbody td:last-child {
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  padding: 0px 10px;
+  border-left: none;
+  /* display: flex;
+  flex-direction: row;
+  justify-content: left;
+  align-items: center; */
+  
+  height: 100%;
+  margin-bottom: 0;
+  margin-right: 0;
+
+}
+
+/* Alternating row colors - optional */
+.orders-table tbody tr:nth-child(even) {
+  background-color: #fff8ef;
+}
+
+.orders-table tbody tr:nth-child(odd) {
+  background-color: #fff8ef;;
+}
+
+/* Lists inside table cells */
+.orders-table td ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.orders-table td ul li {
+  padding: 3px 0;
+  color: #212121;
+  font-size: 16px;
+}
+
+/* Action Buttons */
+.get-button {
+  display: inline-block;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 8px 16px; */
+  margin: 2px 5px 2px 0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Accept Button */
+.get-button:last-child {
+  background-color: #28a745;
+  color: white;
+}
+
+.get-button:last-child:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+/* Reject Button */
+.get-button:first-child {
+  background-color: #ee9919ff;
+  color: white;
+}
+
+.get-button:first-child:hover {
+  background-color: #ec9006ff;
+  transform: translateY(-1px);
+}
+
+.get-button-reject{
+  display: inline-block;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 8px 16px; */
+  margin: 10px 5px 2px 0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  background-color: #dc3545;
+  color: white;
+}
+.get-button-reject:hover {
+  background-color: #c82333;
+  transform: translateY(-1px);
+}
+.get-button-done{
+  display: inline-block;
+  width: 80px;
+  height: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* padding: 8px 16px; */
+  margin: 10px 5px 2px 0;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.3s ease;
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  
+  background-color: #28a745;
+  color: white;
+}
+.get-button-done:hover {
+  background-color: #218838;
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 1200px) {
+  .admin-container {
+    padding: 30px 50px;
+  }
+  
+  .orders-table {
+    font-size: 12px;
+  }
+  
+  .orders-table tbody td {
+    padding: 15px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .admin-container {
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  .menu-section,
+  .content-section {
+    width: 100%;
+  }
+  
+  .orders-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
+
+.delete-icon{
+  color: white;
+  font-size: 18px;
+  margin:0;
+  padding:0;
+}
