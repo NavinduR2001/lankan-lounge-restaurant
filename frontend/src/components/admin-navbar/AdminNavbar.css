@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.navbar{
+    width: 100%;
+    height: max-content;
+    background: linear-gradient(to left,rgba(29, 13, 0, 1),rgb(39, 18, 0),rgb(29, 13, 0));
+    
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar-container-admin{
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    margin-left: 200px;
+    margin-right: 200px;
+}
+.logo img{
+    width:120px;
+    
+}
+
+.nav-buttons{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-nav-buttons{
+    display: flex;
+    flex-direction: row;
+   
+    justify-content: right;
+    align-items: center;
+   
+}
+.admin-profile{
+    margin-left: 10px;
+    margin-right: 0px
+}
+.admin-logout{
+    margin-left: 0px;
+}
+
+.admin-name{
+    color:#fdf0df;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 500 ;
+    font-size: 16px;
+}
+
+.navbar-title{
+    text-align: center;
+    color:#fdf0df;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 500 ;
+    font-size: 28px;
+    
+    
+}
