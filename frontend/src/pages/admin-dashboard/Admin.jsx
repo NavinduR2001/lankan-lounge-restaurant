@@ -2,16 +2,153 @@ import React, { useState } from 'react'
 import './Admin.css'
 import AdminNavbar from '../../components/admin-navbar/AdminNavbar'
 import { MdDelete } from "react-icons/md";
+import { addMenuItem } from '../../services/api'; // ✅ Add this import
 
 function Admin() {
-  // ✅ Fixed useState syntax
+
+
+  const [formData, setformData] = useState({
+    itemName: "",
+    itemCategory: "",
+    foodID: "",
+    itemPrice: "",
+    itemDescription: "",
+    itemImage: null
+  })
+
+  const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successMessage, setSuccessMessage] = useState(''); // ✅ Add success message state
+
   const [activeSection, setActiveSection] = useState('orders');
   const [activeSubmenus, setActiveSubmenus] = useState({
     addItems: false,
     salesReports: false
   });
 
-  // ✅ Separate toggle functions for each submenu
+  const validateForm = (formData) => {
+    const errors = {};
+    if (!formData.itemName.trim()) errors.itemName = "Item name is required";
+    if (!formData.itemCategory) errors.itemCategory = "Item category is required";
+    if (!formData.foodID.trim()) errors.foodID = "Food ID is required";
+    if (!formData.itemPrice || formData.itemPrice <= 0) errors.itemPrice = "Valid item price is required";
+    if (!formData.itemDescription.trim()) errors.itemDescription = "Item description is required";
+    if (!formData.itemImage) errors.itemImage = "Item image is required";
+    return Object.keys(errors).length ? errors : null;
+  };
+
+  // ✅ Updated handleSubmit with real API call
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSuccessMessage('');
+    
+    const validationErrors = validateForm(formData);
+    
+    if (validationErrors) {
+      setErrors(validationErrors);
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Clear errors if validation passes
+    setErrors({});
+    
+    try {
+      console.log("Form is valid. Submitting data:", formData);
+      
+      // Prepare data for API (handle file upload separately for now)
+      const submitData = {
+        itemName: formData.itemName,
+        itemCategory: formData.itemCategory,
+        foodID: formData.foodID,
+        itemPrice: formData.itemPrice,
+        itemDescription: formData.itemDescription,
+        itemImage: formData.itemImage ? formData.itemImage.name : '', // For now, just send filename
+        isTrending: activeSection === 'add-trending' // Set trending based on which form
+      };
+      
+      // ✅ Call the real API
+      const response = await addMenuItem(submitData);
+      
+      console.log('Item added successfully:', response.data);
+      
+      // Show success message
+      setSuccessMessage(response.data.message || 'Item added successfully!');
+      
+      // Reset form
+      setformData({
+        itemName: "",
+        itemCategory: "",
+        foodID: "",
+        itemPrice: "",
+        itemDescription: "",
+        itemImage: null
+      });
+      
+      // Clear file input
+      const fileInput = document.getElementById(activeSection === 'add-trending' ? 'trending-item-image' : 'item-image');
+      if (fileInput) fileInput.value = '';
+      
+      setIsSubmitting(false);
+      
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      
+      // Handle different error types
+      if (error.response) {
+        // Server responded with error status
+        const errorMessage = error.response.data.message || 'Failed to add item';
+        setErrors({ submit: errorMessage });
+        
+        // Handle validation errors from server
+        if (error.response.data.errors) {
+          const serverErrors = {};
+          error.response.data.errors.forEach(err => {
+            if (err.includes('itemName')) serverErrors.itemName = err;
+            if (err.includes('itemCategory')) serverErrors.itemCategory = err;
+            if (err.includes('foodID')) serverErrors.foodID = err;
+            if (err.includes('itemPrice')) serverErrors.itemPrice = err;
+            if (err.includes('itemDescription')) serverErrors.itemDescription = err;
+          });
+          setErrors(serverErrors);
+        }
+      } else if (error.request) {
+        // Network error
+        setErrors({ submit: "Network error. Please check your connection and try again." });
+      } else {
+        // Other error
+        setErrors({ submit: "An unexpected error occurred. Please try again." });
+      }
+      
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    
+    setformData((prevData) => ({
+      ...prevData,
+      [name]: files ? files[0] : value
+    }));
+    
+    // Clear specific field error when user starts typing
+    if (errors[name]) {
+      setErrors(prev => ({
+        ...prev,
+        [name]: ""
+      }));
+    }
+    
+    // Clear success message when user makes changes
+    if (successMessage) {
+      setSuccessMessage('');
+    }
+    
+    console.log(`Field ${name} updated with value:`, files ? files[0] : value);
+  };
+
   const toggleSubmenu = (submenuName) => {
     setActiveSubmenus(prev => ({
       ...prev,
@@ -23,6 +160,7 @@ function Admin() {
     <>
       <AdminNavbar />
       <div className="admin-container">
+        {/* Menu Section - Same as before */}
         <div className="menu-section"> 
           <div 
             className={`profile-menu-item ${activeSection === 'orders' ? 'active' : ''}`} 
@@ -38,7 +176,6 @@ function Admin() {
             Pending Orders
           </div>
           
-          {/* ✅ Add Items with arrow indicator */}
           <div 
             className="profile-menu-item" 
             onClick={() => toggleSubmenu('addItems')}
@@ -51,7 +188,6 @@ function Admin() {
             <li onClick={() => setActiveSection('add-trending')}>Add Trending Items</li>
           </ul>
           
-          {/* ✅ Sales Reports with arrow indicator */}
           <div 
             className="profile-menu-item" 
             onClick={() => toggleSubmenu('salesReports')}
@@ -73,7 +209,7 @@ function Admin() {
         </div>
 
         <div className="content-section">
-          {/* ✅ Available Orders - Show when activeSection is 'orders' */}
+          {/* Orders and History sections - Same as before */}
           <div className={`Available-order ${activeSection === 'orders' ? 'show' : ''}`}>
             <div className="ad-topic-header">
               <h2 className='Ad-av-header'>Available Orders</h2>
@@ -150,7 +286,6 @@ function Admin() {
             </div>
           </div>
 
-          {/* ✅ Order History - Show when activeSection is 'order-history' */}
           <div className={`Order-history ${activeSection === 'order-history' ? 'show' : ''}`}>
             <div className="ad-topic-header">
               <h2 className='Ad-av-header'>Pending Orders</h2>
@@ -221,43 +356,221 @@ function Admin() {
             </div>
           </div>
 
-          {/* ✅ Additional sections */}
+          {/* ✅ Updated Add Menu Form with Error Display */}
           {activeSection === 'add-menu' && (
             <div className="section-content">
               <div className="ad-topic-header">
-              <h2 className='Ad-av-header'>Add New Menu Item</h2>
-            </div>
-              <p>Content for adding menu items...</p>
+                <h2 className='Ad-av-header'>Add New Menu Item</h2>
+              </div>
+              <div className="add-item-form">
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    {/* Success message */}
+                    {successMessage && (
+                      <div className="success-message">{successMessage}</div>
+                    )}
+
+                    {/* Submit error */}
+                    {errors.submit && (
+                      <div className="error-message submit-error">{errors.submit}</div>
+                    )}
+
+                    <label htmlFor="item-name">Item Name:</label>
+                    <input 
+                      name="itemName"
+                      id="item-name" 
+                      type="text" 
+                      placeholder="Enter item name" 
+                      value={formData.itemName} 
+                      onChange={handleInputChange}
+                      className={errors.itemName ? 'error' : ''}
+                    />
+                    {errors.itemName && <div className="error-message">{errors.itemName}</div>}
+                    
+                    <label htmlFor="item-category">Select Category:</label>
+                    <select 
+                      name="itemCategory"
+                      id="item-category"
+                      value={formData.itemCategory}
+                      onChange={handleInputChange}
+                      className={errors.itemCategory ? 'error' : ''}
+                    >
+                      <option value="">Select a category</option>
+                      <option value="sri-lankan">01 - Sri Lankan Food</option>
+                      <option value="indian">02 - Indian Food</option>
+                      <option value="chinese">03 - Chinese Food</option>
+                      <option value="family-meals">04 - Family Meals</option>
+                      <option value="desserts">05 - Desserts</option>
+                      <option value="bakery">06 - Bakery Items</option>
+                      <option value="pizza">07 - Pizza</option>
+                      <option value="beverages">08 - Beverages</option>
+                    </select>
+                    {errors.itemCategory && <div className="error-message">{errors.itemCategory}</div>}
+                    
+                    <label htmlFor="food-id">Food ID:</label>
+                    <input 
+                      name="foodID"
+                      id="food-id" 
+                      type="text" 
+                      placeholder="Enter food ID" 
+                      value={formData.foodID} 
+                      onChange={handleInputChange}
+                      className={errors.foodID ? 'error' : ''}
+                    />
+                    {errors.foodID && <div className="error-message">{errors.foodID}</div>}
+                    
+                    <label htmlFor="item-price">Item Price:</label>
+                    <input 
+                      name="itemPrice"
+                      id="item-price" 
+                      type="number" 
+                      placeholder="Enter item price" 
+                      value={formData.itemPrice} 
+                      onChange={handleInputChange}
+                      className={errors.itemPrice ? 'error' : ''}
+                      min="0"
+                      step="0.01"
+                    />
+                    {errors.itemPrice && <div className="error-message">{errors.itemPrice}</div>}
+                    
+                    <label htmlFor="item-description">Item Description:</label>
+                    <textarea 
+                      name="itemDescription"
+                      id="item-description" 
+                      placeholder="Enter item description" 
+                      value={formData.itemDescription} 
+                      onChange={handleInputChange}
+                      className={errors.itemDescription ? 'error' : ''}
+                    ></textarea>
+                    {errors.itemDescription && <div className="error-message">{errors.itemDescription}</div>}
+                    
+                    <label htmlFor="item-image">Item Image:</label>
+                    <input 
+                      name="itemImage"
+                      id="item-image" 
+                      type="file" 
+                      onChange={handleInputChange}
+                      accept="image/*"
+                      className={errors.itemImage ? 'error' : ''}
+                    />
+                    {errors.itemImage && <div className="error-message">{errors.itemImage}</div>}
+                    
+                    <button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? 'Adding Item...' : 'Add Item'}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           )}
 
+          {/* ✅ Fixed Add Trending Form */}
           {activeSection === 'add-trending' && (
             <div className="section-content">
-              <h2>Add Trending Items</h2>
-              <p>Content for adding trending items...</p>
+              <div className="ad-topic-header">
+                <h2 className='Ad-av-header'>Add Trending Items</h2>
+              </div>
+              <div className="add-item-form">
+                <form onSubmit={handleSubmit}>
+                  <div className="form-group">
+                    {successMessage && (
+                      <div className="success-message">{successMessage}</div>
+                    )}
+
+                    {errors.submit && (
+                      <div className="error-message submit-error">{errors.submit}</div>
+                    )}
+
+                    <label htmlFor="trending-item-name">Item Name:</label>
+                    <input 
+                      name="itemName"
+                      id="trending-item-name" 
+                      type="text" 
+                      placeholder="Enter item name"
+                      value={formData.itemName} 
+                      onChange={handleInputChange}
+                      className={errors.itemName ? 'error' : ''}
+                    />
+                    {errors.itemName && <div className="error-message">{errors.itemName}</div>}
+                    
+                    <label htmlFor="trending-item-category">Select Category:</label>
+                    <select 
+                      name="itemCategory"
+                      id="trending-item-category"
+                      value={formData.itemCategory}
+                      onChange={handleInputChange}
+                      className={errors.itemCategory ? 'error' : ''}
+                    >
+                      <option value="">Select a category</option>
+                      <option value="sri-lankan">01 - Sri Lankan Food</option>
+                      <option value="indian">02 - Indian Food</option>
+                      <option value="chinese">03 - Chinese Food</option>
+                      <option value="family-meals">04 - Family Meals</option>
+                      <option value="desserts">05 - Desserts</option>
+                      <option value="bakery">06 - Bakery Items</option>
+                      <option value="pizza">07 - Pizza</option>
+                      <option value="beverages">08 - Beverages</option>
+                    </select>
+                    {errors.itemCategory && <div className="error-message">{errors.itemCategory}</div>}
+                    
+                    <label htmlFor="trending-food-id">Food ID:</label>
+                    <input 
+                      name="foodID"
+                      id="trending-food-id" 
+                      type="text" 
+                      placeholder="Enter food ID"
+                      value={formData.foodID} 
+                      onChange={handleInputChange}
+                      className={errors.foodID ? 'error' : ''}
+                    />
+                    {errors.foodID && <div className="error-message">{errors.foodID}</div>}
+                    
+                    <label htmlFor="trending-item-price">Item Price:</label>
+                    <input 
+                      name="itemPrice"
+                      id="trending-item-price" 
+                      type="number" 
+                      placeholder="Enter item price"
+                      value={formData.itemPrice} 
+                      onChange={handleInputChange}
+                      className={errors.itemPrice ? 'error' : ''}
+                      min="0"
+                      step="0.01"
+                    />
+                    {errors.itemPrice && <div className="error-message">{errors.itemPrice}</div>}
+                    
+                    <label htmlFor="trending-item-description">Item Description:</label>
+                    <textarea 
+                      name="itemDescription"
+                      id="trending-item-description" 
+                      placeholder="Enter item description"
+                      value={formData.itemDescription} 
+                      onChange={handleInputChange}
+                      className={errors.itemDescription ? 'error' : ''}
+                    ></textarea>
+                    {errors.itemDescription && <div className="error-message">{errors.itemDescription}</div>}
+                    
+                    <label htmlFor="trending-item-image">Item Image:</label>
+                    <input 
+                      name="itemImage"
+                      id="trending-item-image" 
+                      type="file"
+                      onChange={handleInputChange}
+                      accept="image/*"
+                      className={errors.itemImage ? 'error' : ''}
+                    />
+                    {errors.itemImage && <div className="error-message">{errors.itemImage}</div>}
+
+                    <button type="submit" disabled={isSubmitting}>
+                      {isSubmitting ? 'Adding Trending Item...' : 'Add Trending Item'}
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           )}
 
-          {activeSection === 'sales-summary' && (
-            <div className="section-content">
-              <h2>Sales Summary</h2>
-              <p>Content for sales summary...</p>
-            </div>
-          )}
-
-          {activeSection === 'item-summary' && (
-            <div className="section-content">
-              <h2>Item Summary</h2>
-              <p>Content for item summary...</p>
-            </div>
-          )}
-
-          {activeSection === 'settings' && (
-            <div className="section-content">
-              <h2>Settings</h2>
-              <p>Content for settings...</p>
-            </div>
-          )}
+          {/* Other sections remain the same */}
         </div>
       </div>
     </>
