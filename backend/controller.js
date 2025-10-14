@@ -4,6 +4,38 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateToken } = require('./utils/generateToken');
 const hashPassword = require('./utils/hashPassword');
+const multer = require('multer');
+const path = require('path');
+const Admin = require('./adminModel');
+
+// ✅ Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // Make sure this folder exists
+  },
+  filename: function (req, file, cb) {
+    // Generate unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  // Check if file is an image
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Please upload only image files.'), false);
+  }
+};
+
+const upload = multer({ 
+  storage: storage,
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024, // 5MB limit
+  }
+});
 
 // Register a new user
 const registerUser = async (req, res) => {
@@ -111,17 +143,48 @@ const loginUser = async (req, res) => {
     }
 };
 
-// Add a new item
+// ✅ Updated addNewItem function
 const addNewItem = async (req, res) => {
     console.log('Add item request received:', req.body);
+    console.log('File received:', req.file);
     
-    const { itemName, itemCategory, foodID, itemPrice, itemDescription, itemImage, isTrending } = req.body;
+    const { itemName, itemCategory, foodID, itemPrice, itemDescription, isTrending } = req.body;
 
     try {
+        // ✅ Validate required fields
+        if (!itemName || !itemCategory || !foodID || !itemPrice || !itemDescription) {
+            return res.status(400).json({ 
+                message: 'All fields are required',
+                missing: {
+                    itemName: !itemName,
+                    itemCategory: !itemCategory,
+                    foodID: !foodID,
+                    itemPrice: !itemPrice,
+                    itemDescription: !itemDescription
+                }
+            });
+        }
+
+        // ✅ Check if file was uploaded
+        if (!req.file) {
+            return res.status(400).json({ 
+                message: 'Item image is required' 
+            });
+        }
+
         // Check if item with same foodID already exists
-        const existingItem = await Item.findOne({ foodID });
+        const existingItem = await Item.findOne({ foodID: foodID.trim() });
         if (existingItem) {
             return res.status(400).json({ message: 'Item with this Food ID already exists' });
+        }
+
+        // Get image path from uploaded file
+        const itemImage = req.file.path;
+
+        // ✅ Validate price
+        const price = parseFloat(itemPrice);
+        if (isNaN(price) || price <= 0) {
+            return res.status(400).json({ message: 'Invalid price value' });
         }
 
         // Create a new item
@@ -129,10 +192,10 @@ const addNewItem = async (req, res) => {
             itemName: itemName.trim(),
             itemCategory,
             foodID: foodID.trim(),
-            itemPrice: parseFloat(itemPrice),
+            itemPrice: price,
             itemDescription: itemDescription.trim(),
-            itemImage, // This will be the file path/URL
-            isTrending: isTrending || false
+            itemImage, // This will be the file path
+            isTrending: isTrending === 'true' || isTrending === true || false
         });
 
         // Save the item to the database
@@ -148,6 +211,7 @@ const addNewItem = async (req, res) => {
                 foodID: newItem.foodID,
                 itemPrice: newItem.itemPrice,
                 itemDescription: newItem.itemDescription,
+                itemImage: newItem.itemImage,
                 isTrending: newItem.isTrending,
                 createdAt: newItem.createdAt
             }
@@ -169,6 +233,14 @@ const addNewItem = async (req, res) => {
             return res.status(400).json({ 
                 message: 'Item with this Food ID already exists' 
             });
+        }
+
+        // ✅ Handle multer errors
+        if (error instanceof multer.MulterError) {
+            if (error.code === 'LIMIT_FILE_SIZE') {
+                return res.status(400).json({ message: 'File too large. Maximum size is 5MB.' });
+            }
+            return res.status(400).json({ message: 'File upload error: ' + error.message });
         }
         
         res.status(500).json({ 
@@ -415,13 +487,276 @@ const searchItems = async (req, res) => {
     }
 };
 
+// Add super Admin user 
+
+const loginAdmin = async (req, res) => {
+    console.log('Admin login request received:', req.body);
+    
+    const { email, password } = req.body;
+
+    try {
+        // Find the admin by email
+        console.log('Finding admin with email:', email);
+        const admin = await Admin.findOne({ email });
+        if (!admin) {
+            console.log('Admin not found');
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        // Compare the password with the hashed password
+        console.log('Comparing admin passwords...');
+        const isMatch = await bcrypt.compare(password, admin.password);
+        if (!isMatch) {
+            console.log('Admin password does not match');
+            return res.status(400).json({ message: 'Invalid credentials' });
+        }
+
+        // Generate a token for admin
+        console.log('Generating admin login token...');
+        const token = generateToken(admin._id);
+
+        res.status(200).json({ 
+            message: 'Admin login successful', 
+            token,
+            admin: {
+                id: admin._id,
+                email: admin.email,
+                displayName: admin.displayName,
+                role: admin.role
+            }
+        });
+    } catch (error) {
+        console.error('Admin login error details:', error);
+        res.status(500).json({ 
+            message: 'Server error', 
+            error: error.message,
+            stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
+        });
+    }
+};
+
+// ✅ Add these new admin management functions
+
+// Get all admins (for management)
+const getAllAdmins = async (req, res) => {
+  try {
+    const admins = await Admin.find({ role: { $ne: 'admin' } }) // Don't show main admins
+      .select('-password')
+      .populate('createdBy', 'displayName email')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: 'Admins retrieved successfully',
+      count: admins.length,
+      admins
+    });
+  } catch (error) {
+    console.error('Error getting admins:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Create new admin/manager/employee
+const createSubAdmin = async (req, res) => {
+  console.log('Create sub-admin request:', req.body);
+  
+  const { email, displayName, password, role, permissions } = req.body;
+
+  try {
+    // Validate required fields
+    if (!email || !displayName || !password || !role) {
+      return res.status(400).json({ 
+        message: 'All fields are required',
+        required: ['email', 'displayName', 'password', 'role']
+      });
+    }
+
+    // Check if admin already exists
+    const existingAdmin = await Admin.findOne({ email: email.toLowerCase() });
+    if (existingAdmin) {
+      return res.status(400).json({ message: 'Admin with this email already exists' });
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Get creator ID from token (you'll need to implement auth middleware)
+    const createdBy = req.admin?.id || null;
+
+    // Create new admin
+    const newAdmin = new Admin({
+      email: email.toLowerCase(),
+      displayName,
+      password: hashedPassword,
+      role,
+      permissions: permissions || [],
+      createdBy
+    });
+
+    await newAdmin.save();
+
+    res.status(201).json({
+      message: `${role} created successfully`,
+      admin: {
+        id: newAdmin._id,
+        email: newAdmin.email,
+        displayName: newAdmin.displayName,
+        role: newAdmin.role,
+        permissions: newAdmin.permissions,
+        isActive: newAdmin.isActive,
+        createdAt: newAdmin.createdAt
+      }
+    });
+
+  } catch (error) {
+    console.error('Error creating sub-admin:', error);
+    
+    if (error.name === 'ValidationError') {
+      const validationErrors = Object.values(error.errors).map(err => err.message);
+      return res.status(400).json({ 
+        message: 'Validation error', 
+        errors: validationErrors 
+      });
+    }
+    
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Update admin details
+const updateAdmin = async (req, res) => {
+  const { id } = req.params;
+  const { displayName, email, role, permissions, isActive } = req.body;
+
+  try {
+    const admin = await Admin.findById(id);
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Update fields
+    if (displayName) admin.displayName = displayName;
+    if (email) admin.email = email.toLowerCase();
+    if (role) admin.role = role;
+    if (permissions) admin.permissions = permissions;
+    if (isActive !== undefined) admin.isActive = isActive;
+
+    await admin.save();
+
+    res.status(200).json({
+      message: 'Admin updated successfully',
+      admin: {
+        id: admin._id,
+        email: admin.email,
+        displayName: admin.displayName,
+        role: admin.role,
+        permissions: admin.permissions,
+        isActive: admin.isActive
+      }
+    });
+
+  } catch (error) {
+    console.error('Error updating admin:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Delete admin
+const deleteAdmin = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const admin = await Admin.findById(id);
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Prevent deleting main admin
+    if (admin.role === 'admin') {
+      return res.status(400).json({ message: 'Cannot delete main admin account' });
+    }
+
+    await Admin.findByIdAndDelete(id);
+
+    res.status(200).json({
+      message: `${admin.role} deleted successfully`,
+      deletedAdmin: {
+        id: admin._id,
+        email: admin.email,
+        displayName: admin.displayName,
+        role: admin.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Error deleting admin:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Update main admin profile
+const updateMainAdmin = async (req, res) => {
+  const { currentPassword, newPassword, displayName, email } = req.body;
+  const adminId = req.admin?.id; // From auth middleware
+
+  try {
+    const admin = await Admin.findById(adminId);
+    if (!admin) {
+      return res.status(404).json({ message: 'Admin not found' });
+    }
+
+    // Verify current password if changing password
+    if (newPassword) {
+      if (!currentPassword) {
+        return res.status(400).json({ message: 'Current password is required to change password' });
+      }
+
+      const isCurrentPasswordValid = await bcrypt.compare(currentPassword, admin.password);
+      if (!isCurrentPasswordValid) {
+        return res.status(400).json({ message: 'Current password is incorrect' });
+      }
+
+      // Hash new password
+      admin.password = await bcrypt.hash(newPassword, 10);
+    }
+
+    // Update other fields
+    if (displayName) admin.displayName = displayName;
+    if (email) admin.email = email.toLowerCase();
+
+    await admin.save();
+
+    res.status(200).json({
+      message: 'Admin profile updated successfully',
+      admin: {
+        id: admin._id,
+        email: admin.email,
+        displayName: admin.displayName,
+        role: admin.role
+      }
+    });
+
+  } catch (error) {
+    console.error('Error updating main admin:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// ✅ Update your exports
 module.exports = {
-    registerUser,
-    loginUser,
-    addNewItem,
-    loadItemById,
-    loadAllItems,
-    loadItemsByCategory,
-    loadTrendingItems,
-    searchItems
+  registerUser,
+  loginUser,
+  addNewItem,
+  loadItemById,
+  loadAllItems,
+  loadItemsByCategory,
+  loadTrendingItems,
+  searchItems,
+  loginAdmin,
+  getAllAdmins,      // ✅ Add these
+  createSubAdmin,    // ✅ Add these
+  updateAdmin,       // ✅ Add these
+  deleteAdmin,       // ✅ Add these
+  updateMainAdmin,   // ✅ Add these
+  upload
 };
