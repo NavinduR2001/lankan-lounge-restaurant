@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { logo } from '../../assets/assets'
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { IoChevronBackCircle } from "react-icons/io5";
-import { loginUser } from '../../services/api'; // Import API service
+import { loginUser, adminLogin } from '../../services/api'; // ✅ Fixed import - added adminLogin
 
 function Login() {
   const navigate = useNavigate();
@@ -42,29 +42,68 @@ function Login() {
     setError('');
 
     try {
-      const response = await loginUser(formData);
-      
+      let response;
+      let isAdminLogin = false;
+
+      // First try admin login
+      try {
+        console.log('Attempting admin login...');
+        response = await adminLogin(formData);
+        isAdminLogin = true;
+        console.log('Admin login successful:', response.data);
+      } catch (adminError) {
+        console.log('Admin login failed:', adminError.response?.data?.message || adminError.message);
+        console.log('Trying user login...');
+        
+        // If admin login fails, try user login
+        try {
+          response = await loginUser(formData);
+          isAdminLogin = false;
+          console.log('User login successful:', response.data);
+        } catch (userError) {
+          console.log('User login also failed:', userError.response?.data?.message || userError.message);
+          // Both login attempts failed - throw the last error
+          throw userError;
+        }
+      }
+
       // Store token in localStorage
       localStorage.setItem('token', response.data.token);
       
-      // Store user info if available
-      if (response.data.user) {
+      if (isAdminLogin && response.data.admin) {
+        // Admin login successful
+        localStorage.setItem('admin', JSON.stringify(response.data.admin));
+        localStorage.removeItem('user'); // Clear any existing user data
+        
+        setGood('Admin login successful!');
+        
+        // Redirect to admin dashboard
+        setTimeout(() => {
+          navigate('/admin-dashboard');
+        }, 1500);
+        
+      } else if (!isAdminLogin && response.data.user) {
+        // User login successful
         localStorage.setItem('user', JSON.stringify(response.data.user));
+        localStorage.removeItem('admin'); // Clear any existing admin data
+        
+        setGood('Login successful!');
+        
+        // Redirect to home page
+        setTimeout(() => {
+          navigate('/');
+        }, 1500);
       }
       
-      // Show success message
-      setGood('Login successful!')
-      
-      // Redirect to home page
-      navigate('/');
-
-      document.getElementsByClassName('profile').style.display = 'block';
-      
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Final login error:', error);
       
       if (error.response?.data?.message) {
         setError(error.response.data.message);
+      } else if (error.response?.status === 400) {
+        setError('Invalid email or password');
+      } else if (error.message.includes('Network Error')) {
+        setError('Network error. Please check your connection.');
       } else {
         setError('Login failed. Please try again.');
       }
