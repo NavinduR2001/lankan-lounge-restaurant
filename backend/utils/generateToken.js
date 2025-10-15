@@ -1,18 +1,15 @@
 require('dotenv').config();
 const jwt = require('jsonwebtoken');
 
-const generateToken = (userId) => {
-    try {
-        const token = jwt.sign(
-            { userId: userId }, 
-            process.env.JWT_SECRET, 
-            { expiresIn: '30d' }
-        );
-        return token;
-    } catch (error) {
-        console.error('Token generation error:', error);
-        throw new Error('Failed to generate token');
-    }
+const generateToken = (id) => {
+  return jwt.sign(
+    { 
+      id: id,           // ✅ Use 'id' instead of 'userId'
+      iat: Math.floor(Date.now() / 1000)
+    }, 
+    process.env.JWT_SECRET || 'your_jwt_secret',
+    { expiresIn: '7d' }
+  );
 };
 
 module.exports = { generateToken };
