@@ -5,10 +5,12 @@ import { logo } from '../../assets/assets'
 import { IoIosEye, IoIosEyeOff } from "react-icons/io";
 import { IoChevronBackCircle } from "react-icons/io5";
 import { loginUser, adminLogin } from '../../services/api'; // ✅ Fixed import - added adminLogin
+import { useCart } from '../../components/CartContext';
 
 function Login() {
   const navigate = useNavigate();
-
+  const { mergeGuestCartOnLogin } = useCart();
+  
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -30,7 +32,7 @@ function Login() {
     }
   };
 
-  const handleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
     e.preventDefault();
     
     if (!formData.email || !formData.password) {
@@ -47,56 +49,81 @@ function Login() {
 
       // First try admin login
       try {
-        console.log('Attempting admin login...');
+        console.log('🔄 Attempting admin login...');
         response = await adminLogin(formData);
         isAdminLogin = true;
-        console.log('Admin login successful:', response.data);
+        console.log('✅ Admin login successful:', response.data);
       } catch (adminError) {
-        console.log('Admin login failed:', adminError.response?.data?.message || adminError.message);
-        console.log('Trying user login...');
+        console.log('❌ Admin login failed, trying user login...');
         
         // If admin login fails, try user login
         try {
           response = await loginUser(formData);
           isAdminLogin = false;
-          console.log('User login successful:', response.data);
+          console.log('✅ User login successful:', response.data);
         } catch (userError) {
-          console.log('User login also failed:', userError.response?.data?.message || userError.message);
-          // Both login attempts failed - throw the last error
+          console.log('❌ User login also failed');
           throw userError;
         }
       }
 
-      // Store token in localStorage
-      localStorage.setItem('token', response.data.token);
-      
-      if (isAdminLogin && response.data.admin) {
-        // Admin login successful
-        localStorage.setItem('admin', JSON.stringify(response.data.admin));
-        localStorage.removeItem('user'); // Clear any existing user data
-        
-        setGood('Admin login successful!');
-        
-        // Redirect to admin dashboard
-        setTimeout(() => {
-          navigate('/admin-dashboard');
-        }, 1500);
-        
-      } else if (!isAdminLogin && response.data.user) {
-        // User login successful
-        localStorage.setItem('user', JSON.stringify(response.data.user));
-        localStorage.removeItem('admin'); // Clear any existing admin data
-        
-        setGood('Login successful!');
-        
-        // Redirect to home page
-        setTimeout(() => {
-          navigate('/');
-        }, 1500);
-      }
+// Handle successful login
+if (isAdminLogin && response.data.admin && response.data.token) {
+  // ✅ Admin login - store admin data with consistent keys
+  const adminData = response.data.admin;
+  const token = response.data.token;
+  
+  console.log('💾 Storing admin data:', adminData);
+  
+  // ✅ Use consistent keys that match Admin.jsx expectations
+  localStorage.setItem('token', token);        // ✅ Changed from 'adminToken'
+  localStorage.setItem('admin', JSON.stringify(adminData)); // ✅ Changed from 'adminUser'
+  localStorage.removeItem('user');  // Clear user data
+  
+  setGood('Admin login successful!');
+  
+  setTimeout(() => {
+    navigate('/admin-dashboard');
+  }, 1000);
+  
+} else if (!isAdminLogin && response.data.user && response.data.token) {
+  // ✅ User login - store user data
+  const userData = response.data.user;
+  const token = response.data.token;
+  
+  console.log('💾 Storing user data:', userData);
+  
+  // Store both token AND user data
+  localStorage.setItem('token', token);
+  localStorage.setItem('user', JSON.stringify(userData));
+  localStorage.removeItem('admin'); // ✅ Clear admin data
+  
+  // ✅ Dispatch login state change event
+  console.log('📡 Dispatching loginStateChanged event');
+  window.dispatchEvent(new Event('loginStateChanged'));
+  
+  // Merge guest cart with user cart
+  setTimeout(() => {
+    mergeGuestCartOnLogin();
+  }, 100);
+  
+  setGood('Login successful! Redirecting...');
+  
+  // Check for redirect path
+  const redirectPath = localStorage.getItem('redirectAfterLogin') || '/';
+  localStorage.removeItem('redirectAfterLogin');
+  
+  setTimeout(() => {
+    navigate(redirectPath);
+  }, 1500);
+} else {
+  // ✅ Invalid response structure
+  console.error('❌ Invalid login response:', response.data);
+  setError('Invalid login response. Please try again.');
+}
       
     } catch (error) {
-      console.error('Final login error:', error);
+      console.error('❌ Final login error:', error);
       
       if (error.response?.data?.message) {
         setError(error.response.data.message);
@@ -141,10 +168,10 @@ function Login() {
 
           <form onSubmit={handleSubmit} className="signin-form">
 
-            <div className="form-group">
-              <label htmlFor="email" className="form-label">Email Address</label>
+            <div className="login-form-group">
+              <label htmlFor="email" className="login-form-label">Email Address</label>
 
-              <div className="password-input-container">
+              <div className="login-password-input-container">
                 <input 
                   type="email" 
                   id="email" 
@@ -152,16 +179,16 @@ function Login() {
                   value={formData.email}
                   onChange={handleChange}
                   placeholder='Enter your email' 
-                  className="form-input"
+                  className="login-form-input"
                   required
                 />
               </div>
              
             </div>
 
-            <div className="form-group">
-              <label htmlFor="password" className="form-label">Password</label>
-              <div className="password-input-container">
+            <div className="login-form-group">
+              <label htmlFor="password" className="login-form-label">Password</label>
+              <div className="login-password-input-container">
                 <input 
                   type={showPassword ? "text" : "password"} 
                   id="password" 
@@ -169,7 +196,7 @@ function Login() {
                   value={formData.password}
                   onChange={handleChange}
                   placeholder='Enter your password' 
-                  className="form-input"
+                  className="login-form-input"
                   required
                 />
                 <span 
