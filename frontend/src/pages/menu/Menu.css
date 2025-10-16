@@ -72,11 +72,12 @@
 }
 .sub-menu-container{
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(5, 1fr);
     gap: 20px;
     padding: 20px 0;
-    
+    width: 100%;
 }
+
 
 .sub-menu-title{
     font-size:62px;
@@ -233,13 +234,7 @@
 }
 
 /* Enhanced sub-menu-container grid */
-.sub-menu-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px 0;
-  /* Keep your existing styles */
-}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -268,4 +263,28 @@
   .menu-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+}
+
+/* Add to your Menu.css */
+
+.add-to-cart-btn.added {
+  background-color: #4caf50;
+  color: white;
+  cursor: not-allowed;
+}
+
+.add-to-cart-btn:disabled {
+  opacity: 0.7;
+}
+
+/* Cart item styles */
+.item-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-id {
+  font-size: 0.8em;
+  color: #666;
 }
