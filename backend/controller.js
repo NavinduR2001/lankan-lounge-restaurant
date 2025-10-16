@@ -1,6 +1,8 @@
 const User = require('./model');
 const Item = require('./itemModel');
 const Admin = require('./adminModel');
+const Order = require('./orderModel');
+const OrderHistory = require('./orderHistoryModel'); // ✅ New import
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { generateToken } = require('./utils/generateToken'); // ✅ Use existing utils
@@ -416,6 +418,431 @@ const updateMainAdmin = async (req, res) => {
   }
 };
 
+// Get user's cart
+const getUserCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Return cart data or empty array if no cart
+    const cartData = user.cart || [];
+    
+    res.status(200).json({
+      message: 'Cart retrieved successfully',
+      cart: cartData,
+      itemCount: cartData.reduce((count, item) => count + item.quantity, 0)
+    });
+  } catch (error) {
+    console.error('Get cart error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Update user's cart
+const updateUserCart = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { cartItems } = req.body;
+    
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    // Validate cart items structure
+    if (!Array.isArray(cartItems)) {
+      return res.status(400).json({ message: 'Cart items must be an array' });
+    }
+
+    // Update user's cart
+    user.cart = cartItems;
+    await user.save();
+    
+    const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+    
+    res.status(200).json({
+      message: 'Cart updated successfully',
+      cart: cartItems,
+      itemCount
+    });
+  } catch (error) {
+    console.error('Update cart error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Create new order
+const createOrder = async (req, res) => {
+  try {
+    // Get user ID from authenticated user (optional for guest orders)
+    const userId = req.user?._id || null;
+    
+    // ✅ Generate unique order number with timestamp and random component
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    const orderNumber = `ORD${timestamp}${randomNum}`;
+    
+    const orderData = {
+      ...req.body,
+      userId: userId,
+      orderDate: new Date(),
+      orderNumber: orderNumber // ✅ Use generated order number
+    };
+    
+    console.log('📝 Creating order:', {
+      orderNumber: orderData.orderNumber,
+      customerName: orderData.customerName,
+      totalAmount: orderData.totalAmount,
+      itemCount: orderData.items?.length || 0
+    });
+    
+    const order = new Order(orderData);
+    await order.save();
+    
+    console.log('✅ Order created successfully:', order.orderNumber);
+    
+    res.status(201).json({
+      success: true,
+      message: 'Order created successfully',
+      order: order
+    });
+  } catch (error) {
+    console.error('❌ Create order error:', error);
+    
+    // ✅ Handle specific duplicate key errors
+    if (error.code === 11000) {
+      // Try again with a different order number
+      try {
+        const timestamp = Date.now();
+        const randomNum = Math.floor(Math.random() * 100000);
+        const orderNumber = `ORD${timestamp}${randomNum}`;
+        
+        const orderData = {
+          ...req.body,
+          userId: req.user?._id || null,
+          orderDate: new Date(),
+          orderNumber: orderNumber
+        };
+        
+        const order = new Order(orderData);
+        await order.save();
+        
+        console.log('✅ Order created on retry:', order.orderNumber);
+        
+        res.status(201).json({
+          success: true,
+          message: 'Order created successfully',
+          order: order
+        });
+        return;
+      } catch (retryError) {
+        console.error('❌ Retry failed:', retryError);
+      }
+    }
+    
+    res.status(500).json({
+      success: false,
+      message: 'Error creating order',
+      error: error.message
+    });
+  }
+};
+
+// Get all orders (for admin)
+const getAllOrders = async (req, res) => {
+  try {
+    const orders = await Order.find().sort({ orderDate: -1 });
+    res.status(200).json({
+      success: true,
+      orders: orders
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: 'Error fetching orders',
+      error: error.message
+    });
+  }
+};
+
+// Update order status
+const updateOrderStatus = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    const { status } = req.body;
+    
+    console.log('Updating order status:', orderId, 'to:', status);
+    
+    // Find by orderNumber instead of _id
+    const order = await Order.findOneAndUpdate(
+      { orderNumber: orderId },
+      { status },
+      { new: true }
+    );
+    
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+    
+    res.status(200).json({
+      success: true,
+      message: 'Order status updated successfully',
+      order: order
+    });
+  } catch (error) {
+    console.error('Update order status error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error updating order status',
+      error: error.message
+    });
+  }
+};
+
+// Get user's orders
+const getUserOrders = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    
+    const orders = await Order.find({ userId })
+      .sort({ createdAt: -1 });
+
+    res.status(200).json({
+      message: 'User orders retrieved successfully',
+      count: orders.length,
+      orders
+    });
+
+  } catch (error) {
+    console.error('Get user orders error:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+const deleteOrder = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+
+    const deletedOrder = await Order.findOneAndDelete({ orderNumber: orderId });
+
+    if (!deletedOrder) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: 'Order deleted successfully',
+      order: deletedOrder
+    });
+  } catch (error) {
+    console.error('Delete order error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting order',
+      error: error.message
+    });
+  }
+};
+
+// Move order to history when accepted
+const moveOrderToHistory = async (req, res) => {
+  try {
+    const { orderId } = req.params;
+    
+    console.log('📝 Moving order to history:', orderId);
+    
+    // Find the original order
+    const order = await Order.findOne({ orderNumber: orderId });
+    
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: 'Order not found'
+      });
+    }
+    
+    // Check if order is already in history
+    const existingHistory = await OrderHistory.findOne({ orderNumber: orderId });
+    if (existingHistory) {
+      return res.status(400).json({
+        success: false,
+        message: 'Order already exists in history'
+      });
+    }
+    
+    // Create history record
+    const historyData = {
+      originalOrderId: order._id,
+      orderNumber: order.orderNumber,
+      customerName: order.customerName,
+      customerEmail: order.customerEmail,
+      customerPhone: order.customerPhone,
+      items: order.items,
+      totalAmount: order.totalAmount,
+      originalOrderDate: order.orderDate,
+      pickupTime: order.pickupTime,
+      paymentMethod: order.paymentMethod,
+      acceptedDate: new Date(),
+      finalStatus: 'completed'
+    };
+    
+    const orderHistory = new OrderHistory(historyData);
+    await orderHistory.save();
+    
+    // Update original order status to confirmed
+    order.status = 'confirmed';
+    await order.save();
+    
+    console.log('✅ Order moved to history successfully:', orderId);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Order moved to history and confirmed',
+      historyRecord: orderHistory,
+      updatedOrder: order
+    });
+    
+  } catch (error) {
+    console.error('❌ Move order to history error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error moving order to history',
+      error: error.message
+    });
+  }
+};
+
+// Get all order history records
+const getOrderHistory = async (req, res) => {
+  try {
+    const { page = 1, limit = 50, status, startDate, endDate } = req.query;
+    
+    let filter = {};
+    
+    if (status) {
+      filter.finalStatus = status;
+    }
+    
+    if (startDate || endDate) {
+      filter.acceptedDate = {};
+      if (startDate) filter.acceptedDate.$gte = new Date(startDate);
+      if (endDate) filter.acceptedDate.$lte = new Date(endDate);
+    }
+    
+    const skip = (page - 1) * limit;
+    
+    const historyRecords = await OrderHistory
+      .find(filter)
+      .sort({ acceptedDate: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+    
+    const totalRecords = await OrderHistory.countDocuments(filter);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Order history retrieved successfully',
+      data: {
+        records: historyRecords,
+        totalRecords,
+        currentPage: parseInt(page),
+        totalPages: Math.ceil(totalRecords / limit),
+        hasNextPage: skip + historyRecords.length < totalRecords,
+        hasPrevPage: page > 1
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Get order history error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving order history',
+      error: error.message
+    });
+  }
+};
+
+// Get order history statistics (for reporting)
+const getOrderHistoryStats = async (req, res) => {
+  try {
+    const { startDate, endDate } = req.query;
+    
+    let matchCondition = {};
+    if (startDate || endDate) {
+      matchCondition.acceptedDate = {};
+      if (startDate) matchCondition.acceptedDate.$gte = new Date(startDate);
+      if (endDate) matchCondition.acceptedDate.$lte = new Date(endDate);
+    }
+    
+    const stats = await OrderHistory.aggregate([
+      { $match: matchCondition },
+      {
+        $group: {
+          _id: null,
+          totalOrders: { $sum: 1 },
+          totalRevenue: { $sum: '$totalAmount' },
+          averageOrderValue: { $avg: '$totalAmount' },
+          completedOrders: {
+            $sum: { $cond: [{ $eq: ['$finalStatus', 'completed'] }, 1, 0] }
+          },
+          cancelledOrders: {
+            $sum: { $cond: [{ $eq: ['$finalStatus', 'cancelled'] }, 1, 0] }
+          }
+        }
+      }
+    ]);
+    
+    const itemStats = await OrderHistory.aggregate([
+      { $match: matchCondition },
+      { $unwind: '$items' },
+      {
+        $group: {
+          _id: '$items.name',
+          totalQuantity: { $sum: '$items.quantity' },
+          totalRevenue: { $sum: { $multiply: ['$items.price', '$items.quantity'] } },
+          orderCount: { $sum: 1 }
+        }
+      },
+      { $sort: { totalQuantity: -1 } },
+      { $limit: 10 }
+    ]);
+    
+    res.status(200).json({
+      success: true,
+      message: 'Order history statistics retrieved successfully',
+      data: {
+        summary: stats[0] || {
+          totalOrders: 0,
+          totalRevenue: 0,
+          averageOrderValue: 0,
+          completedOrders: 0,
+          cancelledOrders: 0
+        },
+        topItems: itemStats
+      }
+    });
+    
+  } catch (error) {
+    console.error('❌ Get order history stats error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error retrieving order history statistics',
+      error: error.message
+    });
+  }
+};
+
+// Update the existing module.exports to include new functions
 module.exports = {
   registerUser,
   loginUser,
@@ -426,5 +853,15 @@ module.exports = {
   loadTrendingItems,
   searchItems,
   updateMainAdmin,
-  upload
+  upload,
+  getUserCart,
+  updateUserCart,
+  createOrder,
+  getAllOrders,
+  updateOrderStatus,
+  getUserOrders,
+  deleteOrder,
+  moveOrderToHistory,      // ✅ New function
+  getOrderHistory,         // ✅ New function
+  getOrderHistoryStats     // ✅ New function
 };
