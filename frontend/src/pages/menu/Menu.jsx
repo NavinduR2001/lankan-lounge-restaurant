@@ -1,10 +1,15 @@
 import './Menu.css'
+import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect } from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import { biriyani, burger, one, pizza } from '../../assets/assets'
 import { getAllItems, getItemsByCategory, getTrendingItems, searchItems } from '../../services/api';
+import { useCart } from '../../components/CartContext'; // ✅ Import useCart
 
 function Menu() {
+  const navigate = useNavigate();
+  const { addToCart, getCartTotals } = useCart(); // ✅ Use cart context
+  
   // State for managing data
   const [menuData, setMenuData] = useState({
     'sri-lankan': [],
@@ -19,6 +24,7 @@ function Menu() {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [addedItems, setAddedItems] = useState(new Set()); // ✅ Track added items for UI feedback
 
   // Category configuration with images
   const categories = [
@@ -72,6 +78,29 @@ function Menu() {
     }
   ];
 
+  // ✅ Handle add to cart
+const handleAddToCart = async (item) => {
+  // ✅ Check if user is logged in first
+  const token = localStorage.getItem('token');
+  const user = localStorage.getItem('user');
+  
+  if (!token || !user) {
+    // Store the current page to redirect back after login
+    localStorage.setItem('redirectAfterLogin', '/menu');
+    alert('Please login to add items to cart');
+    navigate('/login');
+    return;
+  }
+
+  try {
+    await addToCart(item);
+    alert('Item added to cart successfully!');
+  } catch (error) {
+    console.error('Error adding item to cart:', error);
+    alert('Failed to add item to cart');
+  }
+};
+
   // Load data for all categories
   useEffect(() => {
     const loadAllCategoryData = async () => {
@@ -115,24 +144,36 @@ function Menu() {
       );
     }
 
-    return categoryItems.map((item) => (
-      <div key={item.id} className="menu-item">
-        <img 
-          className='menu-top-item-image' 
-          src={item.itemImage || one} 
-          alt={item.itemName}
-          onError={(e) => {
-            e.target.src = one; // Fallback to default image
-          }}
-        />
-        {item.isTrending && <span className="trending-badge">🔥 Trending</span>}
-        <h3 className='menu-top-item-title'>{item.itemName}</h3>
-        <h3 className='price'>Rs. {item.itemPrice.toFixed(2)}</h3>
-        <p className='item-portion'>ID: {item.foodID}</p>
-        <p className='item-description'>{item.itemDescription}</p>
-        <button className='add-to-cart-btn'>Add to Cart</button>
-      </div>
-    ));
+    return categoryItems.map((item) => {
+      const isAdded = addedItems.has(item.foodID);
+      
+      return (
+        <div key={item._id || item.id} className="menu-item">
+          <img 
+            className='menu-top-item-image' 
+            src={item.itemImage ? `http://localhost:5000/${item.itemImage}` : one} 
+            alt={item.itemName}
+            onError={(e) => {
+              e.target.src = one; // Fallback to default image
+            }}
+          />
+          {item.isTrending && <span className="trending-badge">🔥 Trending</span>}
+          <h3 className='menu-top-item-title'>{item.itemName}</h3>
+          <h3 className='price'>Rs. {item.itemPrice.toFixed(2)}</h3>
+          
+          <p className='item-description'>{item.itemDescription}</p>
+          
+          {/* ✅ Updated add to cart button */}
+          <button 
+            className={`add-to-cart-btn ${isAdded ? 'added' : ''}`}
+            onClick={() => handleAddToCart(item)}
+            disabled={isAdded}
+          >
+            {isAdded ? '✓ Added to Cart' : 'Add to Cart'}
+          </button>
+        </div>
+      );
+    });
   };
 
   if (loading) {

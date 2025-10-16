@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './Register.css'
 import { Link, useNavigate } from 'react-router-dom'
 import { IoChevronBackCircle } from "react-icons/io5";
-import { registerUser } from '../../services/api'; // Import API service
+import { registerUser } from '../../services/api';
 
 function Register() {
   const navigate = useNavigate();
@@ -18,8 +18,8 @@ function Register() {
   })
 
   const [errors, setErrors] = useState({})
-  const [loading, setLoading] = useState(false) // Add loading state
-  const [apiError, setApiError] = useState('') // Add API error state
+  const [loading, setLoading] = useState(false)
+  const [apiError, setApiError] = useState('')
   const [apiGood, setApiGood] = useState('')
 
   const districts = [
@@ -35,7 +35,6 @@ function Register() {
       ...formData,
       [e.target.name]: e.target.value
     })
-    // Clear errors when user starts typing
     if (errors[e.target.name]) {
       setErrors({
         ...errors,
@@ -94,209 +93,223 @@ function Register() {
   }
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    const newErrors = validateForm()
+  e.preventDefault()
+  const newErrors = validateForm()
+  
+  if (Object.keys(newErrors).length === 0) {
+    setLoading(true)
+    setApiError('')
     
-    if (Object.keys(newErrors).length === 0) {
-      setLoading(true)
-      setApiError('')
+    try {
+      const submitData = { ...formData };
+      delete submitData.confirmPassword;
       
-      try {
-        // Remove confirmPassword before sending to backend
-        const submitData = { ...formData };
-        delete submitData.confirmPassword;
-        
-        const response = await registerUser(submitData);
-        
-        // Store token in localStorage
+      console.log('🔄 Registering user:', submitData);
+      
+      const response = await registerUser(submitData);
+      
+      console.log('✅ Registration response:', response.data);
+      
+      
+      if (response.data.token && response.data.user) {
         localStorage.setItem('token', response.data.token);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         
-        // Show success message
-        // alert('Registration successful! Welcome to Lankan Lounge!');
-
-        setApiGood('Registration successful! Welcome to Lankan Lounge!')
-
-
-        // Redirect to home page or dashboard
-        navigate('/');
+   
+        console.log('📡 Dispatching loginStateChanged event');
+        window.dispatchEvent(new Event('loginStateChanged'));
         
-      } catch (error) {
-        console.error('Registration error:', error);
+        setApiGood('Registration successful! Welcome to Gami Gedara!');
         
-        if (error.response?.data?.message) {
-          setApiError(error.response.data.message);
-        } else if (error.response?.data?.errors) {
-          // Handle validation errors from backend
-          const backendErrors = {};
-          error.response.data.errors.forEach(err => {
-            backendErrors[err.path] = err.msg;
-          });
-          setErrors(backendErrors);
-        } else {
-          setApiError('Registration failed. Please try again.');
-        }
-      } finally {
-        setLoading(false)
+        setTimeout(() => {
+          navigate('/');
+        }, 2000);
+      } else {
+        // If no user data in response, just show success and redirect to login
+        setApiGood('Registration successful! Please login.');
+        setTimeout(() => {
+          navigate('/login');
+        }, 2000);
       }
-    } else {
-      setErrors(newErrors)
+      
+    } catch (error) {
+      console.error(' Registration error:', error);
+      
+      if (error.response?.data?.message) {
+        setApiError(error.response.data.message);
+      } else if (error.response?.data?.errors) {
+        const backendErrors = {};
+        error.response.data.errors.forEach(err => {
+          backendErrors[err.path] = err.msg;
+        });
+        setErrors(backendErrors);
+      } else {
+        setApiError('Registration failed. Please try again.');
+      }
+    } finally {
+      setLoading(false)
     }
+  } else {
+    setErrors(newErrors)
   }
+}
 
   return (
-    <div className='register-page'>
-      <div className="register-container">
-        <div className="register-header">
-          <div className='back-btn-reg'><IoChevronBackCircle onClick={() => navigate(-1)} /></div>
-          <div className="line-register">
-            <div className="line registerline"></div>
-            <h2 className='register-subtitle'>Create Account</h2>
-            <div className="line registerline"></div>
+    <div className='register-main-page'> 
+      <div className="register-main-container"> 
+        <div className="register-main-header"> 
+          <div className='register-back-btn'> 
+            <IoChevronBackCircle onClick={() => navigate(-1)} />
+          </div>
+          <div className="register-title-line"> 
+            <div className="register-decorative-line"></div> 
+            <h2 className='register-main-subtitle'>Create Account</h2> 
+            <div className="register-decorative-line"></div> 
           </div>
         </div>
 
-        <div className="register-form-container">
+        <div className="register-form-wrapper"> 
           {apiError && (
-            <div className="api-error-message">
+            <div className="register-api-error-message"> 
               {apiError}
             </div>
           )}
 
           {apiGood && (
-            <div className="api-good-message">
+            <div className="register-api-success-message"> 
               {apiGood}
             </div>
           )}
 
-          <form onSubmit={handleSubmit} className="register-form">
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="name" className="form-label">Full Name</label>
+          <form onSubmit={handleSubmit} className="register-main-form"> 
+            <div className="register-form-row"> 
+              <div className="register-form-group"> 
+                <label htmlFor="name" className="register-form-label">Full Name</label> 
                 <input
                   type="text"
                   id="name"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  className={`form-input ${errors.name ? 'error' : ''}`}
+                  className={`register-form-input ${errors.name ? 'register-input-error' : ''}`}
                   placeholder="Enter your full name"
                 />
-                {errors.name && <span className="error-message">{errors.name}</span>}
+                {errors.name && <span className="register-error-text">{errors.name}</span>} 
               </div>
 
-              <div className="form-group">
-                <label htmlFor="email" className="form-label">Email Address</label>
+              <div className="register-form-group">
+                <label htmlFor="email" className="register-form-label">Email Address</label>
                 <input
                   type="email"
                   id="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className={`form-input ${errors.email ? 'error' : ''}`}
+                  className={`register-form-input ${errors.email ? 'register-input-error' : ''}`}
                   placeholder="Enter your email"
                 />
-                {errors.email && <span className="error-message">{errors.email}</span>}
+                {errors.email && <span className="register-error-text">{errors.email}</span>}
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="city" className="form-label">City</label>
+            <div className="register-form-row">
+              <div className="register-form-group">
+                <label htmlFor="city" className="register-form-label">City</label>
                 <input
                   type="text"
                   id="city"
                   name="city"
                   value={formData.city}
                   onChange={handleChange}
-                  className={`form-input ${errors.city ? 'error' : ''}`}
+                  className={`register-form-input ${errors.city ? 'register-input-error' : ''}`}
                   placeholder="Enter your city"
                 />
-                {errors.city && <span className="error-message">{errors.city}</span>}
+                {errors.city && <span className="register-error-text">{errors.city}</span>}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="district" className="form-label">District</label>
+              <div className="register-form-group">
+                <label htmlFor="district" className="register-form-label">District</label>
                 <select
                   id="district"
                   name="district"
                   value={formData.district}
                   onChange={handleChange}
-                  className={`form-select ${errors.district ? 'error' : ''}`}
+                  className={`register-form-select ${errors.district ? 'register-input-error' : ''}`}
                 >
                   <option value="">Select District</option>
                   {districts.map(district => (
                     <option key={district} value={district}>{district}</option>
                   ))}
                 </select>
-                {errors.district && <span className="error-message">{errors.district}</span>}
+                {errors.district && <span className="register-error-text">{errors.district}</span>}
               </div>
             </div>
 
-            <div className="form-group">
-              <label htmlFor="contactNumber" className="form-label">Contact Number</label>
+            <div className="register-form-group">
+              <label htmlFor="contactNumber" className="register-form-label">Contact Number</label>
               <input
                 type="tel"
                 id="contactNumber"
                 name="contactNumber"
                 value={formData.contactNumber}
                 onChange={handleChange}
-                className={`form-input ${errors.contactNumber ? 'error' : ''}`}
+                className={`register-form-input ${errors.contactNumber ? 'register-input-error' : ''}`}
                 placeholder="Enter your contact number"
               />
-              {errors.contactNumber && <span className="error-message">{errors.contactNumber}</span>}
+              {errors.contactNumber && <span className="register-error-text">{errors.contactNumber}</span>}
             </div>
 
-            <div className="form-row">
-              <div className="form-group">
-                <label htmlFor="password" className="form-label">Password</label>
-                <div className="password-input-container">
+            <div className="register-form-row">
+              <div className="register-form-group">
+                <label htmlFor="password" className="register-form-label">Password</label>
+                <div className="register-password-container"> 
                   <input
                     type="password"
                     id="password"
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className={`form-input ${errors.password ? 'error' : ''}`}
+                    className={`register-form-input ${errors.password ? 'register-input-error' : ''}`}
                     placeholder="Enter your password"
                   />
                 </div>
-                {errors.password && <span className="error-message">{errors.password}</span>}
+                {errors.password && <span className="register-error-text">{errors.password}</span>}
               </div>
 
-              <div className="form-group">
-                <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
-                <div className="password-input-container">
+              <div className="register-form-group">
+                <label htmlFor="confirmPassword" className="register-form-label">Confirm Password</label>
+                <div className="register-password-container">
                   <input
                     type="password"
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleChange}
-                    className={`form-input ${errors.confirmPassword ? 'error' : ''}`}
+                    className={`register-form-input ${errors.confirmPassword ? 'register-input-error' : ''}`}
                     placeholder="Confirm your password"
                   />
                 </div>
-                {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
+                {errors.confirmPassword && <span className="register-error-text">{errors.confirmPassword}</span>}
               </div>
             </div>
 
-            <div className="form-terms">
-              <label className="terms-checkbox">
+            <div className="register-terms-section"> 
+              <label className="register-terms-checkbox"> 
                 <input type="checkbox" required />
-                <span className="checkmark"></span>
-                I agree to the <Link to="/terms" className="terms-link">Terms & Conditions</Link> and <Link to="/privacy" className="terms-link">Privacy Policy</Link>
+                <span className="register-checkmark"></span> 
+                I agree to the <Link to="/terms" className="register-terms-link">Terms & Conditions</Link> and <Link to="/privacy" className="register-terms-link">Privacy Policy</Link> 
               </label>
             </div>
 
-            <div className="reg-btn-align">
-              <button type="submit" className="register-btn" disabled={loading}>
+            <div className="register-button-container"> 
+              <button type="submit" className="register-submit-button" disabled={loading}> 
                 {loading ? 'Creating Account...' : 'Create Account'}
               </button>
             </div>
 
-            <div className="register-footer">
+            <div className="register-main-footer"> 
               <p>Already have an account?
-                <Link to="/login" className="signin-link"> Sign In</Link>
+                <Link to="/login" className="register-signin-link"> Sign In</Link> 
               </p>
             </div>
           </form>
