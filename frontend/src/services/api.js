@@ -52,18 +52,17 @@ export const registerUser = (userData) => API.post('/register', userData);
 export const loginUser = (userData) => API.post('/login', userData);
 export const adminLogin = (adminData) => API.post('/admin-login', adminData);
 
+// Cart API calls
+export const getUserCart = () => API.get('/cart');
+export const updateUserCart = (cartItems) => API.put('/cart', { cartItems });
+
 // Item API calls
-export const addMenuItem = (itemData) => {
-  const formData = new FormData();
-  Object.keys(itemData).forEach(key => {
-    if (itemData[key] !== null && itemData[key] !== undefined) {
-      formData.append(key, itemData[key]);
-    }
-  });
-  
+export const addMenuItem = (formData) => {
+  console.log('📡 Adding menu item with FormData');
   return API.post('/add-item', formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-    timeout: 30000
+    headers: {
+      'Content-Type': 'multipart/form-data', // ✅ Important for file uploads
+    },
   });
 };
 
@@ -87,16 +86,43 @@ export const searchItems = (query, category = 'all') => {
 };
 
 // ✅ Enhanced admin profile update with better error handling
-export const updateMainAdminProfile = async (profileData) => {
-  try {
-    console.log('🔄 Updating admin profile with:', profileData);
-    const response = await API.put('/admin-profile', profileData);
-    console.log('✅ Profile update successful:', response.data);
-    return response;
-  } catch (error) {
-    console.error('❌ Profile update failed:', error.response?.data);
-    throw error; // Re-throw so component can handle it
-  }
+export const updateMainAdminProfile = (profileData) => {
+  console.log('🔄 Updating admin profile with:', profileData);
+  return API.put('/admin-profile', profileData)
+    .then(response => {
+      console.log('✅ Profile updated successfully:', response.data);
+      return response;
+    })
+    .catch(error => {
+      console.log('❌ Profile update failed:', error.response?.data);
+      throw error;
+    });
+};
+
+// Order API calls
+export const createOrder = (orderData) => API.post('/orders', orderData);
+export const getAllOrders = () => API.get('/orders');
+export const updateOrderStatus = (orderId, status) => API.put(`/orders/${orderId}`, { status });
+export const deleteOrder = (orderId) => API.delete(`/orders/${orderId}`);
+
+// Order History API calls
+export const moveOrderToHistory = (orderId) => API.post(`/orders/${orderId}/move-to-history`);
+export const getOrderHistory = (params = {}) => {
+  const searchParams = new URLSearchParams();
+  if (params.page) searchParams.append('page', params.page);
+  if (params.limit) searchParams.append('limit', params.limit);
+  if (params.status) searchParams.append('status', params.status);
+  if (params.startDate) searchParams.append('startDate', params.startDate);
+  if (params.endDate) searchParams.append('endDate', params.endDate);
+  
+  return API.get(`/order-history?${searchParams.toString()}`);
+};
+export const getOrderHistoryStats = (params = {}) => {
+  const searchParams = new URLSearchParams();
+  if (params.startDate) searchParams.append('startDate', params.startDate);
+  if (params.endDate) searchParams.append('endDate', params.endDate);
+  
+  return API.get(`/order-history/stats?${searchParams.toString()}`);
 };
 
 export default API;
