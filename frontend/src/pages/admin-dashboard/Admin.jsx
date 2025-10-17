@@ -2,7 +2,17 @@ import React, { useState, useEffect } from 'react'
 import './Admin.css'
 import AdminNavbar from '../../components/admin-navbar/AdminNavbar'
 import AdminSettings from '../admin-setting/AdminSettings'  // ✅ Correct import path
-import { addMenuItem } from '../../services/api'
+import SalesSummary from '../../components/chart/SalesSummary.jsx';
+import ItemSummary from '../../components/item-summary/ItemSummary';
+import { 
+  addMenuItem, 
+  getAllOrders, 
+  updateOrderStatus, 
+  deleteOrder, 
+  moveOrderToHistory,      // ✅ New import
+  getOrderHistory,         // ✅ New import
+  getOrderHistoryStats     // ✅ New import
+} from '../../services/api';
 
 function Admin() {
   // Form state for menu items
@@ -25,6 +35,16 @@ function Admin() {
     addItems: false,
     salesReports: false
   });
+
+  // Orders state
+  const [orders, setOrders] = useState([]);
+  const [loadingOrders, setLoadingOrders] = useState(false);
+  const [activeTab, setActiveTab] = useState('orders'); // Add tab state
+
+  // Order history state
+  const [orderHistory, setOrderHistory] = useState([]);
+  const [loadingHistory, setLoadingHistory] = useState(false);
+  const [historyStats, setHistoryStats] = useState(null);
 
   // Check authentication on mount
   useEffect(() => {
@@ -57,6 +77,49 @@ function Admin() {
     validateStoredData();
   }, []);
 
+  // Load orders when orders section is active
+  useEffect(() => {
+    if (activeSection === 'orders') {
+      loadOrders();
+    }
+  }, [activeSection]);
+
+  // Load order history when history section is active
+  useEffect(() => {
+    if (activeSection === 'order-history') {
+      loadOrderHistory();
+    }
+  }, [activeSection]);
+
+  const loadOrders = async () => {
+    setLoadingOrders(true);
+    try {
+      const response = await getAllOrders('pending,confirmed,preparing');
+      setOrders(response.data.orders);
+      console.log('Orders loaded:', response.data.orders);
+    } catch (error) {
+      console.error('Error loading orders:', error);
+    } finally {
+      setLoadingOrders(false);
+    }
+  };
+
+  // New function to load order history
+  const loadOrderHistory = async () => {
+    setLoadingHistory(true);
+    try {
+      const response = await getOrderHistory({ page: 1, limit: 50 });
+      if (response.data.success) {
+        setOrderHistory(response.data.data.records);
+        console.log('Order history loaded:', response.data.data.records);
+      }
+    } catch (error) {
+      console.error('Error loading order history:', error);
+    } finally {
+      setLoadingHistory(false);
+    }
+  };
+
   // Enhanced form validation
   const validateForm = (formData) => {
     const errors = {};
@@ -76,82 +139,76 @@ function Admin() {
     return Object.keys(errors).length ? errors : null;
   };
 
-  // Handle form submission
+  // Update the handleSubmit function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setSuccessMessage('');
     
-    console.log('Form submission started with data:', {
-      itemName: formData.itemName,
-      itemCategory: formData.itemCategory,
-      foodID: formData.foodID,
-      itemPrice: formData.itemPrice,
-      itemDescription: formData.itemDescription,
-      imageFile: formData.itemImage ? {
-        name: formData.itemImage.name,
-        type: formData.itemImage.type,
-        size: formData.itemImage.size
-      } : null,
-      isTrending: activeSection === 'add-trending'
-    });
+    console.log('Form submission started with data:', formData);
     
-    const validationErrors = validateForm(formData);
-    
-    if (validationErrors) {
-      console.log('Validation errors:', validationErrors);
-      setErrors(validationErrors);
-      setIsSubmitting(false);
+    if (!formData.itemName || !formData.itemCategory || !formData.itemPrice || !formData.itemDescription || !formData.itemImage) {
+      alert('Please fill in all fields and select an image');
       return;
     }
 
-    setErrors({});
-    
     try {
-      const submitData = {
-        itemName: formData.itemName,
-        itemCategory: formData.itemCategory,
-        foodID: formData.foodID,
-        itemPrice: formData.itemPrice,
-        itemDescription: formData.itemDescription,
-        itemImage: formData.itemImage, // This should be a File object
-        isTrending: activeSection === 'add-trending'
-      };
+      setIsSubmitting(true); // ✅ Add loading state
       
-      console.log('Submitting data:', submitData);
-      
+      const submitData = new FormData();
+      submitData.append('itemName', formData.itemName);
+      submitData.append('itemCategory', formData.itemCategory);
+      submitData.append('foodID', formData.foodID);
+      submitData.append('itemPrice', formData.itemPrice);
+      submitData.append('itemDescription', formData.itemDescription);
+      submitData.append('image', formData.itemImage);
+
+      console.log('Submitting data:', Object.fromEntries(submitData));
+
       const response = await addMenuItem(submitData);
       
-      setSuccessMessage(response.data.message || 'Item added successfully!');
-      
-      // Reset form
-      setformData({
-        itemName: "",
-        itemCategory: "",
-        foodID: "",
-        itemPrice: "",
-        itemDescription: "",
-        itemImage: null
-      });
-      
-      // Clear file input
-      const fileInput = document.getElementById(activeSection === 'add-trending' ? 'trending-item-image' : 'item-image');
-      if (fileInput) fileInput.value = '';
-      
-      setIsSubmitting(false);
-      
-    } catch (error) {
-      console.error("Submission error:", error);
-      
-      if (error.response) {
-        console.log('Server response:', error.response.data);
-        const errorMessage = error.response.data.message || 'Failed to add item';
-        setErrors({ submit: errorMessage });
-      } else {
-        setErrors({ submit: "Network error. Please check your connection and try again." });
+      // ✅ Fix the response check - your backend sends just 'message', not nested 'success'
+      if (response.data && response.data.message) {
+        console.log('✅ Menu item added successfully:', response.data);
+        
+        // ✅ Show success alert
+        alert('Menu item added successfully!');
+        
+        // ✅ Show success message in form
+        setSuccessMessage('Menu item added successfully!');
+        
+        // ✅ Reset form data
+        setformData({
+          itemName: "",
+          itemCategory: "",
+          foodID: "",
+          itemPrice: "",
+          itemDescription: "",
+          itemImage: null
+        });
+        
+        // ✅ Clear any existing errors
+        setErrors({});
+        
+        // ✅ Reset file input
+        const fileInput = document.querySelector('input[type="file"]');
+        if (fileInput) fileInput.value = '';
+        
+        // ✅ Clear success message after 3 seconds
+        setTimeout(() => {
+          setSuccessMessage('');
+        }, 3000);
       }
+    } catch (error) {
+      console.error('❌ Submission error:', error);
+      console.log('Server response:', error.response?.data);
       
-      setIsSubmitting(false);
+      // ✅ Better error handling
+      const errorMessage = error.response?.data?.message || 'Error adding menu item. Please try again.';
+      alert(`Error: ${errorMessage}`);
+      
+      // ✅ Set error in form
+      setErrors({ submit: errorMessage });
+    } finally {
+      setIsSubmitting(false); // ✅ Reset loading state
     }
   };
 
@@ -233,6 +290,99 @@ function Admin() {
     }));
   };
 
+  const handleOrderAction = async (orderId, newStatus) => {
+    try {
+      await updateOrderStatus(orderId, { status: newStatus });
+      // Reload orders
+      loadOrders();
+    } catch (error) {
+      console.error('Error updating order status:', error);
+    }
+  };
+
+  // Fetch orders for the orders tab
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await getAllOrders();
+        if (response.data.success) {
+          setOrders(response.data.orders);
+        }
+      } catch (error) {
+        console.error('Error fetching orders:', error);
+      }
+    };
+
+    if (activeTab === 'orders') {
+      fetchOrders();
+    }
+  }, [activeTab]);
+
+
+
+  // Updated handleAccept function
+  const handleAccept = async (orderId) => {
+    try {
+      console.log('🔄 Accepting order (setting to preparing):', orderId);
+      
+      // Just update status to preparing, don't move to history yet
+      const response = await updateOrderStatus(orderId, 'preparing');
+      
+      if (response.data.success) {
+        console.log('✅ Order status updated to preparing');
+        loadOrders(); // Refresh the orders list
+        alert('Order accepted! Now preparing.');
+      }
+    } catch (error) {
+      console.error('❌ Error accepting order:', error);
+      alert('Error accepting order. Please try again.');
+    }
+  };
+
+  // Update the handleComplete function to move order to history
+  const handleComplete = async (orderId) => {
+    try {
+      console.log('🔄 Completing order and moving to history:', orderId);
+      
+      const response = await moveOrderToHistory(orderId);
+      
+      if (response.data.success) {
+        console.log('✅ Order completed and moved to history');
+        
+        // Refresh both orders and history
+        loadOrders();
+        loadOrderHistory();
+        
+        alert('Order completed successfully!');
+      }
+    } catch (error) {
+      console.error('❌ Error completing order:', error);
+      alert('Error completing order. Please try again.');
+    }
+  };
+
+  // Update the handleReject function
+  const handleReject = async (orderId) => {
+    const confirmed = window.confirm('Are you sure you want to reject this order? This action cannot be undone.');
+    
+    if (confirmed) {
+      try {
+        console.log('🔄 Rejecting order:', orderId);
+        
+        const response = await deleteOrder(orderId);
+        
+        if (response.data.success) {
+          console.log('✅ Order rejected successfully');
+          loadOrders(); // Refresh the orders list
+          alert('Order rejected successfully.');
+        }
+      } catch (error) {
+        console.error('❌ Error rejecting order:', error);
+        alert('Error rejecting order. Please try again.');
+      }
+    }
+  };
+
   return (
     <>
       <AdminNavbar />
@@ -290,50 +440,118 @@ function Admin() {
           <div className={`Available-order ${activeSection === 'orders' ? 'show' : ''}`}>
             <div className="ad-topic-header">
               <h2 className='Ad-av-header'>Available Orders</h2>
+              <button onClick={loadOrders} className="refresh-btn">Refresh</button>
             </div>
 
             <div className="content-container">
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer Name</th>
-                    <th>Contact</th>
-                    <th>Order Items</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Takeaway Time</th>
-                    <th>Order Status</th>
-                  </tr>
-                </thead>
-                <tbody className='orders-table-body'>
-                  <tr>
-                    <td className='or-table-body-data'>#001</td>
-                    <td>John Doe</td>
-                    <td>123-456-7890</td>
-                    <td>
-                      <ul>
-                        <li>Pizza</li>
-                        <li>Burger</li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul>
-                        <li>2</li>
-                        <li>1</li>
-                      </ul>
-                    </td>
-                    <td>$30</td>
-                    <td>1:00 PM</td>
-                    <td>
-                      <div className="button-container">
-                        <div className="get-button make-btn">Make</div>
-                        <div className="get-button accept-btn">Accept</div>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              {loadingOrders ? (
+                <div className="loading">Loading orders...</div>
+              ) : orders.length > 0 ? (
+                <table className="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order Number</th>
+                      <th>Customer Name</th>
+                      <th>Contact</th>
+                      <th>Order Items</th>
+                      <th>Quantities</th>
+                      <th>Total Price</th>
+                      <th>Pickup Time</th>
+                      <th>Order Date</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody className='orders-table-body'>
+                    {orders.map(order => (
+                      <tr key={order._id}>
+                        <td className='or-table-body-data'>
+                          <strong>{order.orderNumber}</strong>
+                        </td>
+                        <td>{order.customerName || 'N/A'}</td>
+                        <td>
+                          <div>{order.customerEmail || 'N/A'}</div>
+                          <div>{order.customerPhone || 'N/A'}</div>
+                        </td>
+                        <td>
+                          <ul style={{margin: 0, padding: '0 0 0 20px'}}>
+                            {order.items && order.items.length > 0 ? (
+                              order.items.map((item, index) => (
+                                <li key={index}>{item.name || 'Unknown Item'}</li>
+                              ))
+                            ) : (
+                              <li>No items</li>
+                            )}
+                          </ul>
+                        </td>
+                        <td>
+                          <ul style={{margin: 0, padding: '0 0 0 20px'}}>
+                            {order.items && order.items.length > 0 ? (
+                              order.items.map((item, index) => (
+                                <li key={index}>{item.quantity || 0}</li>
+                              ))
+                            ) : (
+                              <li>0</li>
+                            )}
+                          </ul>
+                        </td>
+                        <td>Rs. {order.totalAmount?.toFixed(2) || '0.00'}</td>
+                        <td>
+                          <strong>{order.pickupTime || 'N/A'}</strong>
+                        </td>
+                        <td>{order.orderDate ? new Date(order.orderDate).toLocaleDateString() : 'N/A'}</td>
+                        <td>
+                          <span className={`status-badge status-${order.status || 'unknown'}`}>
+                            {order.status ? order.status.charAt(0).toUpperCase() + order.status.slice(1) : 'Unknown'}
+                          </span>
+                        </td>
+                        <td>
+                          <div className="button-container">
+                            {order.status === 'pending' && (
+                              <>
+                                <button 
+                                  className="get-button accept-btn"
+                                  onClick={() => handleAccept(order.orderNumber)}
+                                >
+                                  Accept
+                                </button>
+                                <button 
+                                  className="get-button reject-btn"
+                                  onClick={() => handleReject(order.orderNumber)}
+                                >
+                                  Reject
+                                </button>
+                              </>
+                            )}
+
+                            {order.status === 'preparing' && (
+                              <button 
+                                className="get-button complete-btn"
+                                onClick={() => handleComplete(order.orderNumber)}
+                              >
+                                Complete
+                              </button>
+                            )}
+
+                            {order.status === 'confirmed' && (
+                              <button 
+                                className="get-button complete-btn"
+                                onClick={() => handleComplete(order.orderNumber)}
+                              >
+                                Complete
+                              </button>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="no-orders">
+                  <p>No orders available at the moment.</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -341,47 +559,69 @@ function Admin() {
           <div className={`Order-history ${activeSection === 'order-history' ? 'show' : ''}`}>
             <div className="ad-topic-header">
               <h2 className='Ad-av-header'>Order History</h2>
+              <button onClick={loadOrderHistory} className="refresh-btn">Refresh</button>
             </div>
 
             <div className="content-container">
-              <table className="orders-table">
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer Name</th>
-                    <th>Contact</th>
-                    <th>Order Items</th>
-                    <th>Quantity</th>
-                    <th>Total Price</th>
-                    <th>Takeaway Time</th>
-                    <th>Order Status</th>
-                  </tr>
-                </thead>
-                <tbody className='orders-table-body'>
-                  <tr>
-                    <td className='or-table-body-data'>#003</td>
-                    <td>Mike Johnson</td>
-                    <td>555-123-4567</td>
-                    <td>
-                      <ul>
-                        <li>Pizza</li>
-                        <li>Burger</li>
-                      </ul>
-                    </td>
-                    <td>
-                      <ul>
-                        <li>2</li>
-                        <li>1</li>
-                      </ul>
-                    </td>
-                    <td>$30</td>
-                    <td>12:00 PM</td>
-                    <td>
-                      <div className="get-button-done">Done</div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              {loadingHistory ? (
+                <div className="loading">Loading order history...</div>
+              ) : orderHistory.length > 0 ? (
+                <table className="orders-table">
+                  <thead>
+                    <tr>
+                      <th>Order Number</th>
+                      <th>Customer Name</th>
+                      <th>Contact</th>
+                      <th>Order Items</th>
+                      <th>Quantities</th>
+                      <th>Total Payment</th>
+                      <th>Order Date</th>
+                      <th>Accepted Date</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody className='orders-table-body'>
+                    {orderHistory.map(record => (
+                      <tr key={record._id}>
+                        <td className='or-table-body-data'>
+                          <strong>{record.orderNumber}</strong>
+                        </td>
+                        <td>{record.customerName}</td>
+                        <td>
+                          <div>{record.customerEmail || 'N/A'}</div>
+                          <div>{record.customerPhone || 'N/A'}</div>
+                        </td>
+                        <td>
+                          <ul style={{margin: 0, padding: '0 0 0 20px'}}>
+                            {record.items.map((item, index) => (
+                              <li key={index}>{item.name}</li>
+                            ))}
+                          </ul>
+                        </td>
+                        <td>
+                          <ul style={{margin: 0, padding: '0 0 0 20px'}}>
+                            {record.items.map((item, index) => (
+                              <li key={index}>{item.quantity}</li>
+                            ))}
+                          </ul>
+                        </td>
+                        <td>Rs. {record.totalAmount.toFixed(2)}</td>
+                        <td>{new Date(record.originalOrderDate).toLocaleDateString()}</td>
+                        <td>{new Date(record.acceptedDate).toLocaleDateString()}</td>
+                        <td>
+                          <span className={`status-badge status-${record.finalStatus}`}>
+                            {record.finalStatus.charAt(0).toUpperCase() + record.finalStatus.slice(1)}
+                          </span>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <div className="no-orders">
+                  <p>No order history available.</p>
+                </div>
+              )}
             </div>
           </div>
 
@@ -598,22 +838,23 @@ function Admin() {
             </div>
           )}
 
-          {/* Sales Reports Sections */}
+          {/* Sales Summary Section */}
           {activeSection === 'sales-summary' && (
             <div className="section-content">
               <div className="ad-topic-header">
                 <h2 className='Ad-av-header'>Sales Summary Report</h2>
               </div>
-              {/* Sales summary content */}
+              <SalesSummary />
             </div>
           )}
 
+          {/* Item Summary Section */}
           {activeSection === 'item-summary' && (
             <div className="section-content">
               <div className="ad-topic-header">
                 <h2 className='Ad-av-header'>Item Sales Summary</h2>
               </div>
-              {/* Item summary content */}
+              <ItemSummary />
             </div>
           )}
 

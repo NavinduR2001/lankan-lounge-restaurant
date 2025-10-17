@@ -10,27 +10,35 @@ const { hashPassword } = require('./utils/hashPassword'); // ✅ Use existing ut
 const multer = require('multer');
 const path = require('path');
 
-// Configure multer for file uploads
+// ✅ Fix multer storage configuration
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'uploads/')
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/') // Make sure this directory exists
   },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
-    cb(null, file.fieldname + '-' + uniqueSuffix + path.extname(file.originalname))
+  filename: function (req, file, cb) {
+    // Generate unique filename
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, 'item-' + uniqueSuffix + path.extname(file.originalname));
   }
 });
 
+// ✅ Fix file filter
+const fileFilter = (req, file, cb) => {
+  // Accept images only
+  if (file.mimetype.startsWith('image/')) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only image files are allowed!'), false);
+  }
+};
+
+// ✅ Configure multer with proper field name
 const upload = multer({ 
   storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (file.mimetype.startsWith('image/')) {
-      cb(null, true);
-    } else {
-      cb(new Error('Please upload only image files.'), false);
-    }
-  },
-  limits: { fileSize: 5 * 1024 * 1024 }
+  fileFilter: fileFilter,
+  limits: {
+    fileSize: 5 * 1024 * 1024 // 5MB limit
+  }
 });
 
 // User registration
@@ -446,102 +454,116 @@ const getUserCart = async (req, res) => {
 const updateUserCart = async (req, res) => {
   try {
     const userId = req.user._id;
-    const { cartItems } = req.body;
+    const { items } = req.body;
     
-    const user = await User.findById(userId);
-    if (!user) {
-      return res.status(404).json({ message: 'User not found' });
-    }
-
-    // Validate cart items structure
-    if (!Array.isArray(cartItems)) {
-      return res.status(400).json({ message: 'Cart items must be an array' });
-    }
-
-    // Update user's cart
-    user.cart = cartItems;
-    await user.save();
+    console.log('Updating cart for user:', userId, 'with items:', items);
     
-    const itemCount = cartItems.reduce((count, item) => count + item.quantity, 0);
+    // Find user and update cart
+    const user = await User.findByIdAndUpdate(
+      userId,
+      { cart: items },
+      { new: true, upsert: true }
+    );
     
     res.status(200).json({
+      success: true,
       message: 'Cart updated successfully',
-      cart: cartItems,
-      itemCount
+      cart: user.cart
     });
   } catch (error) {
     console.error('Update cart error:', error);
-    res.status(500).json({ message: 'Server error', error: error.message });
+    res.status(500).json({
+      success: false,
+      message: 'Error updating cart',
+      error: error.message
+    });
   }
 };
 
 // Create new order
 const createOrder = async (req, res) => {
   try {
-    // Get user ID from authenticated user (optional for guest orders)
     const userId = req.user?._id || null;
     
-    // ✅ Generate unique order number with timestamp and random component
+    // ✅ Generate unique order number with multiple factors
     const timestamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 10000);
-    const orderNumber = `ORD${timestamp}${randomNum}`;
+    const randomNum = Math.floor(Math.random() * 999999);
+    const orderNumber = `ORD-${timestamp}-${randomNum}`;
     
-    const orderData = {
-      ...req.body,
-      userId: userId,
-      orderDate: new Date(),
-      orderNumber: orderNumber // ✅ Use generated order number
-    };
-    
-    console.log('📝 Creating order:', {
-      orderNumber: orderData.orderNumber,
-      customerName: orderData.customerName,
-      totalAmount: orderData.totalAmount,
-      itemCount: orderData.items?.length || 0
+    console.log('📝 Creating order with data:', {
+      orderNumber,
+      customerName: req.body.customerName,
+      totalAmount: req.body.totalAmount,
+      itemCount: req.body.items?.length || 0
     });
     
-    const order = new Order(orderData);
-    await order.save();
+    // ✅ Check if orderId_1 index still exists (debugging)
+    const Order = require('./orderModel');
+    const collection = Order.collection;
     
-    console.log('✅ Order created successfully:', order.orderNumber);
+    try {
+      const indexes = await collection.indexes();
+      const hasOrderIdIndex = indexes.some(idx => idx.name === 'orderId_1');
+      if (hasOrderIdIndex) {
+        console.error('🚨 CRITICAL: orderId_1 index still exists!');
+        return res.status(500).json({
+          success: false,
+          message: 'Database index error. Please contact support.',
+          error: 'Index configuration issue'
+        });
+      }
+    } catch (indexError) {
+      console.error('Error checking indexes:', indexError);
+    }
+    
+    const orderData = {
+      orderNumber,
+      userId,
+      customerName: req.body.customerName,
+      customerEmail: req.body.customerEmail,
+      customerPhone: req.body.customerPhone,
+      items: req.body.items,
+      totalAmount: req.body.totalAmount,
+      pickupTime: req.body.pickupTime,
+      paymentMethod: req.body.paymentMethod || 'Cash on Pickup',
+      orderDate: new Date(),
+      status: 'pending'
+    };
+    
+    const order = new Order(orderData);
+    const savedOrder = await order.save();
+    
+    console.log('✅ Order created successfully:', savedOrder.orderNumber);
     
     res.status(201).json({
       success: true,
       message: 'Order created successfully',
-      order: order
+      order: {
+        orderNumber: savedOrder.orderNumber,
+        customerName: savedOrder.customerName,
+        totalAmount: savedOrder.totalAmount,
+        status: savedOrder.status,
+        orderDate: savedOrder.orderDate
+      }
     });
+    
   } catch (error) {
     console.error('❌ Create order error:', error);
     
-    // ✅ Handle specific duplicate key errors
     if (error.code === 11000) {
-      // Try again with a different order number
-      try {
-        const timestamp = Date.now();
-        const randomNum = Math.floor(Math.random() * 100000);
-        const orderNumber = `ORD${timestamp}${randomNum}`;
-        
-        const orderData = {
-          ...req.body,
-          userId: req.user?._id || null,
-          orderDate: new Date(),
-          orderNumber: orderNumber
-        };
-        
-        const order = new Order(orderData);
-        await order.save();
-        
-        console.log('✅ Order created on retry:', order.orderNumber);
-        
-        res.status(201).json({
-          success: true,
-          message: 'Order created successfully',
-          order: order
+      if (error.message.includes('orderId')) {
+        return res.status(500).json({
+          success: false,
+          message: 'Database index error. Please contact support.',
+          error: 'Index configuration issue'
         });
-        return;
-      } catch (retryError) {
-        console.error('❌ Retry failed:', retryError);
       }
+      
+      return res.status(400).json({
+        success: false,
+        message: 'Order number already exists. Please try again.',
+        error: 'Duplicate order number'
+      });
     }
     
     res.status(500).json({
@@ -577,7 +599,14 @@ const updateOrderStatus = async (req, res) => {
     
     console.log('Updating order status:', orderId, 'to:', status);
     
-    // Find by orderNumber instead of _id
+    const validStatuses = ['pending', 'preparing', 'confirmed', 'ready', 'completed', 'cancelled'];
+    if (!validStatuses.includes(status)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Invalid status'
+      });
+    }
+    
     const order = await Order.findOneAndUpdate(
       { orderNumber: orderId },
       { status },
@@ -629,20 +658,21 @@ const getUserOrders = async (req, res) => {
 const deleteOrder = async (req, res) => {
   try {
     const { orderId } = req.params;
-
-    const deletedOrder = await Order.findOneAndDelete({ orderNumber: orderId });
-
-    if (!deletedOrder) {
+    
+    console.log('Deleting order:', orderId);
+    
+    const order = await Order.findOneAndDelete({ orderNumber: orderId });
+    
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: 'Order not found'
       });
     }
-
+    
     res.status(200).json({
       success: true,
-      message: 'Order deleted successfully',
-      order: deletedOrder
+      message: 'Order deleted successfully'
     });
   } catch (error) {
     console.error('Delete order error:', error);
@@ -659,7 +689,7 @@ const moveOrderToHistory = async (req, res) => {
   try {
     const { orderId } = req.params;
     
-    console.log('📝 Moving order to history:', orderId);
+    console.log('📝 Completing order and moving to history:', orderId);
     
     // Find the original order
     const order = await Order.findOne({ orderNumber: orderId });
@@ -680,7 +710,7 @@ const moveOrderToHistory = async (req, res) => {
       });
     }
     
-    // Create history record
+    // Create history record with completed status
     const historyData = {
       originalOrderId: order._id,
       orderNumber: order.orderNumber,
@@ -692,31 +722,29 @@ const moveOrderToHistory = async (req, res) => {
       originalOrderDate: order.orderDate,
       pickupTime: order.pickupTime,
       paymentMethod: order.paymentMethod,
-      acceptedDate: new Date(),
+      acceptedDate: new Date(), // When it was moved to history (completed)
       finalStatus: 'completed'
     };
     
     const orderHistory = new OrderHistory(historyData);
     await orderHistory.save();
     
-    // Update original order status to confirmed
-    order.status = 'confirmed';
-    await order.save();
+    // ✅ Remove the order from active orders (delete it)
+    await Order.findOneAndDelete({ orderNumber: orderId });
     
-    console.log('✅ Order moved to history successfully:', orderId);
+    console.log('✅ Order completed and moved to history successfully:', orderId);
     
     res.status(200).json({
       success: true,
-      message: 'Order moved to history and confirmed',
-      historyRecord: orderHistory,
-      updatedOrder: order
+      message: 'Order completed and moved to history',
+      historyRecord: orderHistory
     });
     
   } catch (error) {
     console.error('❌ Move order to history error:', error);
     res.status(500).json({
       success: false,
-      message: 'Error moving order to history',
+      message: 'Error completing order',
       error: error.message
     });
   }
