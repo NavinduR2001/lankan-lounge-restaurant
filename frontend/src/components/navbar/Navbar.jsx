@@ -3,6 +3,7 @@ import './Navbar.css'
 import {cart, logo} from '../../assets/assets'
 import {Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoPersonSharp } from "react-icons/io5";
+import { useCart } from '../CartContext';
 
 function Navbar() {
     const navigate = useNavigate();
@@ -11,6 +12,8 @@ function Navbar() {
     const [user, setUser] = useState(null);
     const [showDropdown, setShowDropdown] = useState(false);
     const location = useLocation();
+    const { getCartTotals } = useCart();
+    const { itemCount } = getCartTotals();
 
     // Check login status on component mount and when localStorage changes
     useEffect(() => {
@@ -62,28 +65,27 @@ function Navbar() {
         }
     }, [location.pathname]);
 
-    const handleLogout = () => {
-        const confirmLogout = window.confirm('Are you sure you want to logout?');
+     const handleLogout = () => {
+        console.log('🔄 Logging out...');
         
-        if (confirmLogout) {
-            // Clear localStorage
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            
-            // Update state
-            setIsLoggedIn(false);
-            setUser(null);
-            setShowDropdown(false);
-            
-            // Dispatch custom event to notify other components
-            window.dispatchEvent(new Event('loginStateChanged'));
-            
-            // Show success message
-            alert('Logged out successfully!');
-            
-            // Redirect to home page
-            navigate('/');
-        }
+        // Clear all auth data
+        localStorage.removeItem('token');
+        localStorage.removeItem('user');
+        localStorage.removeItem('adminToken');
+        localStorage.removeItem('adminUser');
+        
+        // Update state
+        setIsLoggedIn(false);
+        setUser(null);
+        setShowDropdown(false);
+        
+        // Dispatch event
+        window.dispatchEvent(new Event('loginStateChanged'));
+        
+        // Navigate to home
+        navigate('/');
+        
+        console.log('✅ Logout complete');
     };
 
     const handleProfileClick = () => {
@@ -127,7 +129,7 @@ function Navbar() {
                     
                     <div className='nav-buttons'>
                         <button className='cart' onClick={() => navigate('/cart')}>
-                            <div className='cart-count'>1</div>
+                            <div className='cart-count'>{itemCount}</div>
                             <img src={cart} className='cart-img' alt="Cart" />
                             <label>CART</label>
                         </button>
