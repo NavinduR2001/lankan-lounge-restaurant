@@ -1,7 +1,7 @@
 import React from 'react'
 import './Home.css';
 import Header from '../../components/header/Header'
-import Navbar from '../../components/Navbar/Navbar'
+import Navbar from '../../components/navbar/Navbar'
 import { chicken, lplate, rplate,rostedChicken,pizza, burger, biriyani } from '../../assets/assets';
 import { IoFastFoodSharp } from "react-icons/io5";
 import { TbTargetArrow } from "react-icons/tb";
