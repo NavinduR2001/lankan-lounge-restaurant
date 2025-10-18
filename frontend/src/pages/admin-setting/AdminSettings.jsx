@@ -90,34 +90,69 @@ function AdminSettings() {
         updateData.newPassword = mainAdminData.newPassword;
       }
 
+      console.log('🔄 Submitting admin update:', updateData);
+
       const response = await updateMainAdminProfile(updateData);
       
-      // Update localStorage with new admin data
-      try {
-        const currentAdmin = JSON.parse(localStorage.getItem('admin') || '{}');
-        const updatedAdminData = {
-          ...currentAdmin,
-          displayName: response.data.admin.displayName,
-          email: response.data.admin.email
-        };
-        localStorage.setItem('admin', JSON.stringify(updatedAdminData));
-      } catch (storageError) {
-        console.error('Error updating localStorage:', storageError);
+      console.log('✅ Update response:', response.data);
+      
+      // ✅ Check response properly - your backend sends 'message' directly
+      if (response.data && response.data.message) {
+        // ✅ Show success alert
+        alert('Admin profile updated successfully!');
+        
+        // ✅ Show success message in form
+        setMessage('Admin profile updated successfully!');
+        
+        // ✅ Update localStorage with new admin data
+        try {
+          const currentAdmin = JSON.parse(localStorage.getItem('admin') || '{}');
+          const updatedAdminData = {
+            ...currentAdmin,
+            displayName: response.data.admin.displayName,
+            email: response.data.admin.email
+          };
+          localStorage.setItem('admin', JSON.stringify(updatedAdminData));
+          console.log('✅ localStorage updated with new admin data');
+        } catch (storageError) {
+          console.error('❌ Error updating localStorage:', storageError);
+        }
+
+        // ✅ Clear password fields after successful update
+        setMainAdminData(prev => ({
+          ...prev,
+          currentPassword: '',
+          newPassword: '',
+          confirmPassword: ''
+        }));
+        
+        // ✅ Clear success message after 5 seconds
+        setTimeout(() => {
+          setMessage('');
+        }, 5000);
+        
+        // ✅ Optionally reload the page to show updated data
+        // setTimeout(() => {
+        //   window.location.reload();
+        // }, 2000);
+
+      } else {
+        // Handle unexpected response format
+        console.warn('⚠️ Unexpected response format:', response.data);
+        setError('Profile updated but response format was unexpected');
       }
 
-      setMessage('Admin profile updated successfully!');
-      
-      // Clear password fields after successful update
-      setMainAdminData(prev => ({
-        ...prev,
-        currentPassword: '',
-        newPassword: '',
-        confirmPassword: ''
-      }));
-
     } catch (error) {
-      console.error('Error updating admin profile:', error);
-      setError(error.response?.data?.message || 'Failed to update profile');
+      console.error('❌ Error updating admin profile:', error);
+      
+      // ✅ Better error handling
+      const errorMessage = error.response?.data?.message || error.message || 'Failed to update profile';
+      
+      // ✅ Show error alert
+      alert(`Error: ${errorMessage}`);
+      
+      // ✅ Set error message in form
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }
