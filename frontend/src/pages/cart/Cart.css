@@ -559,54 +559,73 @@
 
 /* Container */
 .time-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 12px;
-  background-color: #f8f9fa;
+  margin: 20px 0;
   padding: 20px;
+  background-color: #f8f9fa;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  width: fit-content;
-  margin: 50px auto;
-  font-family: "Poppins", sans-serif;
+  border: 1px solid #e0e0e0;
 }
 
-/* Label text */
+.time-selection {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 .time-label {
-  font-size: 16px;
-  color: #333;
-  font-weight: 500;
+  font-size: 14px;
+  color: #5d4037;
+  font-weight: 600;
+  margin-bottom: 5px;
 }
 
-/* Time input box */
 .time-input {
-  margin-left: 8px;
-  padding: 6px 10px;
-  border: 2px solid #007bff;
-  border-radius: 6px;
-  font-size: 15px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  padding: 10px 12px;
+  border: 2px solid #5d4037;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: "Josefin Sans", sans-serif;
+  background-color: white;
+  color: #212121;
+  transition: all 0.3s ease;
 }
 
 .time-input:focus {
-  border-color: #0056b3;
+  border-color: #ffbf00ff;
   outline: none;
-  box-shadow: 0 0 5px rgba(0, 91, 187, 0.3);
+  box-shadow: 0 0 5px rgba(255, 191, 0, 0.3);
 }
 
-/* Submit button */
-.submit-btn {
-  padding: 6px 14px;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  font-size: 15px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.time-input option {
+  padding: 10px;
 }
 
-.submit-btn:hover {
-  background-color: #0056b3;
+.pickup-info {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: rgba(93, 64, 55, 0.1);
+  border-radius: 8px;
+  border-left: 4px solid #5d4037;
+}
+
+.pickup-note {
+  color: #5d4037;
+  font-size: 16px;
+  margin: 10px 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.pickup-note strong {
+  color: #ffbf00ff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.pickup-instruction {
+  font-size: 14px;
+  color: #666;
+  text-align: center;
+  margin-top: 8px;
+  font-style: italic;
 }
