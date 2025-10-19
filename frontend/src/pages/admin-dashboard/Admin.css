@@ -633,3 +633,48 @@
 .refresh-btn:hover {
   background-color: #0056b3;
 }
+
+/* Add to your Admin.css */
+
+.rem-menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.rem-menu-table th,
+.rem-menu-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.rem-menu-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.remove-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.no-items {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}

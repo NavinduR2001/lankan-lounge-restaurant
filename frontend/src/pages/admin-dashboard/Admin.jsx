@@ -11,9 +11,10 @@ import {
   deleteOrder, 
   moveOrderToHistory,      // ✅ New import
   getOrderHistory,         // ✅ New import
-  getOrderHistoryStats     // ✅ New import
+  getOrderHistoryStats,
+  getAllItems,              // ✅ New import
+  deleteItem
 } from '../../services/api';
-
 function Admin() {
   // Form state for menu items
   const [formData, setformData] = useState({
@@ -45,6 +46,11 @@ function Admin() {
   const [orderHistory, setOrderHistory] = useState([]);
   const [loadingHistory, setLoadingHistory] = useState(false);
   const [historyStats, setHistoryStats] = useState(null);
+
+  // Items state
+  const [loadAllItems, setLoadAllItems] = useState([]);
+  const [loadingItems, setLoadingItems] = useState(false);
+  const [removingItem, setRemovingItem] = useState(null);
 
   // Check authentication on mount
   useEffect(() => {
@@ -90,6 +96,58 @@ function Admin() {
       loadOrderHistory();
     }
   }, [activeSection]);
+
+  useEffect(() => {
+    if (activeSection === 'remove-item ') {
+      loadAllItems();
+    }
+  }, [activeSection]);
+
+  // Add this function to load all items
+const loadAllItemsData = async () => {
+  setLoadingItems(true);
+  try {
+    const response = await getAllItems();
+    console.log('Items response:', response.data);
+    
+    if (response.data && response.data.items) {
+      setLoadAllItems(response.data.items);
+    }
+  } catch (error) {
+    console.error('Error loading items:', error);
+    alert('Error loading items. Please try again.');
+  } finally {
+    setLoadingItems(false);
+  }
+};
+
+// Add this function to handle item removal
+const handleRemoveItem = async (itemId) => {
+  const confirmed = window.confirm('Are you sure you want to remove this item? This action cannot be undone.');
+  
+  if (confirmed) {
+    setRemovingItem(itemId);
+    try {
+      console.log('🗑️ Removing item:', itemId);
+      
+      const response = await deleteItem(itemId);
+      
+      if (response.data.success || response.data.message) {
+        console.log('✅ Item removed successfully');
+        alert('Item removed successfully!');
+        
+        // Refresh the items list
+        loadAllItemsData();
+      }
+    } catch (error) {
+      console.error('❌ Error removing item:', error);
+      const errorMessage = error.response?.data?.message || 'Error removing item. Please try again.';
+      alert(`Error: ${errorMessage}`);
+    } finally {
+      setRemovingItem(null);
+    }
+  }
+};
 
   const loadOrders = async () => {
     setLoadingOrders(true);
@@ -413,6 +471,7 @@ function Admin() {
           <ul className={`submenu-profile ${activeSubmenus.addItems ? 'show' : ''}`}>
             <li onClick={() => setActiveSection('add-menu')}>Add Item to Menu</li>
             <li onClick={() => setActiveSection('add-trending')}>Add Trending Items</li>
+            <li onClick={() => setActiveSection('remove-item')}>Remove Items</li>
           </ul>
           
           <div 
@@ -838,6 +897,55 @@ function Admin() {
             </div>
           )}
 
+          {activeSection === 'remove-item' && (
+            <div className="section-content">
+              <div className="ad-topic-header">
+                <h2 className='Ad-av-header'>Remove Menu Items</h2>
+                <button onClick={loadAllItemsData} className="refresh-btn">Refresh</button>
+              </div>
+              
+              <div className="load-rem-menu">
+                {loadingItems ? (
+                  <div className="loading">Loading menu items...</div>
+                ) : loadAllItems.length > 0 ? (
+                  <table className="rem-menu-table">
+                    <thead>
+                      <tr>
+                        <th>Food ID</th>
+                        <th>Item Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {loadAllItems.map(item => (
+                        <tr key={item._id}>
+                          <td>{item.foodID}</td>
+                          <td>{item.itemName}</td>
+                          <td>{item.itemCategory}</td>
+                          <td>Rs. {item.itemPrice}</td>
+                          <td>
+                            <button 
+                              onClick={() => handleRemoveItem(item._id)}
+                              disabled={removingItem === item._id}
+                              className="remove-btn"
+                            >
+                              {removingItem === item._id ? 'Removing...' : 'Remove'}
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                ) : (
+                  <div className="no-items">
+                    <p>No menu items found.</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
           {/* Sales Summary Section */}
           {activeSection === 'sales-summary' && (
             <div className="section-content">
