@@ -54,6 +54,36 @@ function Cart() {
     if (error) setError('');
   };
 
+  // Enhanced helper function with better formatting
+const getPickupTimeRange = (selectedTime) => {
+  if (!selectedTime) return null;
+  
+  const [hours, minutes] = selectedTime.split(':').map(Number);
+  
+  // Calculate end time (1 hour later)
+  let endHour = hours + 1;
+  let endMinute = minutes;
+  
+  // Handle day overflow
+  if (endHour >= 24) {
+    endHour = endHour - 24;
+  }
+  
+  // Format times in 12-hour format with AM/PM
+  const formatTime12Hour = (hour, minute) => {
+    const period = hour >= 12 ? 'PM' : 'AM';
+    const displayHour = hour > 12 ? hour - 12 : hour === 0 ? 12 : hour;
+    return `${displayHour}:${minute.toString().padStart(2, '0')} ${period}`;
+  };
+  
+  return {
+    startTime: formatTime12Hour(hours, minutes),
+    endTime: formatTime12Hour(endHour, endMinute),
+    startTime24: selectedTime,
+    endTime24: `${endHour.toString().padStart(2, '0')}:${endMinute.toString().padStart(2, '0')}`
+  };
+};
+
   const handleProceedToCheckout = async () => {
     setError('');
     
@@ -96,22 +126,27 @@ function Cart() {
       // Create order
       const response = await createOrder(orderData);
       
-      if (response.data.success) {
-        console.log('✅ Order created successfully');
-        
-        // Clear cart after successful order
-        await clearCart();
-        
-        // Show success message
-        alert(`Order placed successfully! Order Number: ${response.data.order.orderNumber}\nYour order will be ready for pickup at ${time}`);
-        
-        // Reset form
-        setTime('');
-        
-        // Stay on cart page as requested
-        // Cart will be empty now
-        
-      } else {
+    // In your handleProceedToCheckout function, update the navigation:
+    if (response.data.success) {
+  console.log('✅ Order created successfully');
+  
+  // Pass order data to checkout page
+  const checkoutData = {
+    orderNumber: response.data.order.orderNumber,
+    customerName: orderData.customerName,
+    customerEmail: orderData.customerEmail,
+    customerPhone: orderData.customerPhone,
+    totalAmount: orderData.totalAmount,
+    pickupTime: orderData.pickupTime,
+    items: orderData.items
+  };
+  
+  // Navigate to checkout with order data
+  navigate('/payment, /checkout', { state: { orderData: checkoutData } });
+  
+  // Clear cart after successful order
+    await clearCart();
+    } else {
         setError('Failed to place order. Please try again.');
       }
     } catch (error) {
@@ -287,23 +322,38 @@ function Cart() {
             </div>
 
             <div className="time-wrapper">
-              <label className="time-label">
-                Select pickup time: *
-                <select
-                  value={time}
-                  onChange={handleTimeChange}
-                  className="time-input"
-                  required
-                >
-                  <option value="">Choose time</option>
-                  {generateTimeSlots().map((timeSlot) => (
-                    <option key={timeSlot} value={timeSlot}>
-                      Today {timeSlot}
-                    </option>
-                  ))}
-                </select>
-              </label>
-            </div>
+  <div className="time-selection">
+    <label htmlFor="pickup-time" className="time-label">
+      Select pickup time for today
+    </label>
+    <select
+      id="pickup-time"
+      value={time}
+      onChange={handleTimeChange}
+      className="time-input"
+      required
+    >
+      <option value="">Choose time</option>
+      {generateTimeSlots().map((timeSlot) => (
+        <option key={timeSlot} value={timeSlot}>
+          Today {timeSlot}
+        </option>
+      ))}
+    </select>
+  </div>
+  
+  {time && (
+    <div className="pickup-info">
+      <h3 className="pickup-note">
+        🕒 Pickup Time Range <br />
+        <strong>{getPickupTimeRange(time)?.startTime} - {getPickupTimeRange(time)?.endTime}</strong>
+      </h3>
+      <p className="pickup-instruction">
+        Please arrive between this time to collect your order. Otherwise order may be <b>canceled</b>.
+      </p>
+    </div>
+  )}
+</div>
             
             <div className="checkout-section">
               <button 

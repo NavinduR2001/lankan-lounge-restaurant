@@ -870,6 +870,27 @@ const getOrderHistoryStats = async (req, res) => {
   }
 };
 
+const deleteItem = async (req, res) => {
+  try {
+    const { itemId } = req.params;
+    console.log('Deleting item with ID:', itemId);
+    const item = await Item.findByIdAndDelete(itemId);
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found' });
+    }
+
+    res.status(200).json({ message: 'Item deleted successfully' });
+  } catch (error) {
+    console.error('❌ Delete item error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Error deleting item',
+      error: error.message
+    });
+  }
+};
+
+
 // Update the existing module.exports to include new functions
 module.exports = {
   registerUser,
@@ -877,6 +898,7 @@ module.exports = {
   loginAdmin,
   addNewItem,
   loadAllItems,
+  deleteItem,
   loadItemsByCategory,
   loadTrendingItems,
   searchItems,
