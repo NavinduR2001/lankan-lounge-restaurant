@@ -78,6 +78,11 @@ export const getItemById = (id) => API.get(`/items/${id}`);
 export const getItemsByCategory = (category) => API.get(`/items/category/${category}`);
 export const getTrendingItems = () => API.get('/items/trending');
 
+export const deleteItem = (itemId) => {
+  console.log('📡 Deleting item with ID:', itemId);
+  return API.delete(`/items/${itemId}`);
+}
+
 export const searchItems = (query, category = 'all') => {
   const params = new URLSearchParams();
   params.append('q', query);
