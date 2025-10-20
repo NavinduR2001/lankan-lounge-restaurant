@@ -1,14 +1,26 @@
+.menu-page-wrapper{
+  margin: 0px;
+  padding: 0px;
+  height: 100%;
+  width: 100%;
+  background-color: #fdf0df;
+}
+
 .menu-page {
-    padding: 20px 200px;
+    padding: 20px 200px 0px 200px;
     background-color: #fdf0df;
+    margin-bottom: 0px;
+    margin-top: 0px;
 }
 
 .menu-grid{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 50px;
-    
+}
 
+.footer-menu{
+  margin: 0px;
 }
 
 .menu-item{

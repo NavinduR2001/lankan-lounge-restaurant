@@ -212,7 +212,7 @@ const handleAddToCart = async (item) => {
   }
 
   return (
-    <>
+    <div className='menu-page-wrapper'>
       <Navbar/>
       <div className='menu-page'>
         <h1 className='menu-page-title'>MENU CARD</h1>
@@ -249,8 +249,8 @@ const handleAddToCart = async (item) => {
         </div>
 
       </div>
-      <Footer />
-    </>
+      <Footer className="footer-menu" />
+    </div>
   )
 }
 

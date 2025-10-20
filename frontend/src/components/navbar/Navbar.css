@@ -66,7 +66,6 @@
     border: none;
 }
 .navbar-item li.active a {
-    
     color: #5d4037;
     font-weight: 600;
     
@@ -111,13 +110,17 @@ button:active{
     flex-direction: row;
     justify-content: center;
     align-items: center;
+    font-size: 14px;
+    width:100%;
+    font-weight: 600;
+    
 }
 .cart:active{
     background-color: #ffbf00ff;
 }
 .cart-img{
-    width: 20px;
-    height: 20px; 
+    width: 25px;
+    height: 25px; 
     margin-right: 10px;
 }
 
@@ -171,19 +174,20 @@ button:active{
 .profile-dropdown {
     position: absolute;
     top: 100%;
-    right: 0;
-    background: white;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
+    right:-10px;
+    background: #fffbf5ff;
+    
+    border-radius: 0px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-    min-width: 200px;
+    min-width: 180px;
     z-index: 1000;
-    margin-top: 10px;
+    margin-top: 26px;
 }
 
 .user-info {
-    padding: 16px;
-    text-align: center;
+    padding: 10px;
+    text-align: left;
+    margin-left:4px;
 }
 
 .user-name {
@@ -207,7 +211,7 @@ button:active{
 
 .dropdown-menu {
     list-style: none;
-    padding: 8px 0;
+    padding: 0;
     margin: 0;
 }
 
@@ -222,10 +226,14 @@ button:active{
     color: #333;
     font-size: 14px;
     transition: background-color 0.2s;
+    font-weight: 600;
+    transition: color 0.1s ease, font-weight 0.1s ease, font-size 0.1s ease;
 }
 
 .dropdown-menu a:hover {
-    background-color: #f8f9fa;
+    background-color: #fdf0df;
+    font-size:15px;
+    font-weight: 700;
 }
 
 .logout-btn {
@@ -236,13 +244,18 @@ button:active{
     text-align: left;
     cursor: pointer;
     color: #dc3545;
-    font-size: 14px;
+    font-size: 16px;
     transition: background-color 0.2s;
     margin: 0;
+    font-weight: 700;
+    transition: color 0.1s ease, font-weight 0.1s ease, font-size 0.1s ease;
 }
 
 .logout-btn:hover {
-    background-color: #f8f9fa;
+    background-color: #dc3545;
+    color: #f8f9fa;
+    font-size: 17px;
+    font-weight: 800;
 }
 
 /* Mobile responsiveness */

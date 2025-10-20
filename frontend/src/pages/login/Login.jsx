@@ -215,8 +215,8 @@ if (isAdminLogin && response.data.admin && response.data.token) {
             <div className="form-options">
               <label className="remember-me">
                 <input type="checkbox" />
-                <span className="checkmark"></span>
-                Remember me
+                <span >Remember me</span>
+                
               </label>
             </div>
 
