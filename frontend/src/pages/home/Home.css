@@ -245,14 +245,14 @@
     margin-top: 60px;
 }
 
-.service-card {
-    background: white;
+.service-card-home {
+    background: #fdf8f1ff;
     padding: 30px 20px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.4s ease;
     text-align: center;
-    border-top: 5px solid #ffbf00ff;
+    border-top: 5px solid #5d4037;
     font-family: "Josefin Sans", sans-serif;
 }
 
