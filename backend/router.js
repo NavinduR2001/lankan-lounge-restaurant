@@ -22,7 +22,8 @@ const {
   deleteOrder,
   moveOrderToHistory,
   getOrderHistory,
-  getOrderHistoryStats
+  getOrderHistoryStats,
+  deleteItem
 } = require('./controller');
 
 // User routes
@@ -36,6 +37,7 @@ router.get('/items', loadAllItems);
 router.get('/items/category/:category', loadItemsByCategory);
 router.get('/items/trending', loadTrendingItems);
 router.get('/items/search', searchItems);
+router.delete('/items/:itemId', authenticateAdmin, deleteItem); // ✅ ADD THIS
 
 // Cart routes
 router.get('/cart', authenticateUser, getUserCart);

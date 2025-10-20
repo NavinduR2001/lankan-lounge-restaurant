@@ -14,6 +14,7 @@ import Admin from './pages/admin-dashboard/Admin';
 import AdminSettings from './pages/admin-setting/AdminSettings';
 
 import Checkout from './pages/checkout/Checkout';
+import Payment from './pages/payments/Payment';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route path='/admin-dashboard' element={<Admin/>} />
           <Route path='/admin-settings' element={<AdminSettings/>} />
           <Route path='/checkout' element={<Checkout/>} />
+          <Route path='/payment' element={<Payment/>} />
         </Routes>
       </BrowserRouter>
     </CartProvider>
