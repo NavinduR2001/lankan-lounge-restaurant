@@ -5,6 +5,7 @@ import Navbar from '../../components/navbar/Navbar'
 import { biriyani, burger, one, pizza } from '../../assets/assets'
 import { getAllItems, getItemsByCategory, getTrendingItems, searchItems } from '../../services/api';
 import { useCart } from '../../components/CartContext'; // ✅ Import useCart
+import Footer from '../../components/footer/Footer'
 
 function Menu() {
   const navigate = useNavigate();
@@ -246,7 +247,9 @@ const handleAddToCart = async (item) => {
             </div>
           ))}
         </div>
+
       </div>
+      <Footer />
     </>
   )
 }

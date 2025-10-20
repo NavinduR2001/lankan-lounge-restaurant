@@ -6,6 +6,7 @@ import { branch } from '../../assets/assets'
 import { FaPhone } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";
+import Footer from '../../components/footer/Footer'
 
 function ContactUs() {
   return (
@@ -124,6 +125,7 @@ function ContactUs() {
           </div>
         </div> */}
         
+        <Footer />
       </div>
     </>
   )

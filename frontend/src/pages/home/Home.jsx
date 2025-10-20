@@ -6,6 +6,7 @@ import { chicken, lplate, rplate,rostedChicken,pizza, burger, biriyani } from '.
 import { IoFastFoodSharp } from "react-icons/io5";
 import { TbTargetArrow } from "react-icons/tb";
 import { SiCodechef } from "react-icons/si";
+import Footer from '../../components/footer/Footer';
 
 function Home() {
   return (
@@ -130,21 +131,21 @@ function Home() {
         </div>
         
         <div className="services-grid">
-          <div className="service-card">
+          <div className="service-card-home">
             <div className="service-icon"><IoFastFoodSharp /></div>
             <div className="service-number">100+</div>
             <h3>Weekly Orders</h3>
             <p>We proudly serve over 100 orders every week, delivering fresh and delicious meals to our valued customers.</p>
           </div>
 
-          <div className="service-card">
+          <div className="service-card-home">
             <div className="service-icon"><TbTargetArrow /></div>
             <div className="service-number">★★★★★</div>
             <h3>Best Customer Service</h3>
             <p>Our dedicated team ensures every customer receives exceptional service with a smile. Your satisfaction is our priority.</p>
           </div>
 
-          <div className="service-card">
+          <div className="service-card-home">
             <div className="service-icon"><SiCodechef /></div>
             <div className="service-number">A+</div>
             <h3>High Quality Food</h3>
@@ -154,9 +155,9 @@ function Home() {
       </div>
         
 
-
       </div>
 
+        <Footer />
     </div>
   )
 }

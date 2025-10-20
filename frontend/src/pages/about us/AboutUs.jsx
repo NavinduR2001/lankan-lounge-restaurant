@@ -16,6 +16,7 @@ import { FaMedal } from "react-icons/fa";
 import { IoFastFoodSharp } from "react-icons/io5";
 import { TbTargetArrow } from "react-icons/tb";
 import { SiCodechef } from "react-icons/si";
+import Footer from '../../components/footer/Footer';
 
 function AboutUs() {
   return (
@@ -265,7 +266,7 @@ function AboutUs() {
           </div>
         </div>
       </div>
-
+      <Footer />
     </div>
   )
 }
