@@ -372,13 +372,13 @@
 }
 
 .achievement-card {
-    background: white;
+    background:#fdf8f1ff;
     padding: 40px 30px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease;
     text-align: center;
-    border-top: 5px solid #ffbf00ff;
+    border-top: 5px solid #5d4037;
 }
 
 .achievement-card:hover {

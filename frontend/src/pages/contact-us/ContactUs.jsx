@@ -26,10 +26,22 @@ function ContactUs() {
             <div className="branch-border">
               {/* <img src={branch} className='branch-img'/> */}
               <div className="branch-content">
-                <h2>COLOMBO</h2>
-                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
-                <p><FaPhone />  +94 11 234 5678</p>
-                <p><MdEmail /> info@gamigedara.com</p>
+                <h2>MATARA</h2>
+                <p><FaLocationDot /> No 23/1, Tangalle Road, Matara</p>
+                <p><FaPhone />  +94 47 113 4549</p>
+                <p><MdEmail /> matara@gamigedara.com</p>
+              </div>
+            </div>
+          </div>
+
+           <div className="branch">
+            <div className="branch-border">
+              {/* <img src={branch} className='branch-img'/> */}
+              <div className="branch-content">
+                <h2>GALLE</h2>
+                <p><FaLocationDot /> Near the Galle fort, Galle</p>
+                <p><FaPhone />  +94 47 113 4545</p>
+                <p><MdEmail /> galle@gamigedara.com</p>
               </div>
             </div>
           </div>
@@ -39,9 +51,9 @@ function ContactUs() {
               {/* <img src={branch} className='branch-img'/> */}
               <div className="branch-content">
                 <h2>COLOMBO</h2>
-                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
-                <p><FaPhone />  +94 11 234 5678</p>
-                <p><MdEmail /> info@gamigedara.com</p>
+                <p><FaLocationDot /> No 234/2, Galkissa Road, Colombo 7</p>
+                <p><FaPhone />  +94 47 113 4546</p>
+                <p><MdEmail /> colombo@gamigedara.com</p>
               </div>
             </div>
           </div>
@@ -50,10 +62,10 @@ function ContactUs() {
             <div className="branch-border">
               {/* <img src={branch} className='branch-img'/> */}
               <div className="branch-content">
-                <h2>COLOMBO</h2>
-                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
-                <p><FaPhone />  +94 11 234 5678</p>
-                <p><MdEmail /> info@gamigedara.com</p>
+                <h2>KALUTARA</h2>
+                <p><FaLocationDot /> No 90/1, Nagoda, Kalutara</p>
+                <p><FaPhone />  +94 47 113 4547</p>
+                <p><MdEmail /> kalutara@gamigedara.com</p>
               </div>
             </div>
           </div>
@@ -62,22 +74,10 @@ function ContactUs() {
             <div className="branch-border">
               {/* <img src={branch} className='branch-img'/> */}
               <div className="branch-content">
-                <h2>COLOMBO</h2>
-                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
-                <p><FaPhone />  +94 11 234 5678</p>
-                <p><MdEmail /> info@gamigedara.com</p>
-              </div>
-            </div>
-          </div>
-
-           <div className="branch">
-            <div className="branch-border">
-              {/* <img src={branch} className='branch-img'/> */}
-              <div className="branch-content">
-                <h2>COLOMBO</h2>
-                <p><FaLocationDot /> No 123, Galle Road, Colombo</p>
-                <p><FaPhone />  +94 11 234 5678</p>
-                <p><MdEmail /> info@gamigedara.com</p>
+                <h2>KANDY</h2>
+                <p><FaLocationDot /> No 60/1, Colombo Road, Kandy</p>
+                <p><FaPhone />  +94 47 113 4548</p>
+                <p><MdEmail /> kandy@gamigedara.com</p>
               </div>
             </div>
           </div>
@@ -104,26 +104,7 @@ function ContactUs() {
         </div>
         </div>
 
-        {/* <div className="map">
-          <div className="map-frame">
-            <iframe 
-              src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d962.0005511138716!2d79.85776922391781!3d6.9195977313594135!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2slk!4v1758887178370!5m2!1sen!2slk" 
-              width="600" 
-              height="350" 
-              style={{border: 0}} 
-              allowFullScreen="" 
-              loading="lazy" 
-              referrerPolicy="no-referrer-when-downgrade">
-            </iframe>
-          </div>
-
-          <div className="contact-details">
-            <h2>CONTACT WITH US !</h2>
-            <p><FaLocationDot /> No 123, Galle Road, Colombo, Sri Lanka</p>
-            <p><FaPhone />  +94 11 234 5678</p>
-            <p><MdEmail /> info@gamigedara.com</p>
-          </div>
-        </div> */}
+     
         
         <Footer />
       </div>

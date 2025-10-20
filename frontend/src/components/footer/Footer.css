@@ -141,7 +141,7 @@
 .quick-links a {
   color: #fff8ef;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 16px;
   transition: all 0.3s ease;
   opacity: 0.9;
 }
@@ -153,7 +153,7 @@
 
 .services li {
   color: #fff8ef;
-  font-size: 14px;
+  font-size: 16px;
   opacity: 0.9;
   display: flex;
   align-items: center;
@@ -172,7 +172,7 @@
 }
 
 .contact-info .contact-details-footer span {
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.4;
 }
 

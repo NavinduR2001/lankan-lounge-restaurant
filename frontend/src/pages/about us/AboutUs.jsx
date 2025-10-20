@@ -80,61 +80,61 @@ function AboutUs() {
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={one} ></img></div>
             <div className="gallery-overlay">
-              <h3>Signature Pizza</h3>
+              <h3>Signature</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={two} ></img></div>
             <div className="gallery-overlay">
-              <h3>Classic Burger</h3>
+              <h3>Classic</h3>
             </div>
           </div>
           <div className="gallery-item large">
             <div className="gallery-placeholder"><img src={three} ></img></div>
             <div className="gallery-overlay">
-              <h3>Spicy Biriyani</h3>
+              <h3>Spicy</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={four} ></img></div>
             <div className="gallery-overlay">
-              <h3>Roasted Chicken</h3>
+              <h3>Roasted</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={five} ></img></div>
             <div className="gallery-overlay">
-              <h3>Traditional Platter</h3>
+              <h3>Traditional</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={six} ></img></div>
             <div className="gallery-overlay">
-              <h3>Lunch Special</h3>
+              <h3>Quality</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={seven} ></img></div>
             <div className="gallery-overlay">
-              <h3>Grilled Chicken</h3>
+              <h3>Solty</h3>
             </div>
           </div>
           <div className="gallery-item large">
             <div className="gallery-placeholder"><img src={eight} alt="Gallery Item 8" /></div>
             <div className="gallery-overlay">
-              <h3>Wood Fire Pizza</h3>
+              <h3>Cheesy</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={nine} ></img></div>
             <div className="gallery-overlay">
-              <h3>Gourmet Burger</h3>
+              <h3>Creamy</h3>
             </div>
           </div>
           <div className="gallery-item">
             <div className="gallery-placeholder"><img src={ten} ></img></div>
             <div className="gallery-overlay">
-              <h3>Seafood Biriyani</h3>
+              <h3>Satisfied</h3>
             </div>
           </div>
         </div>

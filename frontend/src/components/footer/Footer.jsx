@@ -13,6 +13,8 @@ import {
   FaClock,
   FaHeart
 } from 'react-icons/fa';
+import { MdDining, MdDeliveryDining, MdFastfood } from "react-icons/md";
+import { RiServiceFill, RiCustomerServiceFill  } from "react-icons/ri";
 
 function Footer() {
   return (
@@ -63,11 +65,11 @@ function Footer() {
           <div className="footer-section services">
             <h3>Our Services</h3>
             <ul>
-              <li>🍽️ Dine In</li>
-              <li>🥡 Takeaway</li>
-              <li>🚚 Online Ordering</li>
-              <li>🎉 Catering Services</li>
-              <li>📞 24/7 Customer Support</li>
+              <li><MdDining />Dine In</li>
+              <li><MdFastfood /> Takeaway</li>
+              <li><MdDeliveryDining /> Online Ordering</li>
+              <li><RiServiceFill /> Catering Services</li>
+              <li><RiCustomerServiceFill /> 24/7 Customer Support</li>
             </ul>
           </div>
 
