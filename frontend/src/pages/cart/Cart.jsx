@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './Cart.css'
 import Navbar from '../../components/navbar/Navbar'
 import { FiMinus, FiPlus } from "react-icons/fi";
-import { RiDeleteBin6Line } from "react-icons/ri";
+import { MdDelete } from "react-icons/md";
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../../components/CartContext'; 
 import { one } from '../../assets/assets'; 
@@ -142,10 +142,11 @@ const getPickupTimeRange = (selectedTime) => {
   };
   
   // Navigate to checkout with order data
-  navigate('/payment, /checkout', { state: { orderData: checkoutData } });
+  navigate('/payment', { state: { orderData: checkoutData } });
   
   // Clear cart after successful order
-    await clearCart();
+  await clearCart();
+
     } else {
         setError('Failed to place order. Please try again.');
       }
@@ -265,11 +266,11 @@ const getPickupTimeRange = (selectedTime) => {
                       <td className="total-cell">Rs. {(item.price * item.quantity).toFixed(2)}</td>
                       <td className="action-cell">
                         <button 
-                          className="remove-btn"
+                          className="remove-btn-cart"
                           onClick={() => handleRemoveItem(item.foodID)}
                           title="Remove from cart"
                         >
-                          <RiDeleteBin6Line />
+                          <MdDelete />
                         </button>
                       </td>
                     </tr>
@@ -281,7 +282,7 @@ const getPickupTimeRange = (selectedTime) => {
                 <h3>Your cart is empty</h3>
                 <p>Add some delicious items to get started!</p>
                 <button 
-                  className="continue-shopping-btn" 
+                  className="continue-shopping-btn-empty" 
                   onClick={() => navigate('/menu')}
                 >
                   Browse Menu
@@ -345,7 +346,7 @@ const getPickupTimeRange = (selectedTime) => {
   {time && (
     <div className="pickup-info">
       <h3 className="pickup-note">
-        🕒 Pickup Time Range <br />
+        Pickup Time Range <br />
         <strong>{getPickupTimeRange(time)?.startTime} - {getPickupTimeRange(time)?.endTime}</strong>
       </h3>
       <p className="pickup-instruction">

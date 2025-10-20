@@ -14,7 +14,7 @@
   justify-content: center;
   align-items: flex-start;
   margin-top: 50px;
-  padding: 0px 30px ;
+  padding: 0px 30px 60px 30px; ;
   gap: 40px;
   max-width: 1400px;
   margin-left: auto;
@@ -55,7 +55,13 @@
 .back-btn-cart:hover {
   color: #ffbf00ff;
 }
-
+.loading-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Josefin Sans", sans-serif;
+}
 .line-cart {
   display: flex;
   justify-content: center;
@@ -90,7 +96,7 @@
   background-color: transparent;
   font-family: "Josefin Sans", sans-serif;
   font-size: 14px;
-  border-radius: 10px;
+  
   overflow: hidden;
   /* box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); */
 }
@@ -101,11 +107,12 @@
   color: #212121;
   padding: 18px 15px;
   text-align: center;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 1px;
-  border: none;
+  border-bottom: 1px solid #21212177;
+  
  
   
 }
@@ -122,9 +129,16 @@
 .cart-table tr:last-child td {
  border-bottom: none;
 }
+.cart-table tr {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-table tr:last-child {
+ border-bottom: none;
+}
 
 .cart-row {
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   border: none;
 }
 
@@ -137,27 +151,30 @@
 } */
 
 .cart-row:hover {
-  background-color: #ffbf00ff !important;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(255, 191, 0, 0.3);
+  background-color: #fdf0df !important;
+  transform: translateX(5px);
+  border-left: 4px solid #ffbf00ff;
 }
 
 .cart-table td {
   padding: 20px 15px;
-  border-bottom: 1px solid #e0e0e0;
+  
   vertical-align: middle;
-  font-size: 14px;
+  font-size: 16px;
   color: #212121;
 }
 
 .item-cell {
   padding-left: 25px !important;
+  box-sizing: border-box;
+  font-size: 16px;
 }
 
 .item-info {
   display: flex;
   align-items: center;
   gap: 15px;
+  font-size: 16px;
 }
 
 .item-image {
@@ -166,29 +183,38 @@
   border-radius: 8px;
   object-fit: cover;
   border: 2px solid #e0e0e0;
+
 }
 
 .item-name {
-  font-weight: 600;
+  font-weight: 800;
   color: #5d4037;
   max-width: 200px;
+  
 }
 
 .serving-cell {
   text-align: center;
-  font-style: italic;
+ font-size: 16px;
   color: #666;
+  box-sizing: border-box;
 }
 
 .price-cell, .total-cell {
   text-align: center;
   font-weight: 600;
   color: #4caf50;
-  font-size: 15px;
+  font-size: 16px;
+  box-sizing: border-box;
 }
 
 .quantity-cell {
   text-align: center;
+  display: inline-block;
+  height:100%;
+  
+  box-sizing: border-box;
+  width: 120px;
   
 
 }
@@ -199,11 +225,12 @@
   justify-content: space-between;
   grid-template-columns: 1fr 1fr 1fr;
   text-align: center;
+  padding:20px 0;
   
 }
 
 .quantity-btn {
-  background-color: #5d4037;
+  background-color: #212121;
   color: white;
   border: none;
   width: 30px;
@@ -231,40 +258,42 @@
     margin-left: 0px;
 }
 .plus{
-    margin-right: 0px;
+   
+    margin:0;
 }
 .quantity-number {
   font-weight: 600;
   color: #5d4037;
   text-align: center;
-
-  
+  display:flex;
+  align-items:center;
+  justify-content:center;
   text-align: center;
   font-size: 16px;
 }
 
 .action-cell {
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
 
-.remove-btn {
-  background-color: #f44336;
-  color: white;
+.remove-btn-cart {
+  color: #f44336;
   border: none;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: all 0.3s ease;
-  font-size: 16px;
+  font-size: 28px;
+  background: none;
 }
 
-.remove-btn:hover {
-  background-color: #d32f2f;
-  transform: scale(1.1);
+.remove-btn-cart:hover {
+  color: #d32f2f;
+  transform: scale(1.2);
+  background: none;
 }
 
 .empty-cart {
@@ -282,7 +311,7 @@
 /* Cart Summary Styles */
 .cart-summary {
   width: 25%;
-  background: linear-gradient(135deg, #fff8ef, #fdf0df);
+  background: #fff8ef;
   border-radius: 15px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
   border-top: 5px solid #ffbf00ff;
@@ -314,8 +343,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 0;
-  font-size: 16px;
+  padding: 5px 0;
+  font-size: 18px;
   color: #212121;
 }
 
@@ -361,7 +390,7 @@
 
 .checkout-btn {
  margin:0px;
-    background-color: #5d4037;
+    background-color: #212121;
     border-radius: 10px;
     width: 100%;
     height: 50px;
@@ -371,14 +400,15 @@
 }
 
 .checkout-btn:hover {
-  background-color: #212121;
-    color: #fff8ef;
+  background-color: #ffbf00ff;
+    color: #212121;
     transform: translateY(-10px);
+    border: 2px solid #212121;
 
 }
 
 .continue-shopping-btn {
-  background-color: #ffbf00ff;
+  background-color: #fff8ef;
   color: #212121;
   border: 2px solid #5d4037;
   padding: 12px 25px;
@@ -390,11 +420,27 @@
   transition: all 0.3s ease;
   width: 100%;
   margin:0;
+  height: 50px;
+}
+.continue-shopping-btn-empty {
+  background-color: #fff8ef;
+  color: #212121;
+  border: 2px solid #5d4037;
+  padding: 12px 25px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  font-family: "Josefin Sans", sans-serif;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: calc(100% - 800px);
+  margin:0;
+  height: 50px;
 }
 
 .continue-shopping-btn:hover {
-  background-color: #212121;
-  color: white;
+  background-color: #fae8d0ff;
+  color: #212121;
 }
 
 /* Add these styles to your existing Cart.css */
@@ -559,24 +605,26 @@
 
 /* Container */
 .time-wrapper {
-  margin: 20px 0;
-  padding: 20px;
-  background-color: #f8f9fa;
+  margin: 10px 0;
+  padding: 10px 0px;
+  
   border-radius: 10px;
-  border: 1px solid #e0e0e0;
+  
 }
 
 .time-selection {
   display: flex;
   flex-direction: column;
+  
   gap: 10px;
 }
 
 .time-label {
-  font-size: 14px;
+  font-size: 16px;
   color: #5d4037;
-  font-weight: 600;
+  font-weight: 800;
   margin-bottom: 5px;
+  text-align: center;
 }
 
 .time-input {
@@ -598,32 +646,37 @@
 
 .time-input option {
   padding: 10px;
+  background-color: #fdf0df;
+}
+.time-input option:hover {
+  background-color: #b4771bff;
 }
 
 .pickup-info {
   margin-top: 15px;
   padding: 15px;
-  background-color: rgba(93, 64, 55, 0.1);
+  background-color: rgba(255, 255, 255, 1);
   border-radius: 8px;
-  border-left: 4px solid #5d4037;
+  border: 2px solid #ffbf00ff;
 }
 
 .pickup-note {
-  color: #5d4037;
-  font-size: 16px;
+  color: #ffbf00ff;
+  font-size: 18px;
+  border-bottom: 1px solid #e0e0e0;
   margin: 10px 0;
   text-align: center;
   line-height: 1.4;
 }
 
 .pickup-note strong {
-  color: #ffbf00ff;
+  color: #212121;
   font-size: 18px;
   font-weight: 700;
 }
 
 .pickup-instruction {
-  font-size: 14px;
+  font-size: 12px;
   color: #666;
   text-align: center;
   margin-top: 8px;

@@ -165,15 +165,19 @@ function Payment() {
       await new Promise(resolve => setTimeout(resolve, 3000));
       
       // On successful payment, navigate to success page
-      navigate('/payment-success', {
-        state: {
-          orderData,
-          paymentData: {
-            ...paymentData,
-            cardNumber: '**** **** **** ' + paymentData.cardNumber.slice(-4)
-          }
+      navigate('/checkout', {
+      state: {
+        orderData: {
+          ...orderData,
+          paymentStatus: 'completed',
+          paymentMethod: 'Credit Card'
+        },
+        paymentData: {
+          ...paymentData,
+          cardNumber: '**** **** **** ' + paymentData.cardNumber.slice(-4)
         }
-      });
+      }
+    });
     } catch (error) {
       console.error('Payment error:', error);
       alert('Payment failed. Please try again.');
@@ -201,26 +205,7 @@ function Payment() {
       
       <div className="payment-container">
         <div className="payment-content">
-          {/* Order Summary */}
-          <div className="order-summary-card">
-            <h2>Order Summary</h2>
-            <div className="summary-details">
-              <div className="summary-row">
-                <span>Order #{orderData.orderNumber || 'N/A'}</span>
-              </div>
-              <div className="summary-row">
-                <span>Customer: {orderData.customerName || 'N/A'}</span>
-              </div>
-              <div className="summary-row">
-                <span>Pickup: {orderData.pickupTime || 'N/A'}</span>
-              </div>
-              <div className="summary-divider"></div>
-              <div className="summary-row total">
-                <span>Total Amount</span>
-                <span className="amount">Rs. {orderData.totalAmount?.toFixed(2) || '0.00'}</span>
-              </div>
-            </div>
-          </div>
+         
 
           {/* Payment Form */}
           <div className="payment-form-card">
@@ -256,7 +241,7 @@ function Payment() {
                     />
                     <span className="card-type-icon">{getCardIcon()}</span>
                   </div>
-                  {errors.cardNumber && <span className="error-message">{errors.cardNumber}</span>}
+                  {errors.cardNumber && <span className="error-message-payment">{errors.cardNumber}</span>}
                 </div>
 
                 <div className="form-row">
@@ -272,7 +257,7 @@ function Payment() {
                       maxLength="5"
                       className={errors.expiryDate ? 'error' : ''}
                     />
-                    {errors.expiryDate && <span className="error-message">{errors.expiryDate}</span>}
+                    {errors.expiryDate && <span className="error-message-payment">{errors.expiryDate}</span>}
                   </div>
 
                   <div className="form-group">
@@ -287,7 +272,7 @@ function Payment() {
                       maxLength="4"
                       className={errors.cvv ? 'error' : ''}
                     />
-                    {errors.cvv && <span className="error-message">{errors.cvv}</span>}
+                    {errors.cvv && <span className="error-message-payment">{errors.cvv}</span>}
                   </div>
                 </div>
 
@@ -302,7 +287,7 @@ function Payment() {
                     placeholder="John Doe"
                     className={errors.cardHolderName ? 'error' : ''}
                   />
-                  {errors.cardHolderName && <span className="error-message">{errors.cardHolderName}</span>}
+                  {errors.cardHolderName && <span className="error-message-payment">{errors.cardHolderName}</span>}
                 </div>
               </div>
 
@@ -321,7 +306,7 @@ function Payment() {
                     placeholder="123 Main Street"
                     className={errors.billingAddress ? 'error' : ''}
                   />
-                  {errors.billingAddress && <span className="error-message">{errors.billingAddress}</span>}
+                  {errors.billingAddress && <span className="error-message-payment">{errors.billingAddress}</span>}
                 </div>
 
                 <div className="form-row">
@@ -336,7 +321,7 @@ function Payment() {
                       placeholder="Colombo"
                       className={errors.city ? 'error' : ''}
                     />
-                    {errors.city && <span className="error-message">{errors.city}</span>}
+                    {errors.city && <span className="error-message-payment">{errors.city}</span>}
                   </div>
 
                   <div className="form-group">
@@ -350,23 +335,11 @@ function Payment() {
                       placeholder="10000"
                       className={errors.postalCode ? 'error' : ''}
                     />
-                    {errors.postalCode && <span className="error-message">{errors.postalCode}</span>}
+                    {errors.postalCode && <span className="error-message-payment">{errors.postalCode}</span>}
                   </div>
                 </div>
 
-                <div className="form-group">
-                  <label htmlFor="country">Country</label>
-                  <select
-                    id="country"
-                    name="country"
-                    value={paymentData.country}
-                    onChange={handleInputChange}
-                  >
-                    <option value="Sri Lanka">Sri Lanka</option>
-                    <option value="India">India</option>
-                    <option value="Maldives">Maldives</option>
-                  </select>
-                </div>
+                
               </div>
 
               {/* Payment Actions */}
@@ -374,15 +347,15 @@ function Payment() {
                 <button
                   type="button"
                   onClick={() => navigate('/checkout')}
-                  className="back-btn"
+                  className="back-btn-payment"
                   disabled={isProcessing}
                 >
-                  ← Back to Checkout
+                  Back to Checkout
                 </button>
 
                 <button
                   type="submit"
-                  className="pay-btn"
+                  className="pay-btn-payment"
                   disabled={isProcessing}
                 >
                   {isProcessing ? (

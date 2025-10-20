@@ -3,6 +3,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import './Checkout.css';
 import jsPDF from 'jspdf';
 import Navbar from '../../components/navbar/Navbar';
+import { IoDocumentTextSharp } from "react-icons/io5";
+import { TbPinFilled } from "react-icons/tb";
+
 
 function Checkout() {
   const navigate = useNavigate();
@@ -58,7 +61,7 @@ function Checkout() {
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(14);
     doc.setTextColor(0, 0, 0);
-    doc.text('GAMI GEDARA', pageWidth / 2, yPos, { align: 'center' });
+    doc.text('LANKAN LOUNGE', pageWidth / 2, yPos, { align: 'center' });
     yPos += 5;
     
     doc.setFontSize(12);
@@ -70,7 +73,7 @@ function Checkout() {
     doc.setFontSize(8);
     doc.text('Tel: 077-123-4567', pageWidth / 2, yPos, { align: 'center' });
     yPos += 3;
-    doc.text('www.gamigedara.com', pageWidth / 2, yPos, { align: 'center' });
+    doc.text('www.lankanlounge.com', pageWidth / 2, yPos, { align: 'center' });
     yPos += 8;
     
     // Separator line
@@ -252,10 +255,10 @@ function Checkout() {
     yPos += 3;
     doc.text('THANK YOU FOR CHOOSING', pageWidth / 2, yPos, { align: 'center' });
     yPos += 2;
-    doc.text('GAMI GEDARA RESTAURANT', pageWidth / 2, yPos, { align: 'center' });
+    doc.text('LANKAN LOUNGE RESTAURANT', pageWidth / 2, yPos, { align: 'center' });
     
     // Save the PDF
-    doc.save(`Gami-Gedara-Token-${token.orderNumber}.pdf`);
+    doc.save(`Lankan-Lounge-Token-${token.orderNumber}.pdf`);
     setIsDownloaded(true);
   };
 
@@ -282,7 +285,7 @@ function Checkout() {
   if (!orderData.orderNumber) {
     return (
       <div className="checkout-page">
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="checkout-container">
           <div className="error-message">
             <h2>No Order Found</h2>
@@ -298,18 +301,18 @@ function Checkout() {
 
   return (
     <div className="checkout-page">
-      <Navbar />
+      {/* <Navbar /> */}
       
       <div className="checkout-container">
         <div className="checkout-header">
           <h1>Order Confirmation</h1>
-          <p className="success-message">Your order has been placed successfully!</p>
+         
         </div>
 
         {/* Order Token Section */}
         <div className="order-token-section">
           <div className="token-header">
-            <h2>📋 Order Token</h2>
+            <h2><IoDocumentTextSharp /> Order Token</h2>
             <span className={`download-status ${isDownloaded ? 'downloaded' : 'pending'}`}>
               {isDownloaded ? '✅ Downloaded' : '⏳ Pending Download'}
             </span>
@@ -372,58 +375,49 @@ function Checkout() {
               className={`download-btn ${isDownloaded ? 'downloaded' : ''}`}
               onClick={handleDownloadPDF}
             >
-              {isDownloaded ? '✅ Token Downloaded' : '📥 Download Order Token (PDF)'}
+              {isDownloaded ? 'Token Downloaded' : 'Download Order Token'}
             </button>
             <p className="download-note">
-              💡 Save this token and present it at the pickup counter
+              Save this token and present it at the pickup counter
             </p>
           </div>
         </div>
 
         {/* Terms and Conditions */}
         <div className="terms-section">
-          <h2>📋 Terms & Conditions</h2>
+          <h2><TbPinFilled /> Terms & Conditions</h2>
           <div className="terms-content">
             <div className="terms-list">
               <div className="term-item">
-                <span className="term-icon">⏰</span>
+                {/* <span className="term-icon"><FaClockRotateLeft /></span> */}
                 <div className="term-text">
-                  <strong>Pickup Time:</strong> Please arrive within your scheduled pickup time window. 
-                  Late arrivals may result in order cancellation.
+                  <ul>
+                    
+                    <li className='checkout-list'>
+                      <strong>Pickup Time:</strong> Please arrive within your scheduled pickup time window. 
+                      Late arrivals may result in order cancellation.
+                    </li>
+                    <li className='checkout-list'> <strong>Auto-Cancellation:</strong> Orders not picked up within 30 minutes of the scheduled time will be automatically cancelled.
+                  </li>
+                    <li className='checkout-list'>
+                      <strong>Manual Cancellation:</strong> You can cancel  order by calling our 
+                      hotline <strong>(077) 123-4567</strong> at least 1 hour before your pickup time.
+                    </li>
+                    <li className='checkout-list'>   <strong>Order Token:</strong> Please present    your downloaded order token 
+                     at the pickup counter for order verification.
+                  </li>
+                  <li className='checkout-list'> <strong>Payment:</strong> Payment will be collected at the time of pickup. 
+                  We accept cash and card payments.</li>
+
+                  </ul>
+                  
+                  
                 </div>
               </div>
               
-              <div className="term-item">
-                <span className="term-icon">❌</span>
-                <div className="term-text">
-                  <strong>Auto-Cancellation:</strong> Orders not picked up within the time frame 
-                  will be automatically cancelled without refund.
-                </div>
-              </div>
-              
-              <div className="term-item">
-                <span className="term-icon">📞</span>
-                <div className="term-text">
-                  <strong>Manual Cancellation:</strong> You can cancel your order by calling our 
-                  hotline <strong>(077) 123-4567</strong> at least 1 hour before your pickup time.
-                </div>
-              </div>
-              
-              <div className="term-item">
-                <span className="term-icon">🎫</span>
-                <div className="term-text">
-                  <strong>Order Token:</strong> Please present your downloaded order token 
-                  at the pickup counter for order verification.
-                </div>
-              </div>
-              
-              <div className="term-item">
-                <span className="term-icon">💳</span>
-                <div className="term-text">
-                  <strong>Payment:</strong> Payment will be collected at the time of pickup. 
-                  We accept cash and card payments.
-                </div>
-              </div>
+           
+            
+
             </div>
           </div>
           
@@ -456,20 +450,22 @@ function Checkout() {
           </div>
           
           <div className="confirmation-actions">
+             <button 
+              className="back-btn-checkout"
+              onClick={() => navigate('/cart')}
+            >
+              Back to Cart
+            </button>
+
             <button 
-              className="confirm-btn"
+              className="confirm-btn-checkout"
               onClick={handleConfirmOrder}
               disabled={!isDownloaded || !isTermsAccepted || isConfirming}
             >
-              {isConfirming ? '🔄 Confirming Order...' : '✅ Confirm Order'}
+              {isConfirming ? 'Confirming Order...' : 'Confirm Order'}
             </button>
             
-            <button 
-              className="back-btn"
-              onClick={() => navigate('/cart')}
-            >
-              ← Back to Cart
-            </button>
+           
           </div>
         </div>
       </div>
