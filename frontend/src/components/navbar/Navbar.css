@@ -1,0 +1,267 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+.navbar{
+    width: 100%;
+    height: max-content;
+    background-color: #212121;
+    background: linear-gradient(to left,rgba(29, 13, 0, 1),rgb(39, 18, 0),rgb(29, 13, 0));
+    
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.navbar-container{
+    display: flex;
+    flex-direction: row;
+  
+    align-items: center;
+    margin-left: 200px;
+    margin-right: 200px;
+    
+    
+}
+.logo img{
+    width:120px;
+}
+
+.navbar-item ul{
+    text-decoration: none; 
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    /* background-color: rgb(134, 86, 23); */
+    
+}
+    
+.navbar-item a{
+    text-decoration: none;
+    color: #fff8ef;
+    cursor: pointer;
+    
+    
+}
+.navbar-item li {
+    list-style: none;
+    font-size: 14px;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 300 ;
+    width: 110px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    box-sizing: border-box;
+}
+
+
+.navbar-item li.active {
+    background-color: #fdf0df;
+    border: none;
+}
+.navbar-item li.active a {
+    color: #5d4037;
+    font-weight: 600;
+    
+}
+.navbar-item li:not(.active):hover {
+    border: 1px solid #fdf0df;
+    
+}
+.navbar-item li:hover{
+    cursor: pointer;
+}
+.nav-buttons{
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+}
+
+button{
+    background-color: #fdf0df;
+    border: none;
+    height: 40px;
+    width: 110px;
+    margin-left: 50px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: "Josefin Sans", sans-serif;
+    color: #5d4037;
+}
+
+button:hover{
+    background-color:#ffca28 ;
+}
+button:active{
+    background-color: #ffbf00ff;
+}
+.cart{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    width:100%;
+    font-weight: 600;
+    
+}
+.cart:active{
+    background-color: #ffbf00ff;
+}
+.cart-img{
+    width: 25px;
+    height: 25px; 
+    margin-right: 10px;
+}
+
+.nav-buttons{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+.cart-count{
+    background-color: red;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    color:#fdf0df;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}
+.profile-icon{
+    color: #5d4037;
+    width: 25px;
+    height: 25px;
+    
+}
+
+.profile{
+    background-color: #fdf0df;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.profile:hover {
+    background-color: #ffca28;
+}
+
+/* Add new styles for profile dropdown */
+.profile-container {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: 100%;
+    right:-10px;
+    background: #fffbf5ff;
+    
+    border-radius: 0px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 180px;
+    z-index: 1000;
+    margin-top: 26px;
+}
+
+.user-info {
+    padding: 10px;
+    text-align: left;
+    margin-left:4px;
+}
+
+.user-name {
+    font-weight: 600;
+    margin: 0 0 4px 0;
+    color: #333;
+    font-size: 14px;
+}
+
+.user-email {
+    font-size: 12px;
+    color: #666;
+    margin: 0;
+}
+
+.dropdown-divider {
+    border: none;
+    border-top: 1px solid #e0e0e0;
+    margin: 0;
+}
+
+.dropdown-menu {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.dropdown-menu li {
+    margin: 0;
+}
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 16px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: background-color 0.2s;
+    font-weight: 600;
+    transition: color 0.1s ease, font-weight 0.1s ease, font-size 0.1s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: #fdf0df;
+    font-size:15px;
+    font-weight: 700;
+}
+
+.logout-btn {
+    width: 100%;
+    padding: 12px 16px;
+    background: none;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    color: #dc3545;
+    font-size: 16px;
+    transition: background-color 0.2s;
+    margin: 0;
+    font-weight: 700;
+    transition: color 0.1s ease, font-weight 0.1s ease, font-size 0.1s ease;
+}
+
+.logout-btn:hover {
+    background-color: #dc3545;
+    color: #f8f9fa;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .profile-dropdown {
+        right: -20px;
+        min-width: 180px;
+    }
+}

@@ -1,0 +1,734 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+/* Main Admin Container */
+.admin-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 20px;
+  min-height: 100vh;
+  background: #fdf0df;
+  font-family: 'Josefin Sans', sans-serif;
+  gap: 20px;
+  box-sizing: border-box;
+}
+/* .admin-nav{
+  position: scroll;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+} */
+/* Menu Section - Left Sidebar */
+.menu-section {
+  width: 280px;
+  background: linear-gradient(to left,rgba(29, 13, 0, 1),rgb(29, 13, 0));
+  padding: 30px 0 ;
+  box-sizing: border-box;
+  height: 600px;
+  overflow-y: auto;
+  z-index: 100;
+  border-radius: 12px;
+  
+  height: max-content;
+  
+}
+.fixed-container{
+  width: 280px;
+  height: max-content;
+}
+
+
+/* Content Section - Main Area */
+.content-section {
+  flex: 1;
+  margin: 0px;
+  padding: 0px;
+  min-height: max-content;
+  background-color: #fdf0df;
+  box-sizing: border-box;
+}
+
+/* Content Sections Visibility */
+.Available-order,
+.Order-history {
+  display: none;
+  animation: fadeIn 0.3s ease-in;
+}
+
+.Available-order.show,
+.Order-history.show {
+  display: block;
+}
+
+/* Profile Menu Items */
+.profile-menu-item {
+  padding: 15px 25px;
+  color: #e2e8f0;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+  font-weight: 500;
+  font-size: 16px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s ease;
+}
+
+.profile-menu-item:hover {
+  background: rgba(255, 255, 255, 0.17);
+  color: #ffffffff;
+  border-left-color: #ffd452ff;
+}
+
+.profile-menu-item.active {
+  background: rgba(255, 149, 100, 0.14);
+  color: #ffca28;
+  border-left-color: #ff9900ff;
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.last-p-item {
+  border-bottom: 1px solid #475569;
+  margin-bottom: 20px;
+}
+
+/* Submenu Styles */
+.submenu-profile {
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(15, 23, 42, 0.3);
+  transition: max-height 0.3s ease-out;
+  margin-left: 20px;
+  border-left: 2px solid #ff9900ff;
+}
+
+.submenu-profile.show {
+  max-height: 200px;
+}
+
+.submenu-profile li {
+  padding: 12px 20px;
+  color: #cbd5e1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  border-bottom: 1px solid rgba(71, 85, 105, 0.3);
+  list-style: none;
+  margin:0;
+}
+
+.submenu-profile li:hover {
+  background: rgba(255, 255, 255, 0.17);
+  color: #ffca28;
+  padding-left: 25px;
+}
+
+.submenu-profile li:last-child {
+  border-bottom: none;
+}
+
+/* Arrow Styles */
+.arrow {
+  transition: transform 0.3s ease;
+  font-size: 0.8rem;
+  color: #ffffffff;
+}
+
+.arrow.open {
+  transform: rotate(180deg);
+  color: #ffca28;
+}
+
+/* Topic Headers */
+.ad-topic-header {
+  margin-bottom: 30px;
+  padding-bottom: 15px;
+  border-bottom: 3px solid #f59e0b;
+  display:inline-flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Ad-av-header {
+  color: #1e293b;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Content Container */
+.content-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  margin-top:0;
+  
+ 
+  
+}
+
+/* Orders Table Styles */
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background: white;
+  /* border-radius: 8px; */
+  overflow: hidden;
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
+}
+
+/* Table Header */
+.orders-table thead th {
+background: #f5f5f5ff; 
+  color: #212121;
+  padding: 25px 10px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-right: 1px solid #d6d6d6ff;
+}
+
+.orders-table thead th:first-child {
+  
+}
+
+.orders-table thead th:last-child {
+  
+  border-right: none;
+}
+
+/* Table Body */
+.orders-table tbody tr {
+  border-bottom: 1px solid #fff0f0ff;
+  transition: all 0.1s ease;
+}
+.orders-table tbody tr:last-child {
+  border-bottom: none;
+} 
+
+.orders-table tbody tr:hover {
+ 
+  background-color: #fff8ef;
+  border-left: 2px solid #f59e0b;
+  border-right: 2px solid #f59e0b;
+}
+
+/* Table Data */
+.orders-table tbody td {
+  padding: 15px 10px;
+  color: #374151;
+  font-size: 14px;
+  vertical-align: top;
+  text-align: center;
+}
+
+.orders-table tbody td:first-child {
+  font-weight: 600;
+  color: #212121;
+}
+
+/* Lists in table cells */
+.orders-table td ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  
+}
+
+.orders-table td ul li {
+  padding: 2px 0;
+  color: #212121;
+}
+
+/* Button Container */
+.button-container {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* Action Buttons */
+.get-button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  min-width: 80px;
+  text-align: center;
+}
+
+
+
+
+
+
+/* Accept Button */
+.get-button.accept-btn {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+}
+
+.get-button.accept-btn:hover {
+  background: linear-gradient(135deg, #059669, #047857);
+  
+ 
+}
+
+/* Reject Button */
+.get-button-reject {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+}
+
+.get-button-reject:hover {
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.4);
+}
+
+/* Done Button */
+.get-button-done {
+  background: linear-gradient(135deg, #6b7280, #4b5563);
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: default;
+  font-weight: 600;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Section Content */
+.section-content {
+  animation: fadeIn 0.4s ease-in;
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  min-height: 500px;
+}
+.flex-div-inline{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.section-content p {
+  color: #6b7280;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+/* Add Item Form Styles */
+.add-item-form {
+  max-width: 1000px;
+  margin: 0 auto;
+
+}
+
+.add-item-form .form-group {
+  display: flex;
+  
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add-item-form label {
+  font-weight: 600;
+  color: #212121;
+  margin-bottom: 6px;
+  font-size: 1rem;
+}
+
+.add-item-form input,
+.add-item-form select,
+.add-item-form textarea {
+  padding: 14px 18px;
+  border: 2px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-family: 'Josefin Sans', sans-serif;
+  transition: all 0.3s ease;
+  background: #f9fafb;
+}
+
+.add-focus :focus,
+.add-focus select:focus,
+.add-focus textarea:focus {
+  outline: none;
+  border-color: #f59b00ff;
+  background: white;
+  box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
+}
+
+.add-item-form textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.add-item-form button {
+  background: #10b981;
+  color: white;
+  padding: 16px 32px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  width: fit-content;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+  margin-left:0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.add-item-form button:hover {
+  background: #059669;
+  transform: translateY(-2px);
+  
+}
+
+.add-item-form button:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+.add-item-img-input {
+  width:100px;
+}
+#trending-item-category{
+  
+}
+/* Error Styles */
+.error-message {
+  background: #fef2f2;
+  color: #991b1b;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border: 1px solid #fecaca;
+  font-size: 0.9rem;
+  margin-top: 5px;
+}
+
+.submit-error {
+  margin-bottom: 20px;
+  font-size: 1rem;
+  padding: 14px 18px;
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: #ef4444;
+  background-color: #fef2f2;
+}
+
+/* Success Message */
+.success-message {
+  background: #ecfdf5;
+  color: #065f46;
+  padding: 14px 18px;
+  border-radius: 8px;
+  border: 1px solid #a7f3d0;
+  margin-bottom: 20px;
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .menu-section {
+    width: 250px;
+  }
+
+  .content-section {
+    margin-left: 250px;
+  }
+}
+
+@media (max-width: 768px) {
+  .menu-section {
+    width: 100%;
+    height: auto;
+    position: relative;
+    padding: 20px 0;
+  }
+
+  .content-section {
+    margin-left: 0;
+    padding: 15px;
+  }
+
+  .admin-container {
+    flex-direction: column;
+  }
+
+  .orders-table {
+    font-size: 0.8rem;
+  }
+
+  .orders-table thead th,
+  .orders-table tbody td {
+    padding: 10px 8px;
+  }
+
+  .button-container {
+    flex-direction: column;
+  }
+
+  .get-button {
+    width: 100%;
+  }
+
+  .Ad-av-header {
+    font-size: 1.5rem;
+  }
+
+  .section-content {
+    padding: 20px 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .content-section {
+    padding: 10px;
+  }
+
+  .section-content {
+    padding: 15px 10px;
+  }
+
+  .orders-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .profile-menu-item {
+    padding: 12px 20px;
+    font-size: 0.9rem;
+  }
+
+  .submenu-profile li {
+    padding: 10px 15px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Status Badge Styles */
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-confirmed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-preparing {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+.status-ready {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-cancelled {
+  background-color: #f8d7da;
+  color: #721c24;
+}
+
+.status-unknown {
+  background-color: #e2e3e5;
+  color: #6c757d;
+}
+
+/* Updated Button Styles */
+.get-button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin: 2px;
+}
+
+.accept-btn {
+  background-color: #28a745;
+  color: white;
+}
+
+.reject-btn {
+  background-color: #dc3545;
+  color: white;
+}
+
+.make-btn {
+  background-color: #007bff;
+  color: white;
+}
+
+.ready-btn {
+  background-color: #17a2b8;
+  color: white;
+}
+
+.complete-btn {
+  background-color: #28a745;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.get-button.complete-btn:hover {
+  background-color: #218838;
+}
+
+.get-button.accept-btn:hover {
+  background-color: #218838;
+}
+
+.get-button.reject-btn:hover {
+  background-color: #c82333;
+}
+
+.button-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+/* Loading Styles */
+.loading {
+  text-align: center;
+  padding: 20px;
+  font-size: 16px;
+  color: #666;
+}
+
+/* Refresh Button Styles */
+.refresh-btn-available {
+  color: #212121;
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 36px;
+  margin-left:10px;
+  padding: 0;
+  width:fit-content;
+  transition: scale 0.3s ease;
+}
+
+.refresh-btn-available:hover {
+  color: #5d4037;
+  background-color: transparent;
+  scale: 1.1;
+}
+
+/* Add to your Admin.css */
+
+.rem-menu-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.rem-menu-table th,
+.rem-menu-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.rem-menu-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-btn:hover {
+  background-color: #c82333;
+}
+
+.remove-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
+}
+
+.no-items {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
