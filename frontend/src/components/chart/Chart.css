@@ -13,7 +13,7 @@
 }
 
 .stat-card {
-  background: white;
+  background: #212121;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -22,20 +22,29 @@
 
 .stat-card h3 {
   margin: 0 0 10px 0;
-  color: #333;
+  color: #fff8ef;
   font-size: 16px;
 }
 
 .stat-value {
   font-size: 2em;
   font-weight: bold;
-  color: #e67e22;
+  color: #ffca28;
   margin: 10px 0;
 }
 
 .stat-label {
-  color: #666;
+  color: #fff8ef;
   font-size: 14px;
+}
+.period-selector {
+  background: transparent;
+  color: #ffca28;
+  border:2px solid #ffca28;
+
+}
+#period-selecter-topic{
+  color:#212121;
 }
 
 .period-select, .category-select, .date-input {
@@ -45,10 +54,16 @@
   border-radius: 4px;
   font-size: 14px;
 }
+.period-select:focus, .category-select:focus, .date-input:focus {
+  outline: none;
+  border-color: #212121;
+  
+}
 
 .date-selector-section {
   margin-bottom: 30px;
 }
+
 
 .date-selector-card {
   background: white;
@@ -80,14 +95,17 @@
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
   gap: 30px;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  padding-top: 30px;
 }
 
 .chart-card {
   background: white;
   padding: 20px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  
 }
 
 .chart-card h3 {
@@ -107,8 +125,8 @@
 
 .table-container {
   background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+ 
   overflow-x: auto;
 }
 
@@ -121,7 +139,7 @@
   background: #f8f9fa;
   padding: 12px;
   text-align: left;
-  border-bottom: 2px solid #dee2e6;
+  
   font-weight: bold;
   color: #333;
 }
@@ -140,19 +158,38 @@
 }
 
 .category-selector {
-  background: white;
+  background: transparent;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   max-width: 400px;
+  color: #ffca28;
+  border:2px solid #ffca28;
+}
+.top-items-category-chart{
+  width:800px;
+  margin:0px;
+
+ 
 }
 
 .category-selector h3 {
   margin: 0 0 15px 0;
   color: #333;
 }
+.pie-chart-card{
+  margin: 0px auto;
+ 
+  
+}
 
+.pie-chart{
+ width:400px;
+ margin:0px auto;
+ potition:relative;
+ bottom: 10px;
+}
 .loading {
   text-align: center;
   padding: 40px;
