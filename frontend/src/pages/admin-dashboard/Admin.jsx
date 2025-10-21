@@ -444,9 +444,12 @@ const handleRemoveItem = async (itemId) => {
 
   return (
     <>
-      <AdminNavbar />
+    <div className="admin-nav"><AdminNavbar /></div>
+      
       <div className="admin-container">
+
         {/* Menu Section */}
+        <div className='fixed-container'>
         <div className="menu-section"> 
           <div 
             className={`profile-menu-item ${activeSection === 'orders' ? 'active' : ''}`} 
@@ -493,6 +496,7 @@ const handleRemoveItem = async (itemId) => {
           >
             Settings
           </div>
+        </div>
         </div>
 
         <div className="content-section">
@@ -910,7 +914,7 @@ const handleRemoveItem = async (itemId) => {
             <div className="section-content">
               <div className="ad-topic-header">
                 <h2 className='Ad-av-header'>Remove Menu Items</h2>
-                <button onClick={loadAllItemsData} className="refresh-btn">Refresh</button>
+                <button onClick={loadAllItemsData} className="refresh-btn-available"><IoReloadCircleSharp /></button>
               </div>
               
               <div className="load-rem-menu">

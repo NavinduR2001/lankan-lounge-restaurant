@@ -222,7 +222,7 @@ if (isAdminLogin && response.data.admin && response.data.token) {
 
             <div className="login-container">
             <button type="submit" className="signin-btn" disabled={loading}>
-                {loading ? 'Signing In...' : 'Login'}
+                {loading ? 'wait...' : 'Login'}
               </button></div>
 
             <div className="signin-footer">

@@ -213,7 +213,7 @@ function AdminSettings() {
 
         {/* Restaurant Information */}
         <div className="settings-section">
-          <h3>🏪 Restaurant Information</h3>
+          <h3>Restaurant Information</h3>
           <form onSubmit={handleRestaurantSettingsUpdate}>
             <div className="form-group">
               <label htmlFor="restaurantName">Restaurant Name:</label>
@@ -288,7 +288,7 @@ function AdminSettings() {
 
         {/* Admin Profile Management */}
         <div className="settings-section">
-          <h3>🔐 Admin Profile</h3>
+          <h3>Admin Profile</h3>
           <form onSubmit={handleMainAdminUpdate}>
             <div className="form-group">
               <div className="form-row">
@@ -330,9 +330,7 @@ function AdminSettings() {
                     className="settings-input"
                     placeholder="Enter current password to change password"
                   />
-                  <small style={{ color: '#6b7280', fontSize: '0.85rem' }}>
-                    Required only if you want to change your password
-                  </small>
+                  
                 </div>
               </div>
 
@@ -372,7 +370,7 @@ function AdminSettings() {
 
         {/* Order Settings */}
         <div className="settings-section">
-          <h3>💰 Order Settings</h3>
+          <h3>Order Settings</h3>
           <form onSubmit={handleRestaurantSettingsUpdate}>
             <div className="form-group">
               <div className="form-row">

@@ -238,8 +238,8 @@ const ItemSummary = () => {
       {
         label: 'Quantity Sold',
         data: categoryItemStats.map(item => item.totalQuantity),
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: '#ffca28',
+        borderColor: '#ffae00ff',
         borderWidth: 1,
       },
     ],
@@ -281,22 +281,6 @@ const ItemSummary = () => {
           </table>
         </div>
       </div>
-
-      {/* Charts Section */}
-      <div className="charts-grid">
-        {/* Top Items Bar Chart */}
-        <div className="chart-card">
-          <h3>Top 10 Selling Items</h3>
-          <Bar data={topItemsChartData} options={chartOptions} />
-        </div>
-
-        {/* Category Pie Chart */}
-        <div className="chart-card">
-          <h3>Orders by Category</h3>
-          <Pie data={categoryPieData} options={pieOptions} />
-        </div>
-      </div>
-
       {/* Category Filter Section */}
       <div className="category-filter-section">
         <div className="category-selector">
@@ -312,7 +296,7 @@ const ItemSummary = () => {
           </select>
         </div>
 
-        <div className="chart-card">
+        <div className="chart-card top-items-category-chart">
           <h3>
             {selectedCategory === 'all' ? 'Top Items (All Categories)' : 
              `Top Items - ${categories.find(c => c.value === selectedCategory)?.label}`}
@@ -320,6 +304,24 @@ const ItemSummary = () => {
           <Bar data={categoryItemsChartData} options={chartOptions} />
         </div>
       </div>
+      
+
+      {/* Charts Section */}
+      <div className="charts-grid">
+        {/* Top Items Bar Chart */}
+        <div className="chart-card">
+          <h3>Top 10 Selling Items</h3>
+          <Bar data={topItemsChartData} options={chartOptions} />
+        </div>
+
+        {/* Category Pie Chart */}
+        <div className="chart-card pie-chart-card">
+          <h3>Orders by Category</h3>
+          <Pie className="pie-chart" data={categoryPieData} options={pieOptions} />
+        </div>
+      </div>
+
+
 
       {/* Category Stats Table */}
       <div className="category-stats-section">

@@ -184,16 +184,16 @@ const SalesSummary = () => {
       {
         label: 'Orders',
         data: last7DaysData.map(day => day.orders),
-        backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(99, 50, 8, 1)',
+        borderColor: '#310a0aff',
         borderWidth: 1,
         yAxisID: 'y',
       },
       {
         label: 'Revenue (LKR)',
         data: last7DaysData.map(day => day.revenue),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: '#ffca28',
+        borderColor: 'rgba(253, 194, 0, 1)',
         borderWidth: 1,
         yAxisID: 'y1',
       },
@@ -206,15 +206,15 @@ const SalesSummary = () => {
       {
         label: 'Orders',
         data: last6MonthsData.map(month => month.orders),
-        backgroundColor: 'rgba(75, 192, 192, 0.5)',
-        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(99, 50, 8, 1)',
+        borderColor: '#310a0aff',
         borderWidth: 1,
       },
       {
         label: 'Revenue (LKR)',
         data: last6MonthsData.map(month => month.revenue),
-        backgroundColor: 'rgba(153, 102, 255, 0.5)',
-        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: '#ffca28',
+        borderColor: 'rgba(253, 194, 0, 1)',
         borderWidth: 1,
       },
     ],
@@ -229,7 +229,7 @@ const SalesSummary = () => {
       <div className="stats-grid">
         {/* Period Selector */}
         <div className="stat-card period-selector">
-          <h3>Select Period</h3>
+          <h3 id='period-selecter-topic'>Select Period</h3>
           <select 
             value={selectedPeriod} 
             onChange={(e) => setSelectedPeriod(e.target.value)}
@@ -273,7 +273,7 @@ const SalesSummary = () => {
         </div>
       </div>
 
-      {/* Date Selector */}
+      {/* Date Selector
       <div className="date-selector-section">
         <div className="date-selector-card">
           <h3>Check Specific Date</h3>
@@ -292,7 +292,7 @@ const SalesSummary = () => {
             </div>
           )}
         </div>
-      </div>
+      </div> */}
 
       {/* Charts */}
       <div className="charts-grid">
