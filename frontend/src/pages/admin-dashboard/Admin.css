@@ -4,7 +4,7 @@
 .admin-container {
   display: flex;
   min-height: 100vh;
-  background: #f8fafc;
+  background: #fdf0df;
   font-family: 'Josefin Sans', sans-serif;
 }
 
@@ -26,6 +26,7 @@
   margin-left: 280px;
   padding: 20px;
   min-height: 100vh;
+  background-color: #fdf0df;
 }
 
 /* Content Sections Visibility */
@@ -122,6 +123,9 @@
   margin-bottom: 30px;
   padding-bottom: 15px;
   border-bottom: 3px solid #f59e0b;
+  display:inline-flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .Ad-av-header {
@@ -129,6 +133,7 @@
   font-size: 2rem;
   font-weight: 700;
   margin: 0;
+  padding: 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -136,9 +141,12 @@
 .content-container {
   background: white;
   border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
-  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  
+ 
+  
 }
 
 /* Orders Table Styles */
@@ -147,54 +155,61 @@
   border-collapse: collapse;
   margin-top: 20px;
   background: white;
-  border-radius: 8px;
+  /* border-radius: 8px; */
   overflow: hidden;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); */
 }
 
 /* Table Header */
 .orders-table thead th {
-  background: linear-gradient(135deg, #1e293b, #334155);
-  color: white;
-  padding: 18px 15px;
-  text-align: left;
-  font-weight: 600;
-  font-size: 0.95rem;
+background: #f5f5f5ff; 
+  color: #212121;
+  padding: 25px 10px;
+  text-align: center;
+  font-weight: 900;
+  font-size: 15px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  border-right: 1px solid #d6d6d6ff;
 }
 
 .orders-table thead th:first-child {
-  border-top-left-radius: 8px;
+  
 }
 
 .orders-table thead th:last-child {
-  border-top-right-radius: 8px;
+  
+  border-right: none;
 }
 
 /* Table Body */
 .orders-table tbody tr {
-  border-bottom: 1px solid #f1f5f9;
-  transition: all 0.2s ease;
+  border-bottom: 1px solid #fff0f0ff;
+  transition: all 0.1s ease;
 }
+.orders-table tbody tr:last-child {
+  border-bottom: none;
+} 
 
 .orders-table tbody tr:hover {
-  background: #f8fafc;
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ 
+  background-color: #fff8ef;
+  border-left: 2px solid #f59e0b;
+  border-right: 2px solid #f59e0b;
 }
 
 /* Table Data */
 .orders-table tbody td {
-  padding: 16px 15px;
+  padding: 15px 10px;
   color: #374151;
-  font-size: 0.9rem;
+  font-size: 14px;
   vertical-align: top;
+  text-align: center;
 }
 
 .orders-table tbody td:first-child {
   font-weight: 600;
-  color: #1e293b;
+  color: #212121;
 }
 
 /* Lists in table cells */
@@ -202,11 +217,12 @@
   list-style: none;
   padding: 0;
   margin: 0;
+  
 }
 
 .orders-table td ul li {
   padding: 2px 0;
-  color: #6b7280;
+  color: #212121;
 }
 
 /* Button Container */
@@ -231,17 +247,10 @@
   text-align: center;
 }
 
-/* Make Button */
-.get-button.make-btn {
-  background: linear-gradient(135deg, #3b82f6, #2563eb);
-  color: white;
-}
 
-.get-button.make-btn:hover {
-  background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-}
+
+
+
 
 /* Accept Button */
 .get-button.accept-btn {
@@ -251,8 +260,8 @@
 
 .get-button.accept-btn:hover {
   background: linear-gradient(135deg, #059669, #047857);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+  
+ 
 }
 
 /* Reject Button */
@@ -299,28 +308,35 @@
   border: 1px solid #e5e7eb;
   min-height: 500px;
 }
+.flex-div-inline{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
 
 .section-content p {
   color: #6b7280;
-  font-size: 1.1rem;
+  font-size: 14px;
   line-height: 1.6;
 }
 
 /* Add Item Form Styles */
 .add-item-form {
-  max-width: 800px;
+  max-width: 1000px;
   margin: 0 auto;
+
 }
 
 .add-item-form .form-group {
   display: flex;
+  
   flex-direction: column;
   gap: 20px;
 }
 
 .add-item-form label {
   font-weight: 600;
-  color: #374151;
+  color: #212121;
   margin-bottom: 6px;
   font-size: 1rem;
 }
@@ -337,11 +353,11 @@
   background: #f9fafb;
 }
 
-.add-item-form input:focus,
-.add-item-form select:focus,
-.add-item-form textarea:focus {
+.add-focus :focus,
+.add-focus select:focus,
+.add-focus textarea:focus {
   outline: none;
-  border-color: #f59e0b;
+  border-color: #f59b00ff;
   background: white;
   box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
 }
@@ -356,12 +372,17 @@
   color: white;
   padding: 16px 32px;
   border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 8px;
   font-size: 1.1rem;
   font-weight: 600;
+  width: fit-content;
   cursor: pointer;
   transition: all 0.3s ease;
   margin-top: 10px;
+  margin-left:0;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
@@ -377,6 +398,9 @@
   cursor: not-allowed;
   transform: none;
   box-shadow: none;
+}
+.add-item-img-input {
+  width:100px;
 }
 
 /* Error Styles */
@@ -620,18 +644,21 @@
 }
 
 /* Refresh Button Styles */
-.refresh-btn {
-  background-color: #007bff;
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+.refresh-btn-available {
+  color: #212121;
+  background-color: transparent;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 36px;
+  margin-left:10px;
+  padding: 0;
+  width:fit-content;
+  transition: scale 0.3s ease;
 }
 
-.refresh-btn:hover {
-  background-color: #0056b3;
+.refresh-btn-available:hover {
+  color: #5d4037;
+  background-color: transparent;
+  scale: 1.1;
 }
 
 /* Add to your Admin.css */
