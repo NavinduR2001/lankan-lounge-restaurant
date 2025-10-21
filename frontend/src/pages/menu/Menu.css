@@ -81,6 +81,9 @@
     justify-content: center;
     gap:80px;
     width: 100%;
+    opacity: 0;
+    transform: translateY(40px) scale(0.99);
+    will-change: transform, opacity;
 }
 .sub-menu-container{
     display: grid;
@@ -299,4 +302,22 @@
 .item-id {
   font-size: 0.8em;
   color: #666;
+}
+
+/* Sub-menu scroll fade-in (initial + animate state) */
+.sub-menu {
+  opacity: 0;
+  transform: translateY(40px) scale(0.99);
+  will-change: transform, opacity;
+}
+
+/* When .animate is added by the observer */
+.sub-menu.animate {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Optional subtle shadow when visible for emphasis */
+.sub-menu.animate .sub-menu-container .menu-item {
+  transition: transform 300ms ease, box-shadow 300ms ease;
 }

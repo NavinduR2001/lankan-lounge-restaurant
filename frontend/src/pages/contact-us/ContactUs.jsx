@@ -2,7 +2,6 @@ import React from 'react'
 import './ContactUs.css'
 import Navbar from '../../components/navbar/Navbar'
 import { logo } from '../../assets/assets'
-import { branch } from '../../assets/assets'
 import { FaPhone } from "react-icons/fa6";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdEmail } from "react-icons/md";

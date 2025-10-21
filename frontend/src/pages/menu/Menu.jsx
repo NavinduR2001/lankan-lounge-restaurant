@@ -1,6 +1,6 @@
 import './Menu.css'
 import { useNavigate } from 'react-router-dom'
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/navbar/Navbar'
 import { biriyani, burger, one, pizza } from '../../assets/assets'
 import { getAllItems, getItemsByCategory, getTrendingItems, searchItems } from '../../services/api';
@@ -135,6 +135,26 @@ const handleAddToCart = async (item) => {
     loadAllCategoryData();
   }, []);
 
+  // --- New: scroll observer for category fade-in (repeating) ---
+  useEffect(() => {
+    const opts = { threshold: 0.15, rootMargin: '0px 0px -80px 0px' };
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add('animate');
+        else entry.target.classList.remove('animate'); // remove to allow repeating
+      });
+    }, opts);
+
+    const nodes = document.querySelectorAll('.sub-menu');
+    nodes.forEach((node, idx) => {
+      node.style.transition = 'all 600ms cubic-bezier(0.25,0.46,0.45,0.94)';
+      node.style.transitionDelay = `${idx * 120}ms`; // stagger
+      observer.observe(node);
+    });
+
+    return () => observer.disconnect();
+  }, [menuData]); // re-run when menuData updates so new categories are observed
+
   // Function to render menu items for a category
   const renderMenuItems = (categoryItems) => {
     if (!categoryItems || categoryItems.length === 0) {
@@ -210,6 +230,7 @@ const handleAddToCart = async (item) => {
       </>
     );
   }
+  
 
   return (
     <div className='menu-page-wrapper'>

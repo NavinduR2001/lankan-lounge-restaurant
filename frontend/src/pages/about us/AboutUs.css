@@ -8,7 +8,276 @@
     background-color: #fdf0df;
 }
 
-/* Hero Section */
+/* Enhanced Scroll Animation Keyframes */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(80px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-80px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    from {
+        opacity: 0;
+        transform: translateX(80px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.7);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes slideInFromBottom {
+    from {
+        opacity: 0;
+        transform: translateY(120px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: translateY(60px) scale(0.8);
+        
+    }
+ 
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Initial state for animated elements */
+.story-section,
+.gallery-section,
+.achievements-section,
+.gallery-item,
+.achievement-card {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Animation classes */
+.story-section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.story-section.animate-in .story-text {
+    animation: fadeInLeft 1.4s ease-out 0.3s forwards;
+}
+
+.story-section.animate-in .story-image {
+    animation: fadeInRight 1.4s ease-out 0.5s forwards;
+}
+
+.gallery-section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.gallery-section.animate-in .gallery-title {
+    animation: slideInFromBottom 1.2s ease-out 0.2s forwards;
+}
+
+.gallery-section.animate-in .line-about {
+    animation: scaleIn 1.2s ease-out 0.4s forwards;
+}
+
+.gallery-item.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+  
+    aniation-iteration-count: 1;
+}
+
+.achievements-section.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    animation: fadeInUp 1.2s ease-out forwards;
+}
+
+.achievements-section.animate-in .achievements-title {
+    animation: slideInFromBottom 1.2s ease-out 0.2s forwards;
+}
+
+.achievements-section.animate-in .line-about {
+    animation: scaleIn 1.2s ease-out 0.4s forwards;
+}
+
+.achievement-card.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+    animation: bounceIn 1s ease-out forwards;
+}
+
+/* Reset animations when elements leave viewport */
+.story-section:not(.animate-in),
+.gallery-section:not(.animate-in),
+.achievements-section:not(.animate-in),
+.gallery-item:not(.animate-in),
+.achievement-card:not(.animate-in) {
+    opacity: 0;
+    transform: translateY(80px);
+    transition: all 0.6s ease-out;
+}
+
+/* Enhanced reset for child elements */
+.story-section:not(.animate-in) .story-text {
+    opacity: 0;
+    transform: translateX(-80px);
+    transition: all 0.6s ease-out;
+}
+
+.story-section:not(.animate-in) .story-image {
+    opacity: 0;
+    transform: translateX(80px);
+    transition: all 0.6s ease-out;
+}
+
+.gallery-section:not(.animate-in) .gallery-title,
+.achievements-section:not(.animate-in) .achievements-title {
+    opacity: 0;
+    transform: translateY(120px);
+    transition: all 0.6s ease-out;
+}
+
+.gallery-section:not(.animate-in) .line-about,
+.achievements-section:not(.animate-in) .line-about {
+    opacity: 0;
+    transform: scale(0.7);
+    transition: all 0.6s ease-out;
+}
+
+/* Smooth scrolling for the entire page */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Enhanced hover animations that work with scroll animations */
+.story-img {
+    transition: transform 0.4s ease;
+}
+
+.story-img:hover {
+    transform: scale(1.08);
+}
+
+.story-img-sub {
+    transition: transform 0.4s ease;
+}
+
+.story-img-sub:hover {
+    transform: scale(1.08) translateX(50px) translateY(50px);
+}
+
+/* Enhanced gallery item animations */
+.gallery-item {
+    transition: all 0.8s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.08) translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+}
+
+/* Enhanced achievement card animations */
+.achievement-card {
+    transition: all 0.4s ease;
+}
+
+.achievement-card:hover {
+    transform: translateY(-20px) scale(1.03);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+}
+
+.achievement-icon {
+    transition: transform 0.4s ease;
+    font-size: 3rem;
+    color: #ffbf00ff;
+    margin-bottom: 20px;
+}
+
+.achievement-card:hover .achievement-icon {
+    transform: scale(1.3) rotate(10deg);
+    color: #5d4037;
+}
+
+/* Ensure proper staggering for gallery items */
+.gallery-item:nth-child(1) { animation-delay: 0.1s; }
+.gallery-item:nth-child(2) { animation-delay: 0.2s; }
+.gallery-item:nth-child(3) { animation-delay: 0.3s; }
+.gallery-item:nth-child(4) { animation-delay: 0.4s; }
+.gallery-item:nth-child(5) { animation-delay: 0.5s; }
+.gallery-item:nth-child(6) { animation-delay: 0.6s; }
+.gallery-item:nth-child(7) { animation-delay: 0.7s; }
+.gallery-item:nth-child(8) { animation-delay: 0.8s; }
+.gallery-item:nth-child(9) { animation-delay: 0.9s; }
+.gallery-item:nth-child(10) { animation-delay: 1.0s; }
+
+/* Ensure proper staggering for achievement cards */
+.achievement-card:nth-child(1) { animation-delay: 0.2s; }
+.achievement-card:nth-child(2) { animation-delay: 0.4s; }
+.achievement-card:nth-child(3) { animation-delay: 0.6s; }
+
+/* Mobile optimizations for smoother animations */
+@media (max-width: 768px) {
+    .story-section,
+    .gallery-section,
+    .achievements-section,
+    .gallery-item,
+    .achievement-card {
+        transition-duration: 0.6s;
+    }
+    
+    .gallery-item:nth-child(n) { animation-delay: 0.1s; }
+    .achievement-card:nth-child(n) { animation-delay: 0.1s; }
+}
+
+/* Performance optimization */
+.story-section,
+.gallery-section,
+.achievements-section,
+.gallery-item,
+.achievement-card {
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* About Us Section */
 .about-hero {
     background-color: #1d0d00ff;
     height: 70vh;
@@ -44,6 +313,8 @@
     align-items: center;
     gap: 40px;
     margin: 20px 0;
+    opacity: 0;
+    transform: scale(0.8);
 }
 
 .aboutline {
@@ -73,20 +344,19 @@
 /* Story Section */
 .story-section {
     padding: 60px 150px;
-   
 }
 
 .story-content {
     display: flex;
     align-items: center;
     gap: 80px;
-   
 }
 
 .story-text {
     flex: 1;
-
     padding: 20px;
+    opacity: 0;
+    transform: translateX(-60px);
 }
 
 .story-title {
@@ -108,6 +378,8 @@
     flex: 1;
     display: flex;
     justify-content: center;
+    opacity: 0;
+    transform: translateX(60px);
 }
 
 .story-img {
@@ -118,6 +390,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
     border-top: 2px solid #fff8ef;
 }
+
 .story-img-sub{
     width: 400px;
     height: 300px;
@@ -141,6 +414,8 @@
     font-size: 70px;
     color: #212121;
     margin-bottom: 20px;
+    opacity: 0;
+    transform: translateY(100px);
 }
 
 .gallery-grid {
@@ -156,12 +431,8 @@
     overflow: hidden;
     border-radius: 15px;
     cursor: pointer;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     border: 3px solid #5d4037;
-}
-
-.gallery-item:hover {
-    transform: scale(1.05);
 }
 
 /* Specific positioning for 10 items in 4x3 grid */
@@ -220,6 +491,11 @@
     height: 100%;
     object-fit: cover;
     display: block;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-placeholder img {
+    transform: scale(1.1);
 }
 
 .gallery-overlay {
@@ -305,7 +581,6 @@
 
 /* Services Section */
 .services-section {
-    
     text-align: center;
 }
 
@@ -348,7 +623,6 @@
     font-size: 24px;
     color: #5d4037;
     margin-bottom: 15px;
-    
 }
 
 .service-card p {
@@ -368,7 +642,6 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 40px;
     margin-top: 60px;
-    
 }
 
 .achievement-card {
@@ -376,27 +649,15 @@
     padding: 40px 30px;
     border-radius: 15px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
     text-align: center;
     border-top: 5px solid #5d4037;
 }
 
-.achievement-card:hover {
-    transform: translateY(-10px);
-}
-
-.achievement-icon {
-    font-size: 64px;
-    margin-bottom: 20px;
-     color: #ffbf00ff;
-}
-
 .achievement-card h3 {
     font-size: 22px;
-    /* color: #5d4037; */
     margin-bottom: 15px;
     color: #ffbf00ff;
-    
 }
 
 .achievement-issuer {

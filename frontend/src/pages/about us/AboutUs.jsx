@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef } from 'react'
 import './AboutUs.css'
 import Navbar from '../../components/navbar/Navbar'
 import { 
@@ -19,6 +19,52 @@ import { SiCodechef } from "react-icons/si";
 import Footer from '../../components/footer/Footer';
 
 function AboutUs() {
+  const storyRef = useRef(null);
+  const galleryRef = useRef(null);
+  const achievementsRef = useRef(null);
+
+  useEffect(() => {
+    const observerOptions = {
+      threshold: 0.2, // Trigger when 20% of element is visible
+      rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          // Add animate class when element enters viewport
+          entry.target.classList.add('animate-in');
+        } else {
+          // Remove animate class when element leaves viewport (for repeating)
+          entry.target.classList.remove('animate-in');
+        }
+      });
+    }, observerOptions);
+
+    // Observe sections
+    if (storyRef.current) observer.observe(storyRef.current);
+    if (galleryRef.current) observer.observe(galleryRef.current);
+    if (achievementsRef.current) observer.observe(achievementsRef.current);
+
+    // Observe gallery items and achievement cards individually
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const achievementCards = document.querySelectorAll('.achievement-card');
+
+    galleryItems.forEach((item, index) => {
+      item.style.animationDelay = `${index * 0.1}s`;
+      observer.observe(item);
+    });
+
+    achievementCards.forEach((card, index) => {
+      card.style.animationDelay = `${index * 0.2}s`;
+      observer.observe(card);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
   return (
     <div className='about-us'>
       <Navbar />
@@ -37,7 +83,7 @@ function AboutUs() {
       </div> */}
 
       {/* Discover Our Story Section */}
-      <div className="story-section">
+      <div className="story-section" ref={storyRef}>
         <div className="story-content">
           <div className="story-text">
             <h1 className="story-title">Discover Our Story</h1>
@@ -68,7 +114,7 @@ function AboutUs() {
       </div>
 
       {/* Gallery Section */}
-      <div className="gallery-section">
+      <div className="gallery-section" ref={galleryRef}>
         <h1 className="gallery-title">Our Gallery</h1>
         <div className="line-about">
           <div className="line aboutline"></div>
@@ -140,93 +186,8 @@ function AboutUs() {
         </div>
       </div>
 
-      {/* Branches Section
-      <div className="branches-section">
-        <h1 className="branches-title">Our Outlets</h1>
-        <div className="line-about">
-          <div className="line aboutline"></div>
-          <h2 className='branches-subtitle'>Locations</h2>
-          <div className="line aboutline"></div>
-        </div>
-        
-        <div className="branches-grid">
-          <div className="branch-card">
-            <div className="branch-icon">🏢</div>
-            <h3>Colombo Main Branch</h3>
-            <p className="branch-address">123 Galle Road, Colombo 03</p>
-            <p className="branch-phone">📞 +94 11 234 5678</p>
-            <p className="branch-hours">⏰ 10:00 AM - 11:00 PM</p>
-          </div>
-
-          <div className="branch-card">
-            <div className="branch-icon">🌊</div>
-            <h3>Negombo Beach Branch</h3>
-            <p className="branch-address">45 Beach Road, Negombo</p>
-            <p className="branch-phone">📞 +94 31 567 8901</p>
-            <p className="branch-hours">⏰ 9:00 AM - 12:00 AM</p>
-          </div>
-
-          <div className="branch-card">
-            <div className="branch-icon">🏛️</div>
-            <h3>Kandy Heritage Branch</h3>
-            <p className="branch-address">78 Peradeniya Road, Kandy</p>
-            <p className="branch-phone">📞 +94 81 234 5678</p>
-            <p className="branch-hours">⏰ 11:00 AM - 10:00 PM</p>
-          </div>
-
-          <div className="branch-card">
-            <div className="branch-icon">🛍️</div>
-            <h3>Galle Fort Branch</h3>
-            <p className="branch-address">12 Church Street, Galle Fort</p>
-            <p className="branch-phone">📞 +94 91 345 6789</p>
-            <p className="branch-hours">⏰ 10:30 AM - 11:30 PM</p>
-          </div>
-
-          <div className="branch-card">
-            <div className="branch-icon">🌄</div>
-            <h3>Nuwara Eliya Branch</h3>
-            <p className="branch-address">25 Queen Elizabeth Drive, Nuwara Eliya</p>
-            <p className="branch-phone">📞 +94 52 678 9012</p>
-            <p className="branch-hours">⏰ 8:00 AM - 9:00 PM</p>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Services Section
-      <div className="services-section">
-        <h1 className="services-title">Our Services</h1>
-        <div className="line-about">
-          <div className="line aboutline"></div>
-          <h2 className='services-subtitle'>Why Choose Us</h2>
-          <div className="line aboutline"></div>
-        </div>
-        
-        <div className="services-grid">
-          <div className="service-card">
-            <div className="service-icon"><IoFastFoodSharp /></div>
-            <div className="service-number">100+</div>
-            <h3>Weekly Orders</h3>
-            <p>We proudly serve over 100 orders every week, delivering fresh and delicious meals to our valued customers.</p>
-          </div>
-
-          <div className="service-card">
-            <div className="service-icon"><TbTargetArrow /></div>
-            <div className="service-number">★★★★★</div>
-            <h3>Best Customer Service</h3>
-            <p>Our dedicated team ensures every customer receives exceptional service with a smile. Your satisfaction is our priority.</p>
-          </div>
-
-          <div className="service-card">
-            <div className="service-icon"><SiCodechef /></div>
-            <div className="service-number">A+</div>
-            <h3>High Quality Food</h3>
-            <p>We use only the finest ingredients and traditional cooking methods to ensure every dish meets the highest quality standards.</p>
-          </div>
-        </div>
-      </div> */}
-
       {/* Achievements Section */}
-      <div className="achievements-section">
+      <div className="achievements-section" ref={achievementsRef}>
         <h1 className="achievements-title">Our Achievements</h1>
         <div className="line-about">
           <div className="line aboutline"></div>
