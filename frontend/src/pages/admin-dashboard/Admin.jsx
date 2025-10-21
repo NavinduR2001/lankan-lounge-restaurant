@@ -4,6 +4,7 @@ import AdminNavbar from '../../components/admin-navbar/AdminNavbar'
 import AdminSettings from '../admin-setting/AdminSettings'  // ✅ Correct import path
 import SalesSummary from '../../components/chart/SalesSummary.jsx';
 import ItemSummary from '../../components/item-summary/ItemSummary';
+import { IoReloadCircleSharp } from "react-icons/io5";
 import { 
   addMenuItem, 
   getAllOrders, 
@@ -470,7 +471,7 @@ const handleRemoveItem = async (itemId) => {
           </div>
           <ul className={`submenu-profile ${activeSubmenus.addItems ? 'show' : ''}`}>
             <li onClick={() => setActiveSection('add-menu')}>Add Item to Menu</li>
-            <li onClick={() => setActiveSection('add-trending')}>Add Trending Items</li>
+         
             <li onClick={() => setActiveSection('remove-item')}>Remove Items</li>
           </ul>
           
@@ -497,12 +498,13 @@ const handleRemoveItem = async (itemId) => {
         <div className="content-section">
           {/* Orders Section */}
           <div className={`Available-order ${activeSection === 'orders' ? 'show' : ''}`}>
-            <div className="ad-topic-header">
-              <h2 className='Ad-av-header'>Available Orders</h2>
-              <button onClick={loadOrders} className="refresh-btn">Refresh</button>
-            </div>
+            
 
             <div className="content-container">
+              <div className="ad-topic-header">
+              <h2 className='Ad-av-header'>Available Orders</h2>
+              <button onClick={loadOrders} className="refresh-btn-available"><IoReloadCircleSharp /></button>
+            </div>
               {loadingOrders ? (
                 <div className="loading">Loading orders...</div>
               ) : orders.length > 0 ? (
@@ -616,12 +618,13 @@ const handleRemoveItem = async (itemId) => {
 
           {/* Order History Section */}
           <div className={`Order-history ${activeSection === 'order-history' ? 'show' : ''}`}>
-            <div className="ad-topic-header">
-              <h2 className='Ad-av-header'>Order History</h2>
-              <button onClick={loadOrderHistory} className="refresh-btn">Refresh</button>
-            </div>
+            
 
             <div className="content-container">
+              <div className="ad-topic-header">
+              <h2 className='Ad-av-header'>Order History</h2>
+              <button onClick={loadOrderHistory} className="refresh-btn-available"><IoReloadCircleSharp /></button>
+            </div>
               {loadingHistory ? (
                 <div className="loading">Loading order history...</div>
               ) : orderHistory.length > 0 ? (
@@ -701,6 +704,8 @@ const handleRemoveItem = async (itemId) => {
                       <div className="error-message submit-error">{errors.submit}</div>
                     )}
 
+                    <div className="flex-div-inline">
+
                     <label htmlFor="item-name">Item Name:</label>
                     <input 
                       name="itemName"
@@ -732,6 +737,9 @@ const handleRemoveItem = async (itemId) => {
                       <option value="beverages">08 - Beverages</option>
                     </select>
                     {errors.itemCategory && <div className="error-message">{errors.itemCategory}</div>}
+                    
+                    </div>
+
                     
                     <label htmlFor="food-id">Food ID:</label>
                     <input 
@@ -797,7 +805,7 @@ const handleRemoveItem = async (itemId) => {
                 <h2 className='Ad-av-header'>Add Trending Items</h2>
               </div>
               {/* Same form as add-menu but with trending-specific IDs */}
-              <div className="add-item-form">
+              <div className="add-item-form add-focus">
                 <form onSubmit={handleSubmit}>
                   <div className="form-group">
                     {successMessage && (
@@ -876,7 +884,8 @@ const handleRemoveItem = async (itemId) => {
                       className={errors.itemDescription ? 'error' : ''}
                     ></textarea>
                     {errors.itemDescription && <div className="error-message">{errors.itemDescription}</div>}
-                    
+
+                    <div className="add-item-img-input">
                     <label htmlFor="trending-item-image">Item Image:</label>
                     <input 
                       name="itemImage"
@@ -887,8 +896,8 @@ const handleRemoveItem = async (itemId) => {
                       className={errors.itemImage ? 'error' : ''}
                     />
                     {errors.itemImage && <div className="error-message">{errors.itemImage}</div>}
-
-                    <button type="submit" disabled={isSubmitting}>
+                    </div>
+                    <button type="submit"  disabled={isSubmitting}>
                       {isSubmitting ? 'Adding Trending Item...' : 'Add Trending Item'}
                     </button>
                   </div>

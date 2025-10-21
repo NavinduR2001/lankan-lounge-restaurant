@@ -53,7 +53,7 @@
 
 .welcome-img{
     margin: 0;
-    margin-top: -220px;
+    margin-top: -150px;
     display: flex;
     flex-direction: row;
     gap: justify;
@@ -69,19 +69,179 @@
     width: 50%;
     height: 50%;
     object-fit: cover;
+    animation-name: rotate;
+    animation-duration: 10s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
 }
+
+
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0deg);
+    }
+    50%{
+        scale :1.2;
+        transform: rotate(180deg);
+    }
+    100%{
+        transform: rotate(360deg);
+    }
+
+}
+
+
 .plateimg{
     width: 50%;
     height:50%;
     object-fit: cover;
+    position: relative;
+    
  
+}
+
+/* Base animation classes */
+.scroll-animate {
+  opacity: 0;
+  transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-animate.animate {
+  opacity: 1;
+}
+
+/* Fade In Animation */
+.fade-in {
+  transform: translateY(50px);
+}
+
+.fade-in.animate {
+  transform: translateY(0);
+}
+
+/* Fade Up Animation */
+.fade-up {
+  transform: translateY(80px);
+}
+
+.fade-up.animate {
+  transform: translateY(0);
+}
+
+/* Scale In Animation */
+.scale-in {
+  transform: scale(0.8) translateY(30px);
+}
+
+.scale-in.animate {
+  transform: scale(1) translateY(0);
+}
+
+/* Pop Up Animation for Dish Cards */
+.pop-up {
+  transform: translateY(100px) scale(0.9);
+  opacity: 0;
+}
+
+.pop-up.animate {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+/* Bounce In Animation for Service Cards */
+.bounce-in {
+  transform: translateY(60px) scale(0.8);
+  opacity: 0;
+}
+
+.bounce-in.animate {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  animation: bounceEffect 0.6s ease-out 0.3s;
+}
+
+@keyframes bounceEffect {
+  0% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-10px) scale(1.05); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+/* Animation Delays */
+.delay-1 {
+  transition-delay: 0.2s;
+}
+
+.delay-2 {
+  transition-delay: 0.4s;
+}
+
+.delay-3 {
+  transition-delay: 0.6s;
+}
+
+.plate-img-ani{
+    animation-name: plateFloat;
+    animation-duration: 6s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: forwards;
+    animation-play-state: running;
+}
+@keyframes plateFloat{
+    0%{
+        transform: translateY(0px);
+        scale: 1;
+    }
+    50%{
+        transform: translateY(-20px);
+        scale: 1.05;
+    }
+    100%{
+        transform: translateY(0px);
+        scale: 1;
+    }
+
+}
+
+/* Enhanced Dish Card Hover Effects */
+.dish-card {
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  animation-iteration-count: 1;
+}
+
+.dish-card:hover {
+  transform: translateY(-20px);
+ 
+  
+
+}
+
+.dish-card img {
+  transition: transform 0.3s ease;
+}
+
+.dish-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Enhanced Service Card Animation */
+.service-card-home {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.service-card-home:hover {
+  transform: translateY(-15px) scale(1.02);
+  box-shadow: 0 25px 50px rgba(93, 64, 55, 0.15);
 }
 
 .ordercap{
     text-align: center;
     font-size: 36px;
     position: relative;
-    bottom: 80px;
+    bottom: 0px;
     color: #212121;
    
 }
