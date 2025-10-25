@@ -2,7 +2,7 @@ import './Menu.css'
 import { useNavigate } from 'react-router-dom'
 import React, { useState, useEffect, useRef } from 'react'
 import Navbar from '../../components/navbar/Navbar'
-import { biriyani, burger, one, pizza } from '../../assets/assets'
+import { biriyani, burger, chinese, desserts, one, pizza,indian,familyMeals,bakery } from '../../assets/assets'
 import { getAllItems, getItemsByCategory, getTrendingItems, searchItems } from '../../services/api';
 import { useCart } from '../../components/CartContext'; // ✅ Import useCart
 import Footer from '../../components/footer/Footer'
@@ -38,31 +38,31 @@ function Menu() {
     { 
       key: 'indian', 
       title: 'Indian Food', 
-      image: biriyani,
+      image: indian,
       displayTitle: 'Indian Food'
     },
     { 
       key: 'chinese', 
       title: 'Chinese Food', 
-      image: one,
+      image: chinese,
       displayTitle: 'Chinese Food'
     },
     { 
       key: 'family-meals', 
       title: 'Family Meals', 
-      image: one,
+      image: familyMeals,
       displayTitle: 'Family Meals'
     },
     { 
       key: 'desserts', 
       title: 'Desserts', 
-      image: one,
+      image: desserts,
       displayTitle: 'Desserts'
     },
     { 
       key: 'bakery', 
       title: 'Bakery Items', 
-      image: one,
+      image: bakery,
       displayTitle: 'Bakery Items'
     },
     { 
