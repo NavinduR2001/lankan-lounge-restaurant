@@ -277,7 +277,6 @@ function Checkout() {
     
     // Simulate order confirmation process
     setTimeout(() => {
-      alert('Order confirmed successfully! You will receive a confirmation email shortly.');
       navigate('/menu'); // Redirect to menu or home
     }, 2000);
   };
