@@ -43,7 +43,7 @@ function AdminNavbar() {
 
   return (
     <>
-            <div className="navbar">
+            <div className="admin-navbar">
                 <div className="navbar-container-admin">
                     <div className="logo"><img src={logo} alt="Logo" /></div>    
 

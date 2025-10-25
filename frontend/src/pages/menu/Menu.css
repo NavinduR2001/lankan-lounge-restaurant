@@ -9,7 +9,7 @@
 .menu-page {
     padding: 20px 200px 0px 200px;
     background-color: #fdf0df;
-    margin-bottom: 0px;
+    margin-bottom: 150px;
     margin-top: 0px;
 }
 
@@ -56,11 +56,13 @@
 .menu-top-item-title{
     font-family: "Josefin Sans", sans-serif;
     font-size: 24px;
+    display: inline-block;
+    width: max-content;
     font-weight:600;
     color:#5d4037 ;
     border-bottom: 2px solid #ffbf00ff;
     border-radius: 5px;
-    padding: 5px 10px 0px 10px;
+    padding: 5px 5px 0px 5px;
 }
 
 .menu-container{
@@ -88,7 +90,7 @@
 .sub-menu-container{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 20px;
+    gap: 50px;
     padding: 20px 0;
     width: 100%;
 }
@@ -298,6 +300,11 @@
   flex-direction: column;
   gap: 4px;
 }
+/* .menu-top-item-title{
+  
+  font-size: 24px;
+  display:inline-block;
+} */
 
 .item-id {
   font-size: 0.8em;

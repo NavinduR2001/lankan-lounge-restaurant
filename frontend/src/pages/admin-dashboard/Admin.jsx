@@ -135,7 +135,6 @@ const handleRemoveItem = async (itemId) => {
       
       if (response.data.success || response.data.message) {
         console.log('✅ Item removed successfully');
-        alert('Item removed successfully!');
         
         // Refresh the items list
         loadAllItemsData();
@@ -228,8 +227,8 @@ const handleRemoveItem = async (itemId) => {
       if (response.data && response.data.message) {
         console.log('✅ Menu item added successfully:', response.data);
         
-        // ✅ Show success alert
-        alert('Menu item added successfully!');
+        // // ✅ Show success alert
+        // alert('Menu item added successfully!');
         
         // ✅ Show success message in form
         setSuccessMessage('Menu item added successfully!');
@@ -433,7 +432,7 @@ const handleRemoveItem = async (itemId) => {
         if (response.data.success) {
           console.log('✅ Order rejected successfully');
           loadOrders(); // Refresh the orders list
-          alert('Order rejected successfully.');
+          // alert('Order rejected successfully.');
         }
       } catch (error) {
         console.error('❌ Error rejecting order:', error);
