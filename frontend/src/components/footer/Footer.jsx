@@ -119,7 +119,7 @@ function Footer() {
         <div className="footer-bottom">
           <div className="footer-bottom-content">
             <div className="copyright">
-              <p>&copy; 2024 Lankan Lounge Restaurant. All rights reserved.</p>
+              <p>&copy; 2025 Lankan Lounge Restaurant. All rights reserved.</p>
             </div>
             <div className="footer-links">
               <Link to="/privacy-policy">Privacy Policy</Link>
@@ -127,7 +127,7 @@ function Footer() {
               <Link to="/refund-policy">Refund Policy</Link>
             </div>
             <div className="made-with-love">
-              <p>Made with <FaHeart className="heart-icon" /> for food lovers</p>
+              <p>Designed by <FaHeart className="heart-icon" /> <a href="https://www.linkedin.com/in/navindu-ramanayaka-125082303" target="_blank" rel="noopener noreferrer" className='name-link-footer'>Navindu Ramanayaka</a></p>
             </div>
           </div>
         </div>
