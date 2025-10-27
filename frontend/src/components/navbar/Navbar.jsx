@@ -4,6 +4,7 @@ import {cart, logo} from '../../assets/assets'
 import {Link, useLocation, useNavigate } from 'react-router-dom'
 import { IoPersonSharp } from "react-icons/io5";
 import { useCart } from '../CartContext';
+import { GiHamburgerMenu } from "react-icons/gi";
 
 function Navbar() {
     const navigate = useNavigate();
@@ -174,6 +175,7 @@ function Navbar() {
                                 <button>LOGIN</button>
                             </Link>
                         )}
+                        <GiHamburgerMenu className='nav-menu-icon' />
                     </div>
                 </div>
             </div>
