@@ -369,8 +369,29 @@
   }
   
   .newsletter-input {
-    width: 100%;
+    width: 80%;
   }
+  .newsletter-btn {
+    scale: 0.9;
+    margin-left:0;
+  }
+  .newsletter-info{
+    
+    text-align: left;
+    margin-left:0;
+    padding:0;
+  }
+  .newsletter-info h3{
+    font-size:16px;
+  }
+  .newsletter-info p{
+    font-size:12px;
+  }
+  .copyright p, .footer-links a, .made-with-love p{
+    font-size:12px;
+    line-height:1;
+  }
+  
 }
 
 @media (max-width: 480px) {
@@ -399,4 +420,14 @@
     height: 35px;
     font-size: 16px;
   }
+}
+
+.name-link-footer{
+    color:#fff8ef;
+    text-decoration:none;
+    font-weight:600;
+    
+}
+.name-link-footer:hover{
+    color:#ffca28;
 }

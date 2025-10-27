@@ -5,7 +5,7 @@ import chicken from './Welcome-chicken.png';
 import rplate from './r-plate.png';
 import lplate from './l-plate.png';
 import rostedChicken from './rostedchicken.png';
-import pizza from './pizzadish.png';
+import pizza from './pizza.jpg';
 import burger from './burger.png';
 import biriyani from './biriyani.png';
 import one from './1.jpg';
@@ -18,8 +18,16 @@ import seven from './7.jpeg';
 import eight from './8 (2).jpg';
 import nine from './9.jpg';
 import ten from './10.png';
+import indian from './indi.jpeg';
+import chinese from './chinee.jpeg';
+import desserts from './dess.jpg';
+import bakery from './bakery.jpg';
+import familyMeals from './FPM.jpg';
+import beverages from './bev.jpg';
+import pizzahome from './pizzadish.png'
+
 
 export {
-    logo,cart,branch,chicken,rplate,lplate,rostedChicken,pizza,burger,biriyani,one,two,three,four,five,six,seven,eight,nine,ten
+    logo,cart,branch,chicken,rplate,lplate,rostedChicken,pizza,burger,biriyani,one,two,three,four,five,six,seven,eight,nine,ten,indian,chinese,desserts,bakery,familyMeals,beverages,pizzahome
 
 }

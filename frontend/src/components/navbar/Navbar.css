@@ -5,20 +5,22 @@
     height: max-content;
     background-color: #212121;
     background: linear-gradient(to left,rgba(29, 13, 0, 1),rgb(39, 18, 0),rgb(29, 13, 0));
-    
     margin: 0;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     padding-top: 10px;
     padding-bottom: 10px;
+    min-height: 60px;
 }
 
 .navbar-container{
     display: flex;
     flex-direction: row;
-  
+    justify-content: space-between;
     align-items: center;
+    gap: 200px;
     margin-left: 200px;
     margin-right: 200px;
     
@@ -26,16 +28,20 @@
 }
 .logo img{
     width:120px;
+    
 }
 
 .navbar-item ul{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
     text-decoration: none; 
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     gap: 50px;
-    /* background-color: rgb(134, 86, 23); */
+    
     
 }
     
@@ -77,13 +83,22 @@
 .navbar-item li:hover{
     cursor: pointer;
 }
+.nav-menu-icon{
+    color: #fdf0df;
+    width: 50px;
+    height: 50px;
+    display: none;
+    cursor: pointer;
+}
 .nav-buttons{
-    margin-left: auto;
+    margin: 0;
+    padding: 0;
     display: flex;
     flex-direction: row;
     gap: 20px;
     justify-content: center;
     align-items: center;
+    
 }
 
 button{
@@ -113,6 +128,7 @@ button:active{
     font-size: 14px;
     width:100%;
     font-weight: 600;
+    margin-left:0;
     
 }
 .cart:active{
@@ -172,6 +188,7 @@ button:active{
 }
 
 .profile-dropdown {
+    font-family: "Josefin Sans", sans-serif;
     position: absolute;
     top: 100%;
     right:-10px;
@@ -260,8 +277,81 @@ button:active{
 
 /* Mobile responsiveness */
 @media (max-width: 768px) {
+    .navbar{
+        width: 100%;
+        height: 60px; /* Change from fixed 50px to auto */
+        min-height: 30px; /* Set minimum height instead */
+        padding-top: 8px; /* Reduce padding for mobile */
+        padding-bottom: 8px;
+    }
+    
+    .navbar-container{
+        margin-left:20px; /* Reduce margins */
+        margin-right: 10px;
+        gap: 20px; /* Reduce gap */
+        width: 100%; /* Ensure full width */
+        justify-content: space-between; /* Better spacing */
+    }
+    
+    .navbar-item {
+        display: none;
+    }
+    
+    .logo img{
+        width: 50px; /* Use width instead of scale */
+        scale: 0.7;
+        position: relative;
+        left: 20px;
+        
+    }
+
     .profile-dropdown {
         right: -20px;
-        min-width: 180px;
+        min-width: 160px; /* Slightly smaller for mobile */
+    }
+    
+    .nav-buttons{
+        gap: 8px; /* Increase gap */
+        transform: scale(0.9); /* Use transform instead of scale property */
+        position: relative;
+        right: 8px;
+    }
+    
+    button{
+        display: none;
+    }
+    .nav-menu-icon{
+        display: block;
+        position: relative;
+        right: 8px;
+    }
+}
+
+/* Add more specific mobile breakpoints */
+@media (max-width: 480px) {
+    .navbar {
+        height: 50px;   
+        min-height: 50px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+    }
+    
+    .navbar-container {
+        margin-left: 5px;
+        margin-right: 5px;
+        gap: 10px;
+    }
+    
+    .logo img {
+        width: 50px;
+    }
+    
+    .nav-buttons {
+        transform: scale(0.8);
+    }
+    
+    .profile-dropdown {
+        right: -10px;
+        min-width: 140px;
     }
 }

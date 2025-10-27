@@ -268,6 +268,7 @@
     position: relative;
     bottom: 30px;
     text-align: center;
+    font-size: 70px;
 }
 .offer-card{
     background-color: #fff;
@@ -318,6 +319,7 @@
 
 .dishes-title{
     font-family: "Josefin Sans", sans-serif;
+    
 }
 
 .dishes-subtitle{
@@ -347,16 +349,24 @@
     width: 800px;
     height:600px;
     
+    
 
 }
 .dish-name{
     display: flex;
     flex-direction: column; 
     align-items: flex-start;
-    width: 600px;
+    width: 700px;
     height:600px;
     color: #5d4037;
      font-family: "Josefin Sans", sans-serif;
+}
+.dish-subtitle-home{
+    font-size: 36px;
+    color: #212121;
+    margin-top:0;
+    font-weight: 500;
+    
 }
 .add-to-cart-btn{
     margin:0px;
@@ -373,16 +383,22 @@
     color: #5d4037;
 }
 .dish-title{
-    font-size: 56px;
+    font-size: 66px;
+    font-weight: 900;
     color: #5d4037;
     margin-bottom: 10px;
 }
-.person, .price ,.sdish-description, .dish-rating{
+.person, .sdish-description{
     font-size: 24px;
     color: #212121;
     line-height: 1.5;
     margin-bottom: 10px;
    
+}
+.price{
+    font-size: 36px;
+    font-weight: 800;
+    color: #212121;
 }
 .dline{
     display: block; 
@@ -396,6 +412,13 @@
 .services-section {
     padding: 50px 0px;
     text-align: center;
+}
+.line-about {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    margin-bottom: 40px;
 }
 
 .services-grid {
@@ -416,7 +439,7 @@
     font-family: "Josefin Sans", sans-serif;
 }
 
-.service-card:hover {
+.service-card-home:hover {
     transform: translateY(-10px);
 }
 
@@ -452,4 +475,287 @@
     white-space: nowrap;
     position: relative;
     bottom: 20px;
+}
+
+@media (max-width: 768px) {
+    .home{
+        overflow-x: hidden;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    .welcome-title, .dishes-title {
+        font-size: 48px;
+        margin-top: 60px;
+    }
+    
+    .welcome h2, .dishes-subtitle {
+        font-size: 56px;
+        margin-top: -50px;
+    }
+    
+    .line-resturent {
+        gap: 20px;
+        flex-wrap: wrap;
+    }
+    
+    .welcome-img {
+        flex-direction: row;
+        margin-top: -60px;
+        gap: 0px;
+    }
+    
+    .ordercap {
+        display: inline-block;
+        font-size: 24px;
+     
+    }
+    
+    .dishes {
+        padding: 20px 30px;
+        gap: 60px;
+    }
+    .dishes-title{
+        font-size: 20px;
+    }
+    
+    .dish-card {
+        flex-direction: column;
+        height: auto;
+        gap: 30px;
+        padding: 30px 20px;
+    }
+    
+    .dish-image-placeholder,
+    .rostedchicken-image {
+        width: 400px;
+        height: 300px;
+        object-fit: cover;
+    }
+    
+    .dish-name {
+        width: 100%;
+        height: auto;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .dish-title {
+        font-size: 42px;
+    }
+    
+    .dish-subtitle-home {
+        font-size: 28px;
+    }
+    
+    .person, .sdish-description {
+        font-size: 18px;
+    }
+    
+    .price {
+        font-size: 28px;
+    }
+    
+    .add-to-cart-btn {
+        width: 180px;
+        height: 45px;
+        font-size: 18px;
+    }
+    
+    .services-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        padding: 0 20px;
+    }
+    
+    .services-subtitle {
+        font-size: 48px;
+        white-space: normal;
+        text-align: center;
+    }
+    
+    .line-about {
+        display: none;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    
+    
+}
+
+@media (max-width: 480px) {
+    .top{
+        height: 380px;
+        padding-bottom: 40px;
+    }
+    .welcome-title, .dishes-title {
+        font-size: 36px;
+        margin-top: 40px;
+        padding: 0 10px;
+    }
+    
+    .welcome h2, .dishes-subtitle {
+        font-size: 42px;
+        margin-top: -40px;
+    }
+    
+    .line-resturent {
+        gap: 15px;
+        padding: 0 10px;
+    }
+    .welcome-img {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        
+        
+    }
+    
+    .chicken {
+        width: 50%;
+    }
+    
+    .plateimg {
+        width: 50%;
+    }
+    
+    .ordercap {
+        top:30px;
+        font-size: 18px;
+        scale: 0.8;
+        
+    }
+    
+    .dishes {
+        padding: 0px 15px;
+        gap: 50px;
+        margin-top: -120px;
+    }
+    
+    .dish-card {
+        padding: 20px 10px;
+        gap: 20px;
+    }
+    
+    .dish-image-placeholder
+     {
+        height: 260px;
+        width: 380px;
+       
+        
+    }
+    .rostedchicken-image {
+        height: 260px;
+        width: 380px;
+        object-fit: fill;
+        
+    }
+    
+    .dish-title {
+        font-size: 32px;
+    }
+    .dishes-title{
+        font-size: 28px;
+        margin-top: 130px;
+    }
+    .dishes-subtitle{
+        font-size: 42px;
+        margin-top: -10px;
+    }
+    .dishline{
+        display: none;
+    }
+    .dish-subtitle-home {
+        font-size: 22px;
+    }
+    
+    .person, .sdish-description {
+        font-size: 16px;
+    }
+    
+    .price {
+        font-size: 24px;
+    }
+    
+    .add-to-cart-btn {
+        width: 160px;
+        height: 40px;
+        font-size: 16px;
+    }
+    
+    .services-section {
+        padding: 30px 0;
+    }
+    
+    .services-grid {
+        padding: 0 15px;
+    }
+    
+    .service-card-home {
+        padding: 20px 15px;
+    }
+    
+    .service-icon {
+        font-size: 48px;
+        margin-bottom: 15px;
+    }
+    
+    .service-number {
+        font-size: 28px;
+        margin-bottom: 10px;
+    }
+    
+    .service-card-home h3 {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+    
+    .service-card-home p {
+        font-size: 14px;
+    }
+    
+    .services-subtitle {
+        font-size: 36px;
+    }
+    
+    
+    .aboutline {
+        display:none;
+        width: 100%;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 360px) {
+    .welcome-title, .dishes-title {
+        font-size: 28px;
+    }
+    
+    .welcome h2, .dishes-subtitle {
+        font-size: 36px;
+    }
+    
+    .dish-title {
+        font-size: 28px;
+    }
+    
+    .dish-subtitle-home {
+        font-size: 18px;
+    }
+    
+    .person, .sdish-description {
+        font-size: 14px;
+    }
+    
+    .price {
+        font-size: 20px;
+    }
+    
+    .services-subtitle {
+        font-size: 28px;
+    }
+    
+    .ordercap {
+        font-size: 18px;
+    }
 }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import './Home.css';
 import Header from '../../components/header/Header'
 import Navbar from '../../components/navbar/Navbar'
-import { chicken, lplate, rplate, rostedChicken, pizza, burger, biriyani } from '../../assets/assets';
+import { chicken, lplate, rplate, rostedChicken, pizzahome, burger, biriyani} from '../../assets/assets';
 import { IoFastFoodSharp } from "react-icons/io5";
 import { TbTargetArrow } from "react-icons/tb";
 import { SiCodechef } from "react-icons/si";
@@ -68,11 +68,11 @@ function Home() {
       <div className="dishes">
         <div className="dish-card scroll-animate pop-up">
           <div className='dish-image-placeholder'>
-            <img src={pizza} alt="Pizza" className='rostedchicken-image' />
+            <img src={pizzahome} alt="Pizza" className='rostedchicken-image' />
           </div>
           <div className='dish-name'>
             <h1 className="dish-title">Tomato Cheese Pizza</h1>
-            <h2>Sri Lankan</h2>
+            <h2 className='dish-subtitle-home'>Sri Lankan</h2>
             <div className="dline"></div>
             <p className='sdish-description'>The Pizza is a delicious blend of flavors, topped with fresh ingredients and melted cheese. Specially tomato pieces are used to enhance the taste. This specialty is a must-try for pizza lovers!</p>
             <p className='person'>2 Persons(M)</p>
@@ -86,7 +86,7 @@ function Home() {
         <div className="dish-card scroll-animate pop-up delay-1">
           <div className='dish-name'>
             <h1 className="dish-title">Spicy Rosted Chicken</h1>
-            <h2>Sri Lankan</h2>
+            <h2 className='dish-subtitle-home'>Sri Lankan</h2>
             <div className="dline"></div>
             <p className='sdish-description'>The perfect blend of spices and flavors. This dish is a must-try for spice lovers!. Chicken is marinated with a special blend of spices and roasted to perfection.</p>
             <p className='person'>2 Persons</p>
@@ -106,7 +106,7 @@ function Home() {
           </div>
           <div className='dish-name'>
             <h1 className="dish-title">Classic Cheeseburger</h1>
-            <h2>Burger</h2>
+            <h2 className='dish-subtitle-home'>Burger</h2>
             <div className="dline"></div>
             <p className='sdish-description'>Cheeseburgers are an all-time favorite classic. They're a hug between two slices of bread with the perfect combination of melted cheese, bacon, and vibrant vegetables—fresh lettuce, tomato, onion, avocado, and mushrooms. Pickles, mayonnaise, ketchup, and mustard enhance the overall taste.</p>
             <p className='person'>1 Person</p>
@@ -120,7 +120,7 @@ function Home() {
         <div className="dish-card scroll-animate pop-up delay-3">
           <div className='dish-name'>
             <h1 className="dish-title">Chicken Biriyani</h1>
-            <h2>Sri Lankan</h2>
+            <h2 className='dish-subtitle-home'>Sri Lankan</h2>
             <div className="dline"></div>
             <p className='sdish-description'>The perfect blend of spices and flavors. This dish is a must-try for spice lovers!. Chicken is marinated with a special blend of spices and roasted to perfection.</p>
             <p className='person'>2 Persons</p>
@@ -136,9 +136,9 @@ function Home() {
 
         {/* Services Section */}
         <div className="services-section">
-          <div className="line-about">
+          <div className="line-about scroll-animate fade-in">
             <div className="line aboutline"></div>
-            <h2 className='services-subtitle scroll-animate fade-in'>Why Choose Us</h2>
+            <h2 className='services-subtitle '>Why Choose Us</h2>
             <div className="line aboutline"></div>
           </div>
           
