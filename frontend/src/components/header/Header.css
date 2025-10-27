@@ -78,17 +78,26 @@ video{
     justify-content: center;
     align-items: center;
     position: absolute;
-    top: 160px;
+    top: 210px;
+    left:0;
+    width: 100%;
 }
 
 .fade-text {
     font-family: "Josefin Sans", sans-serif;
-    font-size: 72px;
+    font-size: 86px;
     text-align: center;
     color: #fff8ef;
     margin: 0px;
     transition: opacity 0.5s ease-in-out;
     font-weight: 900;
+    white-space: nowrap;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    width: 100%;
+    transform: translateY(0);
   }
   
   .fade-in {
@@ -97,6 +106,8 @@ video{
   
   .fade-out {
     opacity: 0;
+    transform: translateY(0px);
+
   }
   .header-order{
     font-size: 24px;
@@ -106,12 +117,13 @@ video{
     padding-right: 30px;
     width: fit-content;
     height: fit-content;
-    font-weight: 400;
+    font-weight: 600;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: #ffca28;
     border:3px solid #fdf0df;
+    margin-left:0;
   }
   .header-order:hover{
     background-color: #fdf0df;
@@ -162,3 +174,86 @@ video{
   .outlet-item h4{
     font-weight: 300;
   }
+
+  @media (max-width: 768px) {
+    .overlay {
+        height: 20vh;
+        
+    }
+    .video-bg {
+        height: 20vh;
+    }
+    video{
+    width: 100%;
+    height: 20vh;
+    object-fit: cover;
+}
+.logo-img {
+        width:60%;
+    }
+   
+    .content {
+        width: 80%;
+        height: 20vh;
+        top: 160px;
+        border: 5px solid #fdf0df;
+    }
+
+    .content h1 {
+        font-size: 36px;
+    }
+
+    .content h3 {
+        font-size: 14px;
+    }
+
+    .logo-img img {
+        width: 70%;
+    }
+
+    .animated_text {
+        top: 130px;
+    }
+
+    .fade-text {
+        font-size: 24px;
+        padding: 0 5px;
+    }
+
+    .header-order {
+        font-size: 14px;
+        padding: 6px 14px;
+        border:2px solid #fdf0df;
+    }
+
+    .outlet {
+        top: 100px;
+        height: 60px;
+    }
+    .outlet-container {
+       display:grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 10px;
+        padding: 10px 0;
+        
+    }
+    .outlet-item {
+        
+        height: 60px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        
+        margin: 0;
+        padding: 0;
+        
+    }
+    .outlet-item h3 {
+        font-size: 10px;
+    }
+
+    .outlet-item h4 {
+        font-size: 8px;
+    }
+}
