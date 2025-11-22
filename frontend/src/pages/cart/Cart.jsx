@@ -84,10 +84,10 @@ const getPickupTimeRange = (selectedTime) => {
   };
 };
 
-  const handleProceedToCheckout = async () => {
-    setError('');
-    
-    // Validation
+
+
+  const makeProceedToCheckout = async() => {
+    // ✅ Validation first
     if (cartItems.length === 0) {
       setError('Your cart is empty');
       return;
@@ -99,69 +99,89 @@ const getPickupTimeRange = (selectedTime) => {
     }
 
     setIsProcessing(true);
+    setError('');
 
     try {
-      // Get user data
-      const userData = JSON.parse(localStorage.getItem('user') || '{}');
-      
-      // Prepare order data
-      const orderData = {
-        customerName: userData.name || 'Guest User',
-        customerEmail: userData.email || '',
-        customerPhone: userData.contactNumber || '',
-        items: cartItems.map(item => ({
+      console.log('🔄 Starting checkout process...');
+
+      // ✅ Prepare products with correct image format
+      const products = cartItems.map(item => {
+        console.log('🔍 Item image path:', item.image);
+        
+        return {
           name: item.name,
           price: item.price,
           quantity: item.quantity,
-          image: item.image
-        })),
-        totalAmount: total,
-        pickupTime: time,
-        paymentMethod: 'Cash on Pickup', // Since payment is implemented later
-        status: 'pending'
+          image: item.image,
+          description: item.description || item.itemDescription
+        };
+      });
+
+      console.log('📦 Products prepared:', products);
+
+      // ✅ Calculate final total with service fee and discount
+      const finalTotal = subtotal + serviceFee - discount;
+      
+      console.log('💰 Price breakdown:', {
+        subtotal: subtotal,
+        serviceFee: serviceFee,
+        discount: discount,
+        finalTotal: finalTotal
+      });
+
+      const body = {
+        products: products,
+        totalAmount: finalTotal,  // ✅ Send final total (not just subtotal)
+        pickupTime: time
       };
 
-      console.log('🔄 Creating order:', orderData);
+      console.log('📤 Checkout body:', body);
 
-      // Create order
-      const response = await createOrder(orderData);
+      // ✅ Get token
+      const token = localStorage.getItem('token');
       
-    // In your handleProceedToCheckout function, update the navigation:
-    if (response.data.success) {
-  console.log('✅ Order created successfully');
-  
-  // Pass order data to checkout page
-  const checkoutData = {
-    orderNumber: response.data.order.orderNumber,
-    customerName: orderData.customerName,
-    customerEmail: orderData.customerEmail,
-    customerPhone: orderData.customerPhone,
-    totalAmount: orderData.totalAmount,
-    pickupTime: orderData.pickupTime,
-    items: orderData.items
-  };
-  
-  // Navigate to checkout with order data
-  navigate('/payment', { state: { orderData: checkoutData } });
-  
-  // Clear cart after successful order
-  await clearCart();
-
-    } else {
-        setError('Failed to place order. Please try again.');
+      if (!token) {
+        throw new Error('Please login to continue');
       }
+
+      console.log('📤 Sending request to create checkout session...');
+
+      // ✅ Create checkout session
+      const response = await fetch("http://localhost:5000/api/create-checkout-session", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify(body)
+      });
+
+      console.log('📥 Response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('❌ Server error:', errorData);
+        throw new Error(errorData.message || 'Failed to create checkout session');
+      }
+
+      const session = await response.json();
+      console.log('✅ Session created:', session);
+
+      if (!session.url) {
+        throw new Error('Invalid session response - no checkout URL');
+      }
+      
+      console.log('🔄 Redirecting to Stripe checkout URL:', session.url);
+
+      // ✅ Direct redirect using session.url
+      window.location.href = session.url;
+      
     } catch (error) {
-      console.error('❌ Order creation error:', error);
-      
-      if (error.response?.status === 401) {
-        setError('Please login to place an order');
-        navigate('/login');
-      } else {
-        setError('Failed to place order. Please try again.');
-      }
-    } finally {
+      console.error('❌ Checkout error:', error);
+      setError(error.message || 'Payment process failed. Please try again.');
       setIsProcessing(false);
     }
+    // Don't set isProcessing to false here since we're redirecting
   };
 
   const handleQuantityChange = (foodID, change) => {
@@ -359,10 +379,10 @@ const getPickupTimeRange = (selectedTime) => {
             <div className="checkout-section">
               <button 
                 className="checkout-btn"
-                onClick={handleProceedToCheckout}
+                onClick={makeProceedToCheckout}
                 disabled={isProcessing || !time}
               >
-                {isProcessing ? 'Processing Order...' : 'Proceed to Checkout'}
+                {isProcessing ? 'Processing Payment...' : 'Proceed to Payment'}
               </button>
               
               <button 
