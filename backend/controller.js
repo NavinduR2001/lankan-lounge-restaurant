@@ -483,93 +483,96 @@ const updateUserCart = async (req, res) => {
 // Create new order
 const createOrder = async (req, res) => {
   try {
-    const userId = req.user?._id || null;
-    
-    // ✅ Generate unique order number with multiple factors
-    const timestamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 999999);
-    const orderNumber = `ORD-${timestamp}-${randomNum}`;
-    
-    console.log('📝 Creating order with data:', {
-      orderNumber,
-      customerName: req.body.customerName,
-      totalAmount: req.body.totalAmount,
-      itemCount: req.body.items?.length || 0
+    const { 
+      customerName, 
+      customerEmail, 
+      customerPhone, 
+      items, 
+      totalAmount, 
+      pickupTime, 
+      paymentMethod = 'Cash',
+      paymentStatus = 'pending',
+      stripeSessionId,
+      status = 'pending'
+    } = req.body;
+
+    console.log('📥 Received order request:', {
+      customerName,
+      itemsCount: items?.length,
+      totalAmount,
+      items: items
     });
-    
-    // ✅ Check if orderId_1 index still exists (debugging)
-    const Order = require('./orderModel');
-    const collection = Order.collection;
-    
-    try {
-      const indexes = await collection.indexes();
-      const hasOrderIdIndex = indexes.some(idx => idx.name === 'orderId_1');
-      if (hasOrderIdIndex) {
-        console.error('🚨 CRITICAL: orderId_1 index still exists!');
-        return res.status(500).json({
-          success: false,
-          message: 'Database index error. Please contact support.',
-          error: 'Index configuration issue'
-        });
-      }
-    } catch (indexError) {
-      console.error('Error checking indexes:', indexError);
-    }
-    
-    const orderData = {
-      orderNumber,
-      userId,
-      customerName: req.body.customerName,
-      customerEmail: req.body.customerEmail,
-      customerPhone: req.body.customerPhone,
-      items: req.body.items,
-      totalAmount: req.body.totalAmount,
-      pickupTime: req.body.pickupTime,
-      paymentMethod: req.body.paymentMethod || 'Cash on Pickup',
-      orderDate: new Date(),
-      status: 'pending'
-    };
-    
-    const order = new Order(orderData);
-    const savedOrder = await order.save();
-    
-    console.log('✅ Order created successfully:', savedOrder.orderNumber);
-    
-    res.status(201).json({
-      success: true,
-      message: 'Order created successfully',
-      order: {
-        orderNumber: savedOrder.orderNumber,
-        customerName: savedOrder.customerName,
-        totalAmount: savedOrder.totalAmount,
-        status: savedOrder.status,
-        orderDate: savedOrder.orderDate
-      }
-    });
-    
-  } catch (error) {
-    console.error('❌ Create order error:', error);
-    
-    if (error.code === 11000) {
-      if (error.message.includes('orderId')) {
-        return res.status(500).json({
-          success: false,
-          message: 'Database index error. Please contact support.',
-          error: 'Index configuration issue'
-        });
-      }
-      
-      return res.status(400).json({
-        success: false,
-        message: 'Order number already exists. Please try again.',
-        error: 'Duplicate order number'
+
+    // Validate required fields
+    if (!customerName || !items || !Array.isArray(items) || items.length === 0 || !totalAmount || !pickupTime) {
+      console.log('❌ Validation failed:', { customerName, items, totalAmount, pickupTime });
+      return res.status(400).json({ 
+        success: false, 
+        message: 'Missing required fields' 
       });
     }
-    
-    res.status(500).json({
-      success: false,
-      message: 'Error creating order',
-      error: error.message
+
+    // ✅ Validate each item has required fields (using 'name' not 'itemName')
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (!item.name || !item.quantity || !item.price) {
+        console.log(`❌ Invalid item at index ${i}:`, item);
+        return res.status(400).json({
+          success: false,
+          message: `Item at index ${i} is missing required fields (name, quantity, price)`
+        });
+      }
+    }
+
+    // Generate unique order number
+    const orderNumber = `ORD-${Date.now()}-${Math.floor(Math.random() * 1000000)}`;
+
+    // ✅ Create new order - items already have correct 'name' field
+    const newOrder = new Order({
+      orderNumber,
+      customerName,
+      customerEmail: customerEmail || 'N/A',
+      customerPhone: customerPhone || 'N/A',
+      items: items,  // ✅ Items have name, quantity, price
+      totalAmount,
+      pickupTime,
+      paymentMethod,
+      paymentStatus,
+      stripeSessionId: stripeSessionId || null,
+      status,
+      orderDate: new Date()
+    });
+
+    await newOrder.save();
+
+    console.log('✅ Order created:', orderNumber);
+
+    // ✅ Return complete order
+    res.status(201).json({ 
+      success: true, 
+      message: 'Order created successfully',
+      order: {
+        orderNumber: newOrder.orderNumber,
+        customerName: newOrder.customerName,
+        customerEmail: newOrder.customerEmail,
+        customerPhone: newOrder.customerPhone,
+        items: newOrder.items,
+        totalAmount: newOrder.totalAmount,
+        pickupTime: newOrder.pickupTime,
+        paymentMethod: newOrder.paymentMethod,
+        paymentStatus: newOrder.paymentStatus,
+        status: newOrder.status,
+        orderDate: newOrder.orderDate,
+        createdAt: newOrder.createdAt
+      }
+    });
+
+  } catch (error) {
+    console.error('❌ Error creating order:', error);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error', 
+      error: error.message 
     });
   }
 };
