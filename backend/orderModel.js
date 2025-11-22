@@ -1,65 +1,75 @@
 const mongoose = require('mongoose');
 
-// ✅ Disable auto-indexing to prevent orderId_1 from being created
-mongoose.set('autoIndex', false);
+const orderItemSchema = new mongoose.Schema({
+  name: {  // ✅ Changed from itemName to name
+    type: String,
+    required: true
+  },
+  quantity: {
+    type: Number,
+    required: true,
+    min: 1
+  },
+  price: {
+    type: Number,
+    required: true,
+    min: 0
+  }
+}, { _id: false });
 
 const orderSchema = new mongoose.Schema({
-  orderNumber: { 
-    type: String, 
-    required: true, 
-    unique: true 
+  orderNumber: {
+    type: String,
+    required: true,
+    unique: true
   },
-  userId: { 
-    type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User',
-    required: false
-  }, 
-  customerName: { 
-    type: String, 
-    required: true 
+  customerName: {
+    type: String,
+    required: true
   },
-  customerEmail: { 
-    type: String 
+  customerEmail: {
+    type: String,
+    default: 'N/A'
   },
-  customerPhone: { 
-    type: String 
+  customerPhone: {
+    type: String,
+    default: 'N/A'
   },
-  items: [{
-    name: { type: String, required: true },
-    price: { type: Number, required: true },
-    quantity: { type: Number, required: true },
-    image: String
-  }],
-  totalAmount: { 
-    type: Number, 
-    required: true 
+  items: [orderItemSchema],
+  totalAmount: {
+    type: Number,
+    required: true,
+    min: 0
   },
-  pickupTime: { 
-    type: String, 
-    required: true 
+  pickupTime: {
+    type: String,
+    required: true
   },
-  orderDate: { 
-    type: Date, 
-    default: Date.now 
+  paymentMethod: {
+    type: String,
+    enum: ['Cash', 'Card', 'Card (Stripe)', 'Online'],
+    default: 'Cash'
   },
-  paymentMethod: { 
-    type: String, 
-    default: 'Cash on Pickup' 
-  },
-  status: { 
-    type: String, 
-    enum: ['pending', 'preparing', 'confirmed', 'ready', 'completed', 'cancelled'],
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed'],
     default: 'pending'
+  },
+  stripeSessionId: {
+    type: String,
+    default: null
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'confirmed', 'preparing', 'ready', 'completed', 'cancelled'],
+    default: 'pending'
+  },
+  orderDate: {
+    type: Date,
+    default: Date.now
   }
 }, {
-  timestamps: true,
-  autoIndex: false, // ✅ Disable auto-indexing
-  collection: 'orders'
+  timestamps: true
 });
 
-// ✅ Only create the index we want
-orderSchema.index({ orderNumber: 1 }, { unique: true, name: 'orderNumber_unique' });
-
-const Order = mongoose.model('Order', orderSchema);
-
-module.exports = Order;
+module.exports = mongoose.model('Order', orderSchema);

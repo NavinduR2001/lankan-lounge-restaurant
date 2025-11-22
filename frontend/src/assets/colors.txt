@@ -1,0 +1,8 @@
+#212121  //bg
+#fff8ef 
+#5d4037 //font
+#ffca28 //bg
+#ffbf00ff
+font-family: "Josefin Sans", sans-serif;
+
+ 
