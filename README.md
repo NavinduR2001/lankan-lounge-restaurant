@@ -141,9 +141,6 @@ gami-gedara-restaurant/
    cd backend
    node seedAdmin.js
    ```
-   **Admin Credentials:**
-   - Email: `admin@gamigedara.lk`
-   - Password: `Admin123!`
 
 ## 📱 API Endpoints
 
@@ -240,15 +237,12 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - **Authentication**: JWT-based security system
 
 ## 📞 Contact
-
-- **Restaurant Email**: info@gamigedara.lk
 - **Project Repository**: [GitHub Link](https://github.com/yourusername/gami-gedara-restaurant)
 
 ## 🙏 Acknowledgments
 
 - Sri Lankan Cultural Restaurant inspiration
 - MERN Stack community
-- Chart.js for data visualization
 - React community for excellent documentation
 
 ---
